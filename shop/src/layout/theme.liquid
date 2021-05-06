@@ -1,407 +1,45 @@
 <!doctype html>
-<!--[if IE 9]> <html class="ie9 no-js" lang="{{ shop.locale }}"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<html>
 <head>
-
-
-{% if content_for_header contains "Shopify.designMode" %}
-  {% section 'gtm-section' %}
-{% else %}
-  {% capture gtmSection %} 
-     {% section 'gtm-section' %}
-  {% endcapture %} 
-  {% capture gtmVal %}{{gtmSection | strip_html | strip }}{% endcapture %} 
-{% endif %}
-{% assign gVal = gtmVal | split: "|" %}
-{% include 'google-head-snippets', gtag: gVal[0] %}
-
-
-{% if content_for_header contains "Shopify.designMode" %}
-  {% section 'lang-section' %}
-{% endif %}
-{% capture langSection %}
-  {% section 'lang-section' %}
-{% endcapture %} 
-{% capture langVal %}{{ langSection | strip_html | strip  }}{% endcapture %} 
-
-
-{% include 'dynamic_yield' %}
-
+  <title>{{ page_title }}</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=12.0, minimum-scale=.25, user-scalable=yes">
-  <meta name="theme-color" content="{{ settings.color_button }}">
+  <meta name="description" content="{{ page_description | escape }}">
   <link rel="canonical" href="{{ canonical_url }}">
-
-  {% if settings.favicon != blank %}
-    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
-  {% endif %}
-
-  {% capture seo_title %}
-    {{ page_title }}
-    {% if current_tags %}
-      {%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
-    {% endif %}
-    {% if current_page != 1 %}
-      &ndash; {{ 'general.meta.page' | t: page: current_page }}
-    {% endif %}
-    
-    
-      {% unless page_title contains shop.name %}
-        &ndash; {{ shop.name }}
-      {% endunless %}
-    
-    
-  {% endcapture %}
-  
-
-  {% if settings.custom_shop_name != ''  %}
-    <title>{{ seo_title | replace: shop.name, settings.custom_shop_name }}</title>
-  {% else %}
-    <title>{{ seo_title }}</title>
-  {% endif %}
-
-  
-
-  {% if page_description %}
-    <meta name="description" content="{{ page_description | escape }}">
-  {% endif %}
-
-
- {% include 'seo', robots: gVal[3], fb: gVal[4] %}
-
- {% include 'schema-organization' %}
-
- {% include 'dns-meta' %}
-
- {% include 'restricted-meta' %}
-
-
-  {% include 'social-meta-tags' %}
-  {% include 'hreflang' %}
-
-  {% include 'bc-sf-filter-style' %}
-  {{ 'custom.scss.css' | asset_url | stylesheet_tag }}
-  {{ 'accessibility.scss.css' | asset_url | stylesheet_tag }}
-
-
-
-  {% if settings.enable_zendesk %}
-  {% include 'zendesk-widget' %}
-  {% endif %}
-
-
-
-
-
-
-
-  <script>
-    var theme = {
-      strings: {
-        addToCart: {{ 'products.product.add_to_cart' | t | json }},
-        soldOut: {{ 'products.product.sold_out' | t | json }},
-        unavailable: {{ 'products.product.unavailable' | t | json }},
-        showMore: {{ 'general.filters.show_more' | t | json }},
-        showLess: {{ 'general.filters.show_less' | t | json }},
-        addressError: {{ 'sections.map.address_error' | t | json }},
-        addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
-        addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
-        authError: {{ 'sections.map.auth_error_html' | t | json }},
-        cognitoCss: "{{ 'cognito.scss.css' | asset_url  }}",
-        template: "{{ template }}", 
-        doNotShow: "{{ settings.country_selector_do_not_show }}",
-        doNotShowtemplate: "{{ settings.country_selector_do_not_show_template }}", 
-        disableCloseCountrySelector: "{{ settings.disable_close_country_selector }}", 
-        botPatternEnable: {{ settings.country_selector_user_agent_blocked_enabled }}, 
-        botPattern: "{{settings.country_selector_user_agent_blocked }}",
-        general: {
-          accessibility: {
-            close_modal: {{ 'general.accessibility.close_modal' | t | json }},
-          },
-        },
-        layout: {
-          cart: {
-            items_count: {
-              one: {{ 'layout.cart.items_count.one' | t | json }},
-              other: {{ 'layout.cart.items_count.other' | t | json }},
-            },
-          },
-        },
-        products: {
-          product: {
-            size_guide_close: {{ 'products.product.size_guide_close' | t | json }},
-          },
-        },
-        wishlist: {
-          default_name: {{'wishlist.wishlist.default_wishlist_name'| t | json }},
-        },
-      },
-      {% include 'restricted-var' %}
-      pdpVariantDisplay: {{settings.variant_selector | json}},
-      gec: {{settings.enhanced_ecommerce_enable}},
-      dy: {{settings.dy_enable}},
-      dy_NL_pageview: {{ settings.dy_NL_pageview}}, 
-
-      desktopRowBuffer: {{settings.desktop_row_buffer | json}},
-      mobileRowBuffer: {{settings.mobile_row_buffer | json}},
-
-      highBidMSG: {{settings.auction_highest | json }},
-      outbidMSG: {{settings.auction_outbid | json }},
-
-      wishDomain: {{ settings.wishlist_domain | json }},  
-
-      shopcurrency: {{ 0 | money_with_currency | strip_html | split: ' ' | last | json }} ,
-      shopcurrencySymbol : {{ 0 | money_with_currency | strip_html | split: '0' | first | json }},
-      moneyFormat: {{ shop.money_format | json }},
-      thousandSeparator: {{ 123456 | money_without_currency | replace: '234,56', '' | replace: '234.56', '' | replace: '1', '' | json }},
-      decimalSeparator: {{ 123456 | money_without_currency | replace: '1,234', '' | replace: '1.234', '' | replace: '56', '' | json }},
-      country_link: {{ settings.country_link | json }},
-      sitewide_msg_prefix: "{{ settings.sitewide_msg_prefix }}",
-      defaultPrintImg:  '{{ settings.collection_default_filter_image | img_url: '136x136' }}',
-      no_result_text: {{ 'general.search.no_results_text' | t |  json }},   
-
-      plus_size_enable: {{settings.plus_size_enable | json }},
-      plus_size_tag: {{settings.plus_size_tag | json }},
-      plus_size_sizes: {{settings.plus_size_sizes | json }},
-      template: {{template.suffix | json }},
-      
-      langVal: {{langVal | json }},
-
-      {%- if customer.accepts_marketing == true -%}
-      subscriber: {{customer.accepts_marketing }}
-      {%- else -%}  
-      subscriber: false
-      {%- endif -%}
-    }
-
-    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-
-    {% if settings.enhanced_ecommerce_enable %}
-      var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(r){var t,e,o,a,h,n,c,d="",C=0;for(r=Base64._utf8_encode(r);C<r.length;)a=(t=r.charCodeAt(C++))>>2,h=(3&t)<<4|(e=r.charCodeAt(C++))>>4,n=(15&e)<<2|(o=r.charCodeAt(C++))>>6,c=63&o,isNaN(e)?n=c=64:isNaN(o)&&(c=64),d=d+this._keyStr.charAt(a)+this._keyStr.charAt(h)+this._keyStr.charAt(n)+this._keyStr.charAt(c);return d},decode:function(r){var t,e,o,a,h,n,c="",d=0;for(r=r.replace(/[^A-Za-z0-9\+\/\=]/g,"");d<r.length;)t=this._keyStr.indexOf(r.charAt(d++))<<2|(a=this._keyStr.indexOf(r.charAt(d++)))>>4,e=(15&a)<<4|(h=this._keyStr.indexOf(r.charAt(d++)))>>2,o=(3&h)<<6|(n=this._keyStr.indexOf(r.charAt(d++))),c+=String.fromCharCode(t),64!=h&&(c+=String.fromCharCode(e)),64!=n&&(c+=String.fromCharCode(o));return c=Base64._utf8_decode(c)},_utf8_encode:function(r){r=r.replace(/\r\n/g,"\n");for(var t="",e=0;e<r.length;e++){var o=r.charCodeAt(e);o<128?t+=String.fromCharCode(o):o>127&&o<2048?(t+=String.fromCharCode(o>>6|192),t+=String.fromCharCode(63&o|128)):(t+=String.fromCharCode(o>>12|224),t+=String.fromCharCode(o>>6&63|128),t+=String.fromCharCode(63&o|128))}return t},_utf8_decode:function(r){for(var t="",e=0,o=c1=c2=0;e<r.length;)(o=r.charCodeAt(e))<128?(t+=String.fromCharCode(o),e++):o>191&&o<224?(c2=r.charCodeAt(e+1),t+=String.fromCharCode((31&o)<<6|63&c2),e+=2):(c2=r.charCodeAt(e+1),c3=r.charCodeAt(e+2),t+=String.fromCharCode((15&o)<<12|(63&c2)<<6|63&c3),e+=3);return t}};
-    {% endif %}  
-  </script>
-
-  {{ 'jquery.min.js' | asset_url | script_tag }}
-
-  <!--[if (lte IE 9) ]>{{ 'match-media.min.js' | asset_url | script_tag }}<![endif]-->
-
-  {% if template.directory == 'customers' %}
-    <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
-    <!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
-  {% endif %}
-
-
-
-
-  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'custom.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
-  <!--[if lte IE 9]><script src="{{ 'custom.js' | asset_url }}"></script><![endif]-->
-
-
-
-  {{ content_for_header }}
-
-
-  {%- if settings.enable_shogun == true -%}
-    {% include 'shogun-head' %}
-  {%- endif -%}
-
-<script type="text/javascript" async 
- src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id={{settings.klaviyo_company_id}}"></script>   
-
-
-
-
-
-
-
-{% include 'geoip_speed_code' %}
-
-
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+  {{ content_for_header }} <!-- Header hook for plugins -->
+  {{ 'theme.min.css?c=1616307645454' | asset_url | stylesheet_tag }}
+  {{ 'theme.min.js?c=1616307645454' | asset_url | script_tag }}
 </head>
+<body>
 
-
-<body class="template-{{ template | split: '.' | first }} wishList_{{settings.wishlist_enabled}} {% if customer %}userCustomer{% else %}userGuest{% endif %}"> 
-{% render 'google-body-snippets', gtag:gVal[0] %}
-<!-- Server side GTM container -->
-  <img src="https://analytics.camilla.com/collect?v=1&t=pageview&tid=UA-184492154-1&cid=johnniedidit&dl=https%3A%2F%2F{{request.host}}" style="display: none" />
-<!-- End server side GTM container -->
-
-
-
-
-
-  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
-
-  <div id="SearchDrawer" class="search-bar drawer drawer--top" role="dialog" aria-modal="true" aria-label="{{ 'general.search.placeholder' | t }}">
-    <div class="search-bar__table">
-      <div class="search-bar__table-cell search-bar__form-wrapper">
-        <form class="search search-bar__form" action="/search" method="get" role="search">
-          <button class="search-bar__submit search__submit btn--link" type="submit">
-            <i class="fas fa-search"></i>
-            <span class="icon__fallback-text">{{ 'general.search.submit' | t }}</span>
-          </button>
-          <input class="search__input search-bar__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" aria-label="{{ 'general.search.placeholder' | t }}">
-        </form>
-      </div>
-      <div class="search-bar__table-cell text-right">
-        <button type="button" class="btn--link search-bar__close js-drawer-close">
-          {% include 'icon-close' %}
-          <span class="icon__fallback-text">{{ 'general.search.close' | t }}</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-
-  {% section 'country-selector' %}
-  {% section 'header' %}
-
-  <div class="page-container" id="PageContainer" role="presentation">
-
-    {% if template contains 'product' %}
-      {% include 'breadcrumbs' %}
+  {% for link in linklists.main-menu.links %}
+    {% assign child_list_handle = link.title | handleize %}
+    {% if linklists[child_list_handle].links != blank %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
+      [{% for childlink in linklists[child_list_handle].links %}
+        <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+      {% endfor %}]
+    {% else %}
+      <a href="{{ link.url }}">{{ link.title }}</a>
     {% endif %}
+  {% endfor %}
 
-    <main class="main-content" id="MainContent" role="main" aria-label="{{ 'layout.navigation.main_content' | t | escape }}">
-      {{ content_for_layout }}
-    </main>
+  <a href="/cart">cart</a>
 
-    {% section 'footer' %}
-
-  </div>
-
-
-
-{% include 'ajaxify-cart' %}
-{% include 'ajax-cart' %}
-
-
-
-
-<script type="text/javascript">
-  window.addEventListener('DOMContentLoaded', function() {
-      CartJS.init({{ cart | json }}, {
-          "moneyFormat": "{{ shop.money_format }}",
-          "moneyWithCurrencyFormat": "{{ shop.money_with_currency_format }}"
-      });
-  });
-</script>
-
-
-
-
-
-
-{% if template == 'page.career' %}
- <!-- Start Responsive Sizing Script -->
-
-
-
-<!-- End Responsive Sizing Script -->
-{% endif %}
-{% if template contains 'customers/account' %}
-<script src="https://app.accentuate.io/dist/proxy.js"></script>
-<script>
-    Accentuate($("#customer_metafields"), function(data) {
-      $("#customer_metafields .message").remove();
-      if (data.status == "OK" ) {
-        $("#customer_metafields .message").remove();
-        $('.aFName').text($('#FirstName').val());
-        $('.aLName').text($('#LastName').val());
-        $('.aEmail').text($('#customerEmail').val());
-        $('.aPhone').text($('#customerPhone').val());
-        $('.aDOB').text($('#customerDOB').val());
-
-        $("#customer_metafields").prepend('<div id="alert-customer_metafields_form" role="alert" class="message success">{{ 'customer.update.success' | t }}</div>');
-        $('html,body').animate({
-          scrollTop: 0
-        }, 300);
-      } else {
-        $("#customer_metafields .message").remove();
-        $("#customer_metafields").prepend('<div id="alert-customer_metafields_form" role="alert" class="message error">'+data.message+'</div>');
-        $('html,body').animate({
-          scrollTop: 0
-        }, 300);
-      }
-    });
-</script>
-{% endif %}
-
-{% include 'country-selector' %}
-{% include 'gdpr-cookie-popup' %}
-{% include 'product-grid-hover-image' %}
-{% include 'product-grid-marketing' %}
-{% section 'filter-color-swatches' %}
-{% section 'special-sale-badge' %}
-{% section 'collection-grid-block' %}
-
-
-
-{% capture data-layer-pdp %}
-  {% include 'data-layer-g-shopping-pdp' %}
-  {% include 'data-layer-pdp' %}
-  {% include 'data-layer-add-cart' %}
-{% endcapture %}
-
-
-
-{% include 'restricted' %}
-{% include 'restricted-hide' %}
-
-
-{% if content_restricted == true  %}
-  {% if vip_customer == true %}
-      {{data-layer-pdp}}
-  {% else %}
-      
+  {% if shop.customer_accounts_enabled %}
+    {% if customer %}
+      <a href="/account">account</a>
+      {{ 'log out'  | customer_logout_link }}
+    {% else %}
+      {{ 'log in ' | customer_login_link }}
+      {{ 'register' | customer_register_link }}
+    {% endif %}
   {% endif %}
-{% else %}
-    {{data-layer-pdp}}
-{% endif %}
 
-
-
-{% include 'emarsys-theme' %}
-{% include 'klaviyo-theme' %}
-{% include 'emarsys-pageview-content' %}
-{% include 'emarsys-tracking' %}
-
-
-  {% include 'data-layer-g-shopping-cart' %}
-
-
-
- 
-<div class="menuOverlay"></div>
-
-
-
-{% include 'bc-sf-filter' %}
-
-{% include 'new-search-modal' %}
-{% include 'swymSnippet' %}
-
-
-
-{% if settings.contentsquare_check == true %}
-  {% include 'contentsquare-body-snippets' %}
-{% endif %}
-
-<style type="text/css">
-{% assign wishPrices = settings.wish_hide_price | split: "," %}
-{% for wishPrice in wishPrices %}
-  {% if wishPrice == cart.currency.iso_code %}
-    .swym-product-grid-price,
-    .swym-item .swym-price,
-    .swym-information .swym-price {
-    display: none !important;
-    }            
-  {% endif %}
-{% endfor %}
-</style>
-
+  <main role="main">
+  <h1 data-test="site-header">My Shopify Website Header</h1>
+    {{ content_for_layout }}
+  </main>
 </body>
 </html>
-
-

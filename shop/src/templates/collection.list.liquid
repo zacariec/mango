@@ -12,7 +12,6 @@
   {% else %}
     <p>no matches</p>
   {% endfor %}
-  {% if paginate.pages > 1 %}
-    {{ paginate | default_pagination }}
-  {% endif %}
+  {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
 {% endpaginate %}
+
