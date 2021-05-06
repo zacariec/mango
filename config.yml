@@ -1,7 +1,0 @@
-development:
-  password: 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
-  theme_id: "118612984006"
-  store: big-street-bikers.myshopify.com
-  directory: shop/src
-  ignore_files:
-  - config/settings_data.json
