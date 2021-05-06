@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const spawn = require('child_process').spawn; 
+const spawn = require('cross-spawn'); 
 const chokidar = require('chokidar');
 
 const _Directorys = {
@@ -102,17 +102,23 @@ const watchJsThemeFiles = () => {
     command.on('error', handleError);
 };
 
-const watchScssThemeFiles = () => {
-    // TODO: Spawn SCSS process if SCSS is being used.
+const watchStyleFiles = (type = 'sass', input, output) => {
+    // TODO: Chokidar + postcss to compile node -sass 
+    const postcss = require('postcss');
+    const postcssSass = require('postcss-node-sass');
+
+    const fileType = (type === 'sass') ? 'shop/src/dev/css/**.scss' : 'shop/src/dev/css/**.css';
+    const watchCommand = (type === 'sass') ? spawn('npx', ['sass', input, output, '--watch']) : spawn('npx', ['postcss', input, output, '--watch']);
+    watchCommand.stdout.on('data', data => spawnCallback(data, false));
+    watchCommand.stderr.on('data', data => spawnCallback(data, false));
+    watchCommand.on('error', err => handleError(err.errno, err));
+
+    const styleCommand = spawn('npx', ['stylelint', fileType]);
+    styleCommand.stdout.on('data', data => spawnCallback(data, false));
+    styleCommand.stderr.on('data', data => spawnCallback(data, false));
+    styleCommand.on('error', err => handleError(err.errno, err));
 };
 
-const watchPostCssThemeFiles = () => {
-    // TODO: Spawn PostCSS process if postCSS is being used.
-    const command = spawn('postcss', ['--help']);
-    command.stdout.on('data', data => spawnCallback(data, false));
-    command.stderr.on('data', spawnCallback);
-    command.on('error', handleError);
-};
 
 // const watchFontsThemeFiles = () => {
 //     const watcher = createWatcher(_Directorys.fontsRoot);
@@ -123,4 +129,4 @@ const watchPostCssThemeFiles = () => {
 // };
 
 
-watchPostCssThemeFiles();
+watchScssThemeFiles();

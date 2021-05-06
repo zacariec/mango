@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postcss": "postcss"
   },
   "author": "",
   "license": "ISC",
@@ -12,17 +13,21 @@
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.0",
     "babel-loader": "^8.2.2",
+    "bootstrap": "^5.0.0",
     "chokidar": "^3.5.1",
+    "commander": "^7.2.0",
     "core-js": "^3.11.2",
+    "cross-spawn": "^7.0.3",
     "fs-extra": "^10.0.0",
     "postcss": "^8.2.13",
     "postcss-cli": "^8.3.1",
+    "postcss-node-sass": "^3.1.0",
     "regenerator-runtime": "^0.13.7",
     "sass": "^1.32.12",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0",
+    "tailwindcss": "^2.1.2",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0"
-  },
-  "dependencies": {
-    "commander": "^7.2.0"
   }
 }
