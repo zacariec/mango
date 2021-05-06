@@ -1,0 +1,35 @@
+{% include 'restricted' %}
+{% capture normal_content %}
+
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% section 'product-template' %}
+
+<script>
+  // Override default values of shop.strings for each template.
+  // Alternate product templates can change values of
+  // add to cart button, sold out, and unavailable states here.
+  theme.productStrings = {
+    addToCart: {{ 'products.product.add_to_cart' | t | json }},
+    soldOut: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }}
+  }
+</script>
+
+{% include 'schema-product' %}
+
+
+{% endcapture %}
+
+{% if content_restricted == true  %}
+  {% if vip_customer == true %}
+      {{normal_content}}
+  {% else %}
+      {% include 'restricted_msg' %}
+  {% endif %}
+{% else %}
+    {{normal_content}}
+{% endif %}
+

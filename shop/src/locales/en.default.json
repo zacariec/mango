@@ -1,0 +1,495 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close_modal": "Close (esc)"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "404": {
+      "title": "404 Page Not Found",
+      "subtext": "The page you requested does not exist.",
+      "link": "Continue shopping"
+    },
+    "pagination": {
+      "previous": "Previous page",
+      "next": "Next Page",
+      "current_page": "Page {{ current }} of {{ total }}",
+      "page_nav": "Go to page"
+    },
+    "store_info_page": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "map_link": "VIEW ON MAP",
+      "opening_hours": "Opening hours",
+      "button_book": "Book a Styling Appointment",
+      "find_stockist": "FIND WORLDWIDE STOCKISTS"
+    },
+    "password_page": {
+      "opening_soon": "Opening Soon",
+      "login_form_heading": "Enter store using password",
+      "login_form_password_label": "Password",
+      "login_form_password_placeholder": "Your password",
+      "login_form_submit": "Enter",
+      "signup_form_email_label": "Email",
+      "signup_form_success": "We will send you an email right before we open!",
+      "admin_link_html": "Are you the store owner? <a href=\"\/admin\" class=\"text-link\">Log in here<\/a>",
+      "password_link": "Enter using password",
+      "powered_by_shopify_html": "This shop will be powered by {{ shopify }}"
+    },
+    "social": {
+      "share_on_facebook": "Share",
+      "share_on_twitter": "Tweet",
+      "share_on_pinterest": "Pin it",
+      "alt_text": {
+        "share_on_facebook": "Share on Facebook",
+        "share_on_twitter": "Tweet on Twitter",
+        "share_on_pinterest": "Pin on Pinterest"
+      }
+    },
+    "search": {
+      "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
+      "no_results_text": "No results found",
+      "results_with_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      },
+      "title": "Search Result",
+      "placeholder": "Search",
+      "submit": "Submit",
+      "expand": "Expand Search",
+      "close": "Close search"
+    },
+    "newsletter_form": {
+      "newsletter_email": "Join our mailing list",
+      "email_placeholder": "Email address",
+      "confirmation": "Thanks for subscribing",
+      "submit": "Subscribe",
+      "firstname_placeholder": "First Name",
+      "lastname_placeholder": "Last Name"
+    },
+    "filters": {
+      "show_more": "Show More",
+      "show_less": "Show Less"
+    }
+  },
+  "sections": {
+    "slideshow": {
+      "next_slide": "Next slide",
+      "previous_slide": "Previous slide",
+      "pause_slideshow": "Pause slideshow",
+      "play_slideshow": "Play slideshow",
+      "play_video": "Play video",
+      "close_video": "Close video"
+    },
+    "map": {
+      "address_error": "Error looking up that address",
+      "address_no_results": "No results for that address",
+      "address_query_limit_html": "You have exceeded the Google API usage limit. Consider upgrading to a <a href=\"https:\/\/developers.google.com\/maps\/premium\/usage-limits\">Premium Plan<\/a>.",
+      "auth_error_html": "There was a problem authenticating your Google Maps account."
+    }
+  },
+  "blogs": {
+    "article": {
+      "view_all": "View all",
+      "all_topics": "All topics",
+      "by_author": "by {{ author }}",
+      "posted_in": "Posted in",
+      "read_more": "Read more",
+      "back_to_blog": "Back to {{ title }}"
+    },
+    "comments": {
+      "title": "Leave a comment",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "post": "Post comment",
+      "moderated": "Please note, comments must be approved before they are published",
+      "success_moderated": "Your comment was posted successfully. We will publish it in a little while, as our blog is moderated.",
+      "success": "Your comment was posted successfully! Thank you!",
+      "comments_with_count": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      }
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "note": "Add a note to your order",
+      "remove": "Remove",
+      "subtotal": "Subtotal",
+      "savings": "You're saving",
+      "shipping_at_checkout": "Shipping & taxes calculated at checkout",
+      "update": "Update",
+      "checkout": "Check out",
+      "empty": "Your cart is currently empty.",
+      "cookies_required": "Enable cookies to use the shopping cart",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "go-cart": "Go to cart",
+      "continue_shopping": "Continue shopping",
+      "free_ship_html": "You are only {{ ship }} away from <strong>free standard shipping!<\/strong>",
+      "qualified_free_ship_html": "You are qualified for  <strong>free standard shipping!<\/strong>",
+      "ichange": "We donate $1 from every order to a charity of your choice",
+      "phone_number_error_message": "The correct phone number must be between 8 and 11 digits."
+    },
+    "label": {
+      "product": "Product",
+      "price": "Price",
+      "quantity": "Quantity",
+      "plus": "Plus 1",
+      "minus": "Minus 1",
+      "total": "Total"
+    }
+  },
+  "collections": {
+    "general": {
+      "products": "Products",
+      "products_listing_toolbar": "Product listing toolbar",
+      "sale_price_label": "On Sale",
+      "view_all": "View all",
+      "no_matches": "Sorry, there are no products in this collection",
+      "items_with_count": {
+        "one": "{{ count }} product",
+        "other": "{{ count }} products"
+      }
+    },
+    "sorting": {
+      "sort_label": "Sort By",
+      "title": "Select",
+      "featured": "Relevance",
+      "best_selling": "Most popular",
+      "az": "Alphabetically, A-Z",
+      "za": "Alphabetically, Z-A",
+      "price_ascending": "Price - Low",
+      "price_descending": "Price - High",
+      "date_descending": "Newest first",
+      "date_ascending": "Oldest first"
+    },
+    "filters": {
+      "desktop_button_label": "Filters",
+      "mobile_button_label": "Sort \/ Filter",
+      "title_tags": "Filter",
+      "toggle_desktop": "Filters",
+      "toggle_mobile": "Sort \/ Filter",
+      "all_tags": "All products",
+      "apply": "Apply",
+      "close": "Close filters",
+      "clear": "Clear Filters",
+      "clear_all": "Clear All",
+      "filter_results": "Filter Results",
+      "select_prints": "Select Prints",
+      "filter_prints": "Filter Prints",
+      "filter_print_prefix": "Print:"
+    },
+    "view": {
+      "display": "Display",
+      "wide": "Wide view",
+      "narrow": "Narrow view"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "message": "Message",
+      "submit": "Send",
+      "post_success": "Thanks for contacting us. We'll get back to you as soon as possible."
+    }
+  },
+  "customer": {
+    "account": {
+      "menu": "Account Menu",
+      "title": "My Account",
+      "details": "My Details",
+      "address": "Shipping Address",
+      "view_addresses": "View Addresses",
+      "return": "Return to Account Details",
+      "edit": "Edit"
+    },
+    "activate_account": {
+      "title": "Activate Account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "cancel": "Decline Invitation"
+    },
+    "addresses": {
+      "title": "Your Addresses",
+      "default": "Default",
+      "add_new": "Add a New Address",
+      "edit_address": "Edit address",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "company": "Company",
+      "address1": "Address1",
+      "address2": "Address2",
+      "city": "City",
+      "country": "Country",
+      "province": "Province",
+      "zip": "Postal\/Zip Code",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add Address",
+      "update": "Update Address",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you wish to delete this address?"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Sign In",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue",
+      "new_account": "New to Camilla?",
+      "create_an_account": "Create an account",
+      "member_benefits": "By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more."
+    },
+    "orders": {
+      "title": "Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "total": "Total",
+      "view": "View Order",
+      "none": "You haven't placed any orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "cancelled": "Order Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "billing_address": "Billing Address",
+      "payment_status": "Payment Status",
+      "shipping_address": "Shipping Address",
+      "fulfillment_status": "Fulfillment Status",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "fulfilled_at": "Fulfilled {{ date }}",
+      "subtotal": "Subtotal",
+      "track_shipment": "Track shipment"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "email": "Email",
+      "submit": "Reset Password",
+      "cancel": "Cancel",
+      "subtext": "We will send you an email to reset your password.",
+      "success": "Email successfully sent to your email account"
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password for {{ email }}",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Reset Password"
+    },
+    "register": {
+      "title": "Create Account",
+      "info_text": "From your My Account Dashboard you have the ability to view a snapshot of your recent account.",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone number",
+      "dob": "Date of birth",
+      "password": "Password",
+      "sign_up_checkbox": "Sign up for CAMILLA Angel News: Be the first to know about new arrivals, special offers & more.",
+      "submit": "Create",
+      "back_to_login": "Already a memeber? Login"
+    },
+    "update": {
+      "title": "Update details form",
+      "first_name": "First Name",
+      "first_name_validation": "Please input a valid First Name",
+      "first_name_pattern": "[A-Za-z\\s-]+",
+      "last_name": "Last Name",
+      "last_name_validation": "Please input a valid Last Name",
+      "last_name_pattern": "[A-Za-z\\s-]+",
+      "email": "Email Address",
+      "email_placeholder": "email@email.com",
+      "phone": "Phone number",
+      "phone_validation": "Please input a valid Phone number",
+      "phone_placeholder": "04xx xxx xxx",
+      "phone_pattern": "",
+      "dob": "Date of birth",
+      "dob_placeholder": "DD\/MM\/YYYY",
+      "dob_validation": "Please input a valid Date of birth",
+      "dob_pattern": "(0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\\d\\d",
+      "submit": "Update",
+      "cancel": "Cancel",
+      "sign_up_checkbox": "Sign me up to receive Camilla Special Offers",
+      "success": "Customer details updated"
+    }
+  },
+  "homepage": {
+    "onboarding": {
+      "product_title": "Your product's name",
+      "product_description": "This area is used to describe your product’s details. Tell customers about the look, feel, and style of your product. Add details on color, materials used, sizing, and where it was made.",
+      "collection_title": "Your collection's name",
+      "blog_title": "Your post's title",
+      "blog_excerpt": "Your store hasn’t published any blog posts yet. A blog can be used to talk about new product launches, tips, or other news you want to share with your customers. You can check out Shopify’s ecommerce blog for inspiration and advice for your own store and blog.",
+      "blog_author": "Author name",
+      "no_content": "This section doesn’t currently include any content. Add content to this section using the sidebar."
+    }
+  },
+  "layout": {
+    "navigation": {
+      "breadcrumb": "Breadcrumb",
+      "breadcrumb_home": "Home",
+      "main_menu": "Main menu",
+      "main_content": "Main content",
+      "site_header": "Site header",
+      "site_footer": "Site footer",
+      "search": "Search",
+      "toggle": "expand\/collapse",
+      "expand": "expand",
+      "collapse": "collapse"
+    },
+    "cart": {
+      "title": "Cart",
+      "items_count": {
+        "one": "item",
+        "other": "items"
+      }
+    },
+    "customer": {
+      "account": "Account",
+      "log_out": "Log out",
+      "log_in": "Log in",
+      "create_account": "Create account"
+    },
+    "footer": {
+      "social_platform": "{{ name }} on {{ platform }}"
+    }
+  },
+  "products": {
+    "general": {
+      "afterpay_paragraph_html": "or make 4 payments of {{ amount }} with "
+    },
+    "product": {
+      "sku": "SKU",
+      "regular_price": "Regular price",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "on_sale": "Sale",
+      "quantity": "Quantity",
+      "add_to_cart": "Add to cart",
+      "size_guide_help_html": "Need size help? View our <a class='sizeGuideLink' href='{{ link }}'>Size Guide<\/a>",
+      "size_guide": "Size Guide",
+      "size_guide_close": "Close Size Guide",
+      "print_inspiration": "Print Inspiration",
+      "discover_print": "Discover the Print",
+      "description": "Description",
+      "measurements": "Measurements",
+      "media": "Product media",
+      "more_print": "More in this print",
+      "how_wear": "How to wear",
+      "complete_look": "Complete the Look",
+      "low_stock": "Low in stock",
+      "free_ship_html": "<i aria-hidden='true' class='icomoon-shipping'><\/i> <strong>Free Shipping<\/strong> over $499.00",
+      "easy_return_html": "<i aria-hidden='true' class='icomoon-returns'><\/i>  <strong>Easy Returns<\/strong>",
+      "zippay_html": "Own it now, pay later <strong>zippay<\/strong> <u>What is this?<\/u>",
+      "back_to_collection": "Back to {{ title }}",
+      "from_text_html": "From {{ price }}",
+      "related_style": "More in this style"
+    },
+    "tags": {
+      "badge_camillas_pick": "Camilla's Pick",
+      "badge_online_exclusive": "Online exclusive",
+      "badge_exclusive": "Camilla Exclusive",
+      "badge_new_arrival": "New Arrival",
+      "badge_on_sale": "On Sale"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title_html": "Here's your {{ value }} gift card for {{ shop }}!",
+      "subtext": "Your gift card",
+      "disabled": "Disabled",
+      "expired": "Expired on {{ expiry }}",
+      "active": "Expires on {{ expiry }}",
+      "redeem_html": "Use this code at checkout to redeem your {{ value }} gift card",
+      "shop_link": "Start shopping",
+      "print": "Print this gift card",
+      "remaining_html": "{{ balance }} left",
+      "add_to_apple_wallet": "Add to Apple Wallet"
+    }
+  },
+  "styleguide": {
+    "title": "CAMILLA STYLE GUIDE",
+    "film": "WATCH FILM",
+    "step": "STEP-BY-STEP",
+    "back": "BACK TO STYLING CATEGORIES",
+    "more": "More ways to wear ",
+    "shop_versatile_styles": "Shop Versatile Styles"
+  },
+  "date_formats": {
+    "month_day_year": "%B %d, %Y"
+  },
+  "shipyourcamillapopup": {
+    "title": "Shipping your CAMILLA to [country_name]",
+    "calltoaction": "Continue to your local site for pricing that includes duties and taxes for shipping to [country_name].",
+    "button": "Shipping to [country_name]",
+    "select_label": "Change your shipping country"
+  },
+  "wedonotshippopup": {
+    "title": "It looks like we don't ship to your country at this time?",
+    "calltoaction": "Sign-up for updates when we hit your region. ",
+    "country_label": "Country *",
+    "email_label": "Email *",
+    "button": "Submit",
+    "no_thank_you": "No thanks. Continue",
+    "country_notice": "Don't see your country, change to local store <u>here<\/u>"
+  },
+  "wishlist": {
+    "wishlist": {
+      "add_to_wishlist": "Add to wish list",
+      "remove_from_wishlist": "Remove from wish list",
+      "save": "Save your wishlist",
+      "account_login": "Login",
+      "account_register": "sign up",
+      "account_message_html": "{{ login_link }}  to save your Wishlist. Access it anytime, on every device & share it with your friends.",
+      "empty": "Your wish list is empty!",
+      "share_intro": "You've got great taste.... why not share your Wishlist with your friends.",
+      "share_title": "SHARE YOUR WISHLIST",
+      "share_on_facebook": "Share on Facebook",
+      "share_on_pinterest": "Share on Pinterest",
+      "share_on_twitter": "Share on Twitter",
+      "share_via_link": "Share via link",
+      "share_via_email": "Share via Email",
+      "copy_link": "Copy link",
+      "link_copied": "Copied",
+      "share_wishlist_via_email_text": "SHARE YOUR WISHLIST VIA EMAIL:",
+      "me_email": "me@example.com",
+      "your_email": "your@example.com",
+      "email_label": "SHARE WITH",
+      "message_label": "MESSAGE",
+      "message_email": "Take the hint! Here’s a few things from CAMILLA that I love…",
+      "invalid_email": "Invalid Email",
+      "send_email": "Send Email",
+      "add_to_board": "Manage",
+      "add_to_board_save": "Create new collection",
+      "add_to_board_title": "Wishlist",
+      "add_to_board_ok": "Confirm",
+      "add_to_board_cancel": "Cancel",
+      "default_wishlist_name": "My Wishlist"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{%- comment -%}This snippet structures the micro-data using JSON-LD specification{%- endcomment -%}
+
+{%- if template.name == 'product' -%}
+  {%- capture main_entity_microdata -%}
+    "@type": "Product",
+    "offers": {
+      "@type": "Offer",
+      "availability": {%- if product.available -%}"//schema.org/InStock"{%- else -%}"//schema.org/OutOfStock"{%- endif -%},
+      "price": {{ product.price_min | money_without_currency | json }},
+      "priceCurrency": {{ shop.currency | json }}
+    },
+    "brand": {{ product.vendor | json }},
+    "name": {{ product.title | json }},
+    "description": {{ product.description | strip_html | json }},
+    "category": {{ product.type | json }},
+    "url": "{{ shop.url }}{{ product.url }}",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:{{ product.featured_image | img_url: '1024x1024' }}",
+      "image": "https:{{ product.featured_image | img_url: '1024x1024' }}",
+      "name": {{ product.featured_image.alt | json }},
+      "width": 1024,
+      "height": 1024
+    }
+  {%- endcapture -%}
+{%- elsif template.name == 'article' -%}
+  {%- capture main_entity_microdata -%}
+    "@type": "BlogPosting",
+    "mainEntityOfPage": "{{ article.url }}",
+    "articleSection": {{ blog.title | json }},
+    "keywords": "{{ article.tags | join: ', ' }}",
+    "headline": {{ article.title | json }},
+    "description": {{ article.excerpt_or_content | strip_html | truncatewords: 25 | json }},
+    "dateCreated": "{{ article.created_at | date: '%Y-%m-%dT%T' }}",
+    "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%T' }}",
+    "dateModified": "{{ article.published_at | date: '%Y-%m-%dT%T' }}",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:{{ article.image | img_url: '1024x1024' }}",
+      "image": "https:{{ article.image | img_url: '1024x1024' }}",
+      "name": {{ article.image.alt | json }},
+      "width": 1024,
+      "height": 1024
+    },
+    "author": {
+      "@type": "Person",
+      "name": "{{ article.user.first_name | escape }} {{ article.user.last_name | escape }}",
+      "givenName": {{ article.user.first_name | json }},
+      "familyName": {{ article.user.last_name | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:{{ 'logo.png' | asset_url }}",
+        "image": "https:{{ 'logo.png' | asset_url }}",
+        "name": {{ shop.name | json }},
+        "width": 100,
+        "height": 100
+      }
+    },
+    "commentCount": {{ article.comments_count }},
+    "comment": [
+      {%- for comment in article.comments limit: 5 -%}
+        {
+          "@type": "Comment",
+          "author": {{ comment.author | json }},
+          "datePublished": "{{ comment.created_at | date: '%Y-%m-%dT%T' }}",
+          "text": {{ comment.content | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  {%- endcapture -%}
+{%- endif -%}
+
+{% if main_entity_microdata != blank %}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    {{ main_entity_microdata }}
+  }
+  </script>
+{% endif %}

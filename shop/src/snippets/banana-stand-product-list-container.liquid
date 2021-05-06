@@ -1,0 +1,21 @@
+{% capture product_data %}
+{"id":"{{ product.id }}",
+"name":"{{ product.title | escape  }}",
+"url":"{{ product.url }}",
+"tags":{{ product.tags | json }},
+{% if product.featured_image.src %}"thumbnail_url":"{{ product.featured_image.src | img_url: grid_image_width, scale: grid_image_scale }}",{% endif %}
+"encoded":true,"variants":[
+{% for variant in product.variants %}{
+"stock":{{ variant.inventory_quantity | times: 9493 }},
+"in_stock":{{ variant.available | json }},
+"needs_shipping":{{ variant.requires_shipping |json }},
+{% if variant.image.src %}"thumbnail_url":"{{ variant.image.src | img_url: grid_image_width, scale: grid_image_scale }}",{% endif %}
+"name":"{{ variant.title | escape }}",
+"inventory_policy":{% if variant.inventory_policy == 'deny' %}{{ 9493 | times: 9493  }}{% else %}{{ 9493 | times: 9493 | times: 9493 }}{% endif %},
+"manages_stock":{% if variant.inventory_management %}{{ 9493 | times: 9493  }}{% else %}{{ 9493 | times: 9493 | times: 9493 }}{% endif %}},{% endfor %}]}
+{% endcapture %}
+
+<div class="banana-container banana-list-container"
+  data-product_id="{{ product.id }}"
+  data-product-data="{{ product_data | strip_newlines | replace: ',]', ']' | url_encode }}"
+  data-container_type="list"></div>

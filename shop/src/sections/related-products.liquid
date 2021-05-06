@@ -1,0 +1,137 @@
+{%- capture flickity_options -%}
+{
+  "prevNextButtons": true,
+  "pageDots": false,
+  "wrapAround": false,
+  "contain": true,
+  "cellAlign": "center",
+  "watchCSS": true,
+  "dragThreshold": 8,
+  "groupCells": true,
+  "arrowShape": {"x0": 20, "x1": 60, "y1": 40, "x2": 60, "y2": 35, "x3": 25}
+}
+{%- endcapture -%}
+
+{%- if section.settings.show_section -%}
+  <section class="Section Section--spacingNormal" data-section-id="{{ section.id }}" data-section-type="related-products">
+    {%- if section.settings.title != blank -%}
+      <header class="SectionHeader SectionHeader--center">
+        <div class="Container">
+          <h3 class="SectionHeader__Heading Heading u-h3">{{ section.settings.title | escape }}</h3>
+        </div>
+      </header>
+    {%- endif -%}
+
+    {%- comment -%}
+    If we are in the context of a collection, we use other products from the same collection. Otherwise we fallback to the first collection attached
+    to the product and, if none is found, the "all" collections
+    {%- endcomment -%}
+
+    {%- unless collection -%}
+      {%- assign collection = product.collections.first | default: collections.all -%}
+    {%- endunless -%}
+
+    {%- if collection.products_count == 1 -%}
+      {%- assign collection = collections.all -%}
+    {%- endif -%}
+
+    {%- assign products_count = collection.products.size -%}
+    {%- if product.metafields.sf_related_products.enabled == 1 -%}
+      {%- assign related_products_count = 0 -%}
+
+      {%- for i in (1..4) -%}
+        {%- assign related_product_option = 'product_' | append: i -%}
+        {%- assign related_product = all_products[product.metafields.sf_related_products[related_product_option]] -%}
+
+        {%- unless related_product.empty? -%}
+          {%- assign related_products_count = related_products_count | plus: 1 -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- if products_count >= 5 -%}
+        {%- assign related_products_count = 4 -%}
+      {%- else -%}
+        {%- assign related_products_count = products_count | minus: 1 -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    <div class="ProductListWrapper">
+      <div class="ProductList ProductList--carousel Carousel" data-flickity-config='{{ flickity_options }}'>
+        {%- if collection.products.size >= 5 -%}
+          {%- assign random_factor = collection.products.size | minus: related_products_count | abs -%}
+          {%- capture index -%}{{ 'now' | date: '%S' | times: random_factor | divided_by: 60 }}{%- endcapture -%}
+        {%- else -%}
+          {%- assign index = 0 -%}
+        {%- endif -%}
+
+        {%- comment -%}
+        All our themes come with a native integration with our SuperFields metafield app. If the product has the hand-picked choosen, then we display the
+        hand-picked products instead
+        {%- endcomment -%}
+
+        {%- if product.metafields.sf_related_products.enabled == 1 -%}
+          {%- for i in (1..related_products_count) -%}
+            {%- assign related_product_option = 'product_' | append: i -%}
+            {%- assign related_product = all_products[product.metafields.sf_related_products[related_product_option]] -%}
+
+            {%- unless related_product.empty? -%}
+              <div class="Carousel__Cell">
+                {% include 'product-item', product: related_product, show_product_info: section.settings.show_product_info, show_labels: true %}
+              </div>
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for related_product in collection.products offset: index limit: 5 -%}
+            {%- if related_product.id == product.id or processed_related_products >= related_products_count -%}
+              {%- continue -%}
+            {%- endif -%}
+
+            <div class="Carousel__Cell">
+              {% include 'product-item', product: related_product, show_product_info: section.settings.show_product_info, show_color_swatch: section.settings.show_color_swatch, show_labels: true %}
+            </div>
+
+            {%- assign processed_related_products = processed_related_products | plus: 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related products",
+  "class": "shopify-section--bordered",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Are you looking for hand-picked related products? [Learn more](http://support.maestrooo.com/article/117-product-choosing-hand-picked-related-products)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Related Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_info",
+      "label": "Show product info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_color_swatch",
+      "label": "Show color swatch",
+      "info": "Some colors appear white? [Learn more](http://support.maestrooo.com/article/80-product-uploading-custom-color-for-color-swatch).",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

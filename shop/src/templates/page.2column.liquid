@@ -1,0 +1,45 @@
+{% include 'restricted' %}
+{% capture normal_content %}
+<div class="page-width pageContent">
+  <div class="grid">
+    <div class="grid__item">
+      <div class="section-header text-center mobileOnly">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="grid">
+        <div class="grid__item small--on-whole medium-up--one-quarter large-up--one-sixth pageSideBarBlock">
+          {% if page.metafields.global.menu %}
+          <div id="pageSideBarMenuButton" class="menuDrawerButton mobileOnly blackBorderBottom">Menu <span id="pageSideBarMenuButtonPlus" class="plusIcon">+</span><span id="pageSideBarMenuButtonDashLine" class="dashLine"></span></div>
+          <ul id="sideBarMenuPanel">
+            {% assign customMenu = page.metafields.global.menu | handle %}
+            {% for link in linklists[customMenu].links %}
+              <li>
+                <a href="{{ link.url }}" {% if link.active %} class="active"{% endif %}>{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="grid__item small--on-whole medium-up--three-quarters large-up--five-sixths pageContentBlock">
+          <h1 class="desktopOnly">{{ page.title }}</h1>
+          <div class="rte">
+            {{ page.content }}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endcapture %}
+
+{% if content_restricted == true  %}
+  {% if vip_customer == true %}
+      {{normal_content}}
+  {% else %}
+      {% include 'restricted_msg' %}
+  {% endif %}
+{% else %}
+    {{normal_content}}
+{% endif %}

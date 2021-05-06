@@ -1,0 +1,87 @@
+<script>
+//function for loading the CustomScarabQueue asynchonously
+function loadCustomScarabQueue( url, callback ) {
+  var script = document.createElement( "script" );
+  script.type = "text/javascript";
+  if(script.readyState) {  // only required for IE <9
+    script.onreadystatechange = function() {
+      if ( script.readyState === "loaded" || script.readyState === "complete" ) {
+        script.onreadystatechange = null;
+        callback();
+      }
+    };
+  } else {  //Others
+    script.onload = function() {
+      callback();
+    };
+  }
+
+  script.src = url;
+  document.getElementsByTagName( "head" )[0].appendChild( script );
+}
+
+$(document).on(`page:load page:change`, function() {
+
+  // Initialize
+  loadCustomScarabQueue('http://webextend.ems-ci.com/js/customScarabQueue_currency_conversion_v2.js', function() {
+
+    var checkoutCurrency = Shopify.Checkout.currency.toLowerCase();
+
+    // Set ExchangeRates
+    CustomScarabQueue_currency_conversion.setExchangeCurrencies('AUD', '{{ cart.currency.iso_code }}');
+
+    if(Shopify.Checkout.page == 'thank_you'){
+      CustomScarabQueue_currency_conversion.push(['setEmail', '{{ order.email }}']);
+      CustomScarabQueue_currency_conversion.push(['cart', []]);
+      CustomScarabQueue_currency_conversion.push(['displayCurrency', checkoutCurrency])
+
+      CustomScarabQueue_currency_conversion.push(['purchase', {
+          orderId: '{{ order.name }}',
+          items: [
+          {% for item in checkout.line_items %}
+              {item: '{{ item.sku }}', price: {{ item.original_price | divided_by: 100 | times: item.quantity }}, quantity: {{ item.quantity }}}{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+          ]
+      }]);
+      CustomScarabQueue_currency_conversion.push(['tag', 'checkout', {
+        checkout_identifier: ''
+      }]);
+      
+    } else {
+      {% if content_for_layout contains 'data-step="contact_information"' %}
+          CustomScarabQueue_currency_conversion.push(['setEmail', '{{checkout.email}}']);
+      {% elsif content_for_layout contains 'data-step="shipping_method"' %}
+        // I am on shipping_method
+          CustomScarabQueue_currency_conversion.push(['setEmail', '{{checkout.email}}']);
+      {% elsif content_for_layout contains 'data-step="payment_method"' %}
+        // I am on payment_method step
+          CustomScarabQueue_currency_conversion.push(['setEmail', '{{checkout.email}}']);
+      {% elsif content_for_layout contains 'data-step="review"' %}
+      {% endif %}
+
+      {% if customer %}
+          
+          var checkout_identifier = window.location.pathname.split('checkouts/')[1];
+
+          CustomScarabQueue_currency_conversion.push(['tag', 'checkout', {
+            checkout_identifier: checkout_identifier
+          }]);
+      {% endif %}
+          CustomScarabQueue_currency_conversion.push(['cart', [
+              {% for item in checkout.line_items %}
+                  {item: '{{ item.sku }}', price: {{ item.original_price | divided_by: 100 | times: item.quantity }}, quantity: {{ item.quantity }}}{% unless forloop.last %},{% endunless %}
+              {% endfor %}
+          ]]);
+          CustomScarabQueue_currency_conversion.push(['displayCurrency', checkoutCurrency]);
+    }
+
+    
+    setTimeout(function(){                                           
+      CustomScarabQueue_currency_conversion.push(['go']);
+    }, 600);
+
+  });
+
+  
+});
+</script>

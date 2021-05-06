@@ -1,0 +1,34 @@
+{% comment %}
+BOLD Multi-Currency Picker
+
+This is the "mount point" for Bold Multi-Currency pickers.
+Include this wherever you want them to appear within your theme (can appear in multiple locations)
+
+Optional "parameters" you can pass to the include:
+
+openDirection: 'up|down' (defaults to "up")
+- Use this to tell the picker to open "upwards" or "downwards" depending on its location in your template.
+- For instance, you would probably want the widget to open "down" if placed into your header
+- This behaviour is controlled in CSS with the "data-open" attribute, passing either "up" or "down" (eg. data-open="down")
+
+additionalClasses: (a space-separated list of class names)
+- Use this to specify additional classes on the mount point, which you can then use to safely customize the
+  Multi-Currency picker, without having to worry about a Robo-install overwriting your changes, for instance.
+
+See https://help.shopify.com/themes/liquid/tags/theme-tags#include for more information about the include tag,
+in the "Including multiple variables in a snippet" section.
+
+These variables appear to be "scoped" to their include (not documented by Shopify), so if you set an additionalClass at
+the start of a file, and include another mountpoint without an additionalClass, it will NOT use the first one.
+
+Example:
+In Liquid, you can include the snippet and pass along the openDirection and/or additionalClasses variables like this:
+{%- include 'bold-currency-picker-mount', openDirection: 'down', additionalClasses: 'header' -%}
+
+These variables are optional, so feel free to leave them out if you don't need to customize the class and/or you want
+the picker to open "up"
+
+{% endcomment %}
+{% assign openDirection = 'up' %}
+{% assign additionalClasses = '' %}
+<span style="display:none;" class="BOLD-mc-picker-mnt {{ additionalClasses }}" data-open="{{openDirection}}" data-bold-mc-picker-mnt></span>

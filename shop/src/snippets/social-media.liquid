@@ -1,0 +1,125 @@
+{%- assign social_media_count = 0 -%}
+
+{%- capture social_media -%}
+  {%- if settings.social_facebook != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_facebook }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Facebook">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'facebook' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_twitter != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_twitter }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Twitter">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'twitter' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_instagram != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_instagram }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Instagram">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'instagram' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_pinterest != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_pinterest }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Pinterest">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'pinterest' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_youtube != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_youtube }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="YouTube">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'youtube' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_vimeo != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_vimeo }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Vimeo">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'vimeo' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_linkedin != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_linkedin }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'linkedin' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_snapchat != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_snapchat }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="SnapChat">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'snapchat' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_tumblr != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_tumblr }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Tumblr">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'tumblr' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_google_plus != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_google_plus }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Google Plus">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'google-plus' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+
+  {%- if settings.social_fancy != blank -%}
+    <li class="HorizontalList__Item">
+      <a href="{{ settings.social_fancy }}" class="Link Link--primary" target="_blank" rel="noopener" aria-label="Fancy">
+        <span class="Icon-Wrapper--clickable">{%- include 'icon' with 'fancy' -%}</span>
+      </a>
+    </li>
+
+    {% assign social_media_count = social_media_count | plus: 1 %}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- assign spacing_to_use = spacing -%}
+
+{%- if spacing == 'large' and social_media_count > 6 -%}
+  {%- assign spacing_to_use = 'small' -%}
+{%- endif -%}
+
+{%- if social_media_count > 0 -%}
+  <ul class="{{ class }} HorizontalList {% if spacing %}HorizontalList--spacing{{ spacing | capitalize }}{% endif %}">
+    {{ social_media }}
+  </ul>
+{%- endif -%}

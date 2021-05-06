@@ -1,0 +1,30 @@
+{%- comment -%}
+This snippet helps to easily create a list of supported sizes based on the max size of a given image. You must pass to this snippet
+an "image" parameter, and a "sizes" string (with sizes separated by commas).
+
+As an output, this snippet will emit a "supported_sizes" variable that contains only the sizes that match.
+{%- endcomment -%}
+
+{%- assign desired_sizes = sizes | split: ',' -%}
+{%- assign supported_sizes = '' -%}
+
+{%- for size in desired_sizes -%}
+  {%- assign size_as_int = size | times: 1 -%}
+
+  {%- if image.width < size_as_int -%}
+    {%- break -%}
+  {%- endif -%}
+
+  {%- assign supported_sizes = supported_sizes | append: size | append: ',' -%}
+{%- endfor -%}
+
+{%- comment -%}
+If we have no single size which matches, we at least set the maximum width of the image, so that there at least
+something that is displayed on the screen.
+{%- endcomment -%}
+
+{%- if supported_sizes == blank -%}
+  {%- assign supported_sizes = image.width -%}
+{%- endif -%}
+
+{%- assign supported_sizes = supported_sizes | split: ',' | compact | join: ',' -%}

@@ -1,0 +1,171 @@
+{%- assign max_height = 250 -%}
+{% paginate search.results by 10 %}
+
+  <div id="Collection"  >
+    <div class="ais-page">
+
+      <div class="collectionDescbox">
+        <!-- h1 class="section__title-text collection__header-info__title-text">{{ 'general.search.title' | t }}</h1 -->
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="filterBoxWrapFiller" style="height: 0px;"></div>
+      <div class="filterBoxWrap">
+        <div class="filterBox" role="toolbar" aria-controls="product-list" aria-label="Product listing toolbar" >
+          <div class="filterItem" role="none">
+            <div class="filterTrigger" tabindex="0" role="button" aria-haspopup="true" aria-controls="collection-filters" aria-expanded="false">
+              <span class="desktop">{{ 'collections.filters.toggle_desktop' | t }}</span>
+              <span class="mobile">{{ 'collections.filters.toggle_mobile' | t }}</span>
+              <i aria-hidden="true" class="fas fa-angle-down"></i>
+              <i aria-hidden="true" class="active fas fa-angle-up"></i>
+            </div>
+          </div>
+          <div class="filterItem origSort">
+            <div id="bc-sf-filter-top-sorting"></div>
+          </div>
+          <div class="filterItem viewToggle" aria-labelledby="label-collection-view-type" role="none">
+            <div class="viewToggleInner">
+              <div class="trigger" role="button" aria-labelledby="button-collection-view-wide" aria-pressed="false" tabindex="0"></div>
+              <label id="label-collection-view-type">Display</label>
+              <button  value="wide" id="button-collection-view-wide" role="radio" aria-checked="false">
+                <svg id="Layer_1" style="enable-background:new 0 0 50 50;" version="1.1" viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer_1_1_"><path d="M1,49h48V1H1V49z M3,26h21v21H3V26z M26,47V26h21v21H26z M47,24H26V3h21V24z M24,3v21H3V3H24z"/></g></svg>
+                <span class="visually-hidden">Wide view</span>
+              </button>
+              <button class="active" value="narrow" role="radio" aria-checked="true">
+                <svg style="enable-background:new 0 0 50 50;" version="1.1" viewBox="0 0 50 50" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Layer_1"><path d="M49,1H1v48h48V1z M47,24H34V3h13V24z M18,24V3h14v21H18z M32,26v21H18V26H32z M16,3v21H3V3H16z M3,26h13v21H3V26z M34,47   V26h13v21H34z"/></g><g/></svg>
+                <span class="visually-hidden">Narrow view</span>
+              </button>
+            </div>
+          </div>
+        </div><!-- filterBox -->
+        <div id="collection-filters" class="ais-facets collectionSB facetsDrop grid__item one-fifth small--one-whole">
+          <button id="button-collection-filters-close" type="button" class="btn--link">
+            <i role="presentation" aria-hidden="true" class="fas fa-times"></i>
+            <span class="icon__fallback-text">Close filters</span>
+          </button>
+          <div class="bc-sf-filter-option-block sortMe showMobile">
+            <h3 tabindex="0">{{ 'collections.sorting.sort_label' | t  }}</h3>
+            <div class="bc-sf-filter-block-content">
+              <ul class="bc-sf-filter-option-multiple-list customSortList">
+              </ul>
+            </div>
+          </div>
+          <div id="bc-sf-filter-tree-h"></div>
+          <div id="bc-sf-filter-tree-mobile"></div>
+          <div id="bc-sf-filter-tree"></div>
+        </div>
+      </div>
+
+<form class="ais-input" action="/search" method="get" role="search">
+  <div class="ais-input--label">
+     {{ 'general.search.title' | t }}
+  </div>
+  <div class="ais-search-box-container">
+    <div class="ais-search-box" aria-label="{{search.results_count}} results">
+
+      <input name="q" placeholder="{{ 'general.search.placeholder' | t }}"
+    aria-label="{{ 'general.search.placeholder' | t }}" role="textbox" autocomplete="off"  data-no-bc-search="" data-custom-bc-search="" value="{{ search.terms | escape }}" class="ais-search-box--input">
+    </div>
+  </div>
+  <div id="ais-input-close-button" class="ais-input-button">
+    
+    <button type="button" class="ais-submit-input-icon clear" aria-label="Clear Search">
+    </button>
+  </div>
+</form>
+
+
+      <div class="grid flexGrid ">
+        <div class="ais-block collectionCont grid__item one-whole">
+          <div class="ais-hits-container ais-results ais-results-as-block  infiniteScrollGrid2 fluidGrid grid--view-items narrow" role="none">
+            <div 
+            {% if settings.shopify_first %}
+            id="bc-sf-filter-product"
+            {% else %} 
+            id="bc-sf-filter-products"
+            {% endif %}
+            data-reactroot="" class="ais-hits" role="list" aria-label="Products">
+              {% for product in collection.products %}
+                <div  class="grid__item grid__item--{{section.id}} {{ grid_item_width }}" {% unless settings.shopify_first %}style="display: none;"{% endunless %}>
+                  {% include 'product-card-grid', max_height: max_height %}
+                </div>
+              {% endfor %}
+            </div>
+          </div><!-- fluidGrid ais-hits-container -->
+          <div class="ais-pagination-container">
+            <div id="bc-sf-filter-bottom-pagination"></div>
+            <div id="bc-sf-filter-load-more"></div>
+          </div>
+        </div><!-- collectionCont -->
+      </div>
+
+      {% if collection.metafields.global.secondary_description %}
+        <div class="collectionDescbox">
+          <h1 class="section__title-text collection__header-info__title-text">{{ collection.title }}</h1>
+          <div class="rte">
+            {{ collection.metafields.global.secondary_description}}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="print-filter-text shopify-section " id="printFilterPopup" style="display: none;">
+        <div class="print-filter-wrapper">
+          <div class="grid print-filter-head">
+            <div class="grid__item one-third print-filter-head-text">
+              <h3>{{ 'collections.filters.filter_prints' | t }}</h3>
+            </div>
+            <div class="filters-btn grid__item one-third">
+              <button class="btn apply-print" type="button">apply</button>
+              <a href="#" class="btn clear-all">clear all</a>
+            </div>
+          </div>
+          <div class="allCollection" style="display: none">
+            {% for collection in collections %}
+              <div class="entry" data-handle="{{ collection.metafields.global.print_tag | split: ':' | last | upcase }}" data-img="{% if collection.metafields.global.print_image %}{{ collection.metafields.global.print_image  }}{% endif %}">{{ collection.title }}</div>
+            {% endfor %}
+          </div>
+          <div class="slickFilerPrintsWrap">
+            <div class="tags tags--vertical slickFilerPrints"></div>
+          </div>
+        </div>
+      </div><!-- printFilterPopup -->
+    </div>
+  </div>
+
+  {% comment %}
+    <div id="Collection">
+      <div class="productList">
+        {% for item in search.results %}
+
+          {% if item.object_type == 'product' %}
+
+            {% if item.available %}
+              <div class="grid__item grid__item--collection-template small--one-half medium-down--one-half large-up--one-fifth">
+                {% include 'product-card-grid', product: item %}
+              </div>
+            {% endif %}
+
+          {% else %}
+
+          {% endif %}
+
+        {% endfor %}
+      </div>
+    </div>
+  {% endcomment %}
+
+  {% if paginate.pages > 1 %}
+    <div class="collection-pagination" style="display: none;">
+      {{ paginate | default_pagination: next: '<i class="icon icon--right-t"></i>', previous: '<i class="icon icon--left-t"></i>' }}
+    </div>
+  {% endif %}
+{% endpaginate %}
+
+
+{% include 'bc-sf-filter-config' %}
+<script>
+$(window).on('load', function (){
+  $('.ais-search-box').attr('role', 'alert');
+})
+</script>
+

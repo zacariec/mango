@@ -1,0 +1,19 @@
+{% comment %}
+These script tags are DOM templates used by the Multi Currency javascript and should not be modified
+{% endcomment %}
+<script type="text/template" id="bold-currency-picker-template">
+    <div class="BOLD-mc-picker multi">
+        <div class="currentCurrency loading" data-current-currency>
+            <span class="flag flag-loading" data-flag></span>
+            <span class="name" data-name>&bull;&bull;&bull;</span>
+            <span class="chevron">
+                <svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M13.148 10.398l-1.297 1.289q-0.148 0.148-0.352 0.148t-0.352-0.148l-4.148-4.148-4.148 4.148q-0.148 0.148-0.352 0.148t-0.352-0.148l-1.297-1.289q-0.148-0.148-0.148-0.355t0.148-0.355l5.797-5.789q0.148-0.148 0.352-0.148t0.352 0.148l5.797 5.789q0.148 0.148 0.148 0.355t-0.148 0.355z" /></svg>
+            </span>
+        </div>
+        <ul class="currencyList" data-currency-list></ul>
+    </div>
+</script>
+
+<script type="text/template" id="bold-currency-picker-mount-template">
+    {%- include 'bold-currency-picker-mount' -%}
+</script>

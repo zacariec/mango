@@ -1,0 +1,16 @@
+{% comment %}
+This snippet takes the following input variables:
+- original_string (a comma delimited string)
+- to_match (the string to match in the array)
+- class_to_output (the string to output if item is found in array)
+{% endcomment %}
+{% assign is_found = false %}
+{% assign titles_to_match = original_string | split: ',' %}
+{% for word in titles_to_match %}
+  {% if word == to_match %}
+    {% assign is_found = true %}
+  {% endif %}
+{% endfor %}
+{% if is_found %}
+  {{ class_to_output }}
+{% endif %}

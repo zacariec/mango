@@ -1,0 +1,3 @@
+_tmp_*
+node_modules
+shop/dist

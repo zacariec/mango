@@ -1,0 +1,43 @@
+<section data-section-id="activate-account" data-section-type="activate-account">
+  <div class="Container">
+    <div class="PageContent PageContent--fitScreen PageContent--extraNarrow">
+      {%- form 'activate_customer_password', name: 'activate', class: 'Form Form--spacingTight', id: 'activate_customer_password' -%}
+        <header class="Form__Header">
+          <h1 class="Form__Title Heading u-h1">{{ 'customer.activate_account.title' | t }}</h1>
+          <p class="Form__Legend">{{ 'customer.activate_account.description' | t }}</p>
+        </header>
+
+        {%- if form.errors -%}
+          <div class="Form__Alert Alert Alert--error">
+            <ul class="Alert__ErrorList">
+              {%- for field in form.errors -%}
+                {%- if field == 'form' -%}
+                  <li class="Alert__ErrorItem">{{ form.errors.messages[field] }}</li>
+                {%- else -%}
+                  <li class="Alert__ErrorItem"><strong>{{ form.errors.translated_fields[field] }}</strong> {{ form.errors.messages[field] }}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="Form__Item">
+          <input type="password" class="Form__Input" name="customer[password]" aria-label="{{ 'customer.activate_account.password' | t }}" placeholder="{{ 'customer.activate_account.password' | t }}" autofocus>
+          <label class="Form__FloatingLabel">{{ 'customer.activate_account.password' | t }}</label>
+        </div>
+
+        <div class="Form__Item">
+          <input type="password" class="Form__Input" name="customer[password_confirmation]" aria-label="{{ 'customer.activate_account.password_confirmation' | t }}" placeholder="{{ 'customer.activate_account.password_confirmation' | t }}">
+          <label class="Form__FloatingLabel">{{ 'customer.activate_account.password_confirmation' | t }}</label>
+        </div>
+
+        <div class="Form__Submit">
+          <div class="ButtonGroup">
+            <button type="submit" class="Button Button--primary ButtonGroup__Item ButtonGroup__Item--expand">{{ 'customer.activate_account.submit' | t }}</button>
+            <button type="submit" class="Button Button--secondary ButtonGroup__Item ButtonGroup__Item--expand" name="decline">{{ 'customer.activate_account.decline' | t }}</button>
+          </div>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</section>

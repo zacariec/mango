@@ -1,0 +1,30 @@
+{% if settings.vip_restriction  %}
+<style type="text/css">
+{%- assign campaignNameArrays = campaignNameList | split: ',' -%}
+{% assign custTagFound  = false  %}
+{% for campaignNameArray in campaignNameArrays %}
+
+  {% for tag in customer.tags %}
+    {% assign customerTag = tag  | upcase  %}
+    {% if customerTag == campaignNameArray %}
+      {% assign custTagFound  = true  %}  
+    {% endif %}
+  {% endfor %}
+
+  {% if custTagFound == false %}
+    .aa-collections .aa-collection[data-restricted*="{{campaignNameArray}}"] {
+    display: none !important;
+    }
+    .aa-pages .aa-page[data-restricted*="{{campaignNameArray}}"] {
+    display: none !important;
+    }
+    #AccessibleNav [data-restricted*="{{campaignNameArray}}"] {
+    display: none !important;
+    }
+    #MobileNav [data-restricted*="{{campaignNameArray}}"] {
+    display: none !important;
+    }
+  {% endif %}
+{% endfor %}  
+</style>
+{% endif %} 

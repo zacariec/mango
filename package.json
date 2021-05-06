@@ -1,0 +1,28 @@
+{
+  "name": "shopify-build-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.0",
+    "babel-loader": "^8.2.2",
+    "chokidar": "^3.5.1",
+    "core-js": "^3.11.2",
+    "fs-extra": "^10.0.0",
+    "postcss": "^8.2.13",
+    "postcss-cli": "^8.3.1",
+    "regenerator-runtime": "^0.13.7",
+    "sass": "^1.32.12",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "commander": "^7.2.0"
+  }
+}

@@ -1,0 +1,160 @@
+<section id="section-{{ section.id }}" class="Section Section--spacingNormal" data-section-id="{{ section.id }}" data-section-type="timeline">
+  <div class="Container">
+    <div class="Timeline">
+      <div class="Timeline__ListItem">
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }} class="Timeline__Item {% if forloop.first %}is-selected{% endif %}" data-index="{{ forloop.index0 }}">
+            <div class="Timeline__ImageWrapper {% if block.settings.apply_overlay %}Image--contrast{% endif %}" {% if block.settings.image %}style="background: url({{ block.settings.image | img_url: '1x1' }})"{% endif %}>
+              {%- if block.settings.image -%}
+                <div class="Timeline__Image Image--lazyLoad hide-no-js" data-bgset="{{ block.settings.image | img_url: 'x650' }} [(max-width: 640px)] | {{ block.settings.image | img_url: '1000x' }}"></div>
+
+                <noscript>
+                  <div class="Timeline__Image" style="background-image: url({{ block.settings.image | img_url: '1000x' }})"></div>
+                </noscript>
+              {%- else -%}
+                <div class="Timeline__Image">
+                  <div class="PlaceholderBackground">
+                    {%- capture placeholder -%}{% cycle 'lifestyle-1', 'lifestyle-2' %}{%- endcapture -%}
+                    {{ placeholder | placeholder_svg_tag: 'PlaceholderBackground__Svg PlaceholderSvg--dark' }}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- capture section_inner -%}
+              {%- if block.settings.subheading != blank or block.settings.heading != blank -%}
+                <header class="Timeline__Header SectionHeader SectionHeader--center">
+                  {%- if block.settings.subheading != blank -%}
+                    <h3 class="SectionHeader__SubHeading Heading u-h6">{{ block.settings.subheading | escape }}</h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.heading != blank -%}
+                    <h2 class="SectionHeader__Heading Heading u-h1">{{ block.settings.heading | escape }}</h2>
+                  {%- endif -%}
+
+                  {%- if block.settings.content != blank -%}
+                    <div class="SectionHeader__Description Rte">
+                      {{ block.settings.content }}
+                    </div>
+                  {%- endif -%}
+                </header>
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- if section_inner -%}
+              <div class="Timeline__Inner">
+                {{ section_inner }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.blocks.size >= 2 -%}
+        <div class="Timeline__Nav">
+          <div class="Timeline__NavWrapper {% if section.blocks.size <= 3 %}Timeline__NavWrapper--center{% endif %}">
+            {%- for block in section.blocks -%}
+              <button type="button" class="Timeline__NavItem {% if forloop.first %}is-selected{% endif %} Link Link--primary" data-index="{{ forloop.index0 }}">
+                <span class="Timeline__NavLabel">{{ block.settings.title | truncate: 20 | escape }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #section-{{ section.id }} .Timeline__ListItem {
+    color: {{ section.settings.text_color }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Timeline",
+  "class": "shopify-section--bordered shopify-section--timeline",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Mobile text color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1200 x 1200px jpg recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "apply_overlay",
+          "label": "Apply overlay on image",
+          "info": "Only applied on mobile. This can improve text visibility.",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "default": "2000",
+          "info": "Maximum 20 characters allowed."
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Sub-heading",
+          "default": "Sub-heading"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Add your own custom content to give more information about your store, availability details...</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Text",
+      "name": "Timeline",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "2000"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "2001"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "2002"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

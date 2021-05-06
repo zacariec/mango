@@ -1,0 +1,16 @@
+{% comment %} always ensure the mc_base_url contains a trailing slash {% endcomment %}
+{% assign mc_base_url = 'https://mc.boldapps.net/' %}
+{% assign mc_shopDomain_url = mc_base_url | append: shop.permanent_domain %}
+<script>
+    // ensure these are available to the global window, for use in the bootstrap js asset
+    window.BOLD_mc_bootstrapSettings = {
+        shopDomainUrl: '{{ mc_shopDomain_url }}',
+        flagsAssetUrl: '{{ 'flags.min.css' | asset_url }}',
+        pickerCssAssetUrl: '{{ 'bold-currency-picker.css' | asset_url }}',
+        productOriginalPrice: {{ product.price | default: '' | json }}
+    };
+</script>
+<script src="{{ mc_base_url | append: 'install_assets/bold.multicurrency.js' }}" defer></script>
+<script src="{{ 'bold-currency-bootstrap.js' | asset_url }}" defer></script>
+
+{%- include 'bold-currency-templates' -%}

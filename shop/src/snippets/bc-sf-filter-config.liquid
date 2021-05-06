@@ -1,0 +1,63 @@
+<button type="button" class="backTop"><i class="fas fa-arrow-up"></i></button> 
+<script>
+    // Declare bcSfFilterConfig variable
+    var bcSfFilterConfig = {
+        label: {
+            sorting: {{ 'collections.sorting.sort_label' | t | json  }},
+            sorting_best_selling: {{ 'collections.sorting.best_selling' | t | json  }},
+            sorting_featured: {{ 'collections.sorting.featured' | t | json  }},
+            sorting_title_ascending: {{ 'collections.sorting.az' | t | json  }},
+            sorting_title_descending: {{ 'collections.sorting.za' | t | json  }},
+            sorting_price_ascending: {{ 'collections.sorting.price_ascending' | t | json  }},
+            sorting_price_descending: {{ 'collections.sorting.price_descending' | t | json  }},
+            sorting_date_ascending: {{ 'collections.sorting.date_ascending' | t | json  }},
+            sorting_date_descending: {{ 'collections.sorting.date_descending' | t | json  }},
+            sorting_relevance: {% assign temp = 'collections.sorting.relevance' | t %} {% unless temp contains 'translation missing'  %} {{ temp | json }} {% else %} "Relevance" {% endunless %},
+
+
+            sale: {{ 'products.product.on_sale' | t | json }},
+            sale_price: {{ 'products.product.sale_price' | t | json }},
+            sold_out: {{ 'products.product.sold_out' | t | json }},
+            vendor: {{ 'products.product.vendor' | t |json }},
+            regular_price: {{ 'products.product.regular_price' | t | json }},
+            items_with_count_one: {{ 'collections.general.items_with_count.one' | t | json}},
+            items_with_count_other: {{ 'collections.general.items_with_count.other' | t | json }},
+            current_page: {{ 'general.pagination.current_page' | t | json }},
+        },
+        custom: {
+            // Add custom value here
+            ppp: {{settings.ppp}},
+            shopify_first: {{settings.shopify_first}},
+            badge_camillas_pick: {{ 'products.tags.badge_camillas_pick' | t |  json }},
+            badge_exclusive: {{ 'products.tags.badge_exclusive' | t |  json }},
+            badge_online_exclusive: {{ 'products.tags.badge_online_exclusive' | t |  json }},
+            badge_new_arrival: {{ 'products.tags.badge_new_arrival' | t |  json }},
+            badge_on_sale: {{ 'products.tags.badge_on_sale' | t |  json }},
+            facet_col_1: {{settings.facet_col_1 |  json}},
+            facet_col_2: {{settings.facet_col_2 |  json}},
+            facet_col_3: {{settings.facet_col_3 |  json}},
+            facet_grp: {{settings.facet_grp |  json}},
+            facet_print: {{settings.facet_print |  json }},
+            select_prints: {{ 'collections.filters.select_prints' | t |  json }},
+            filter_prints: {{ 'collections.filters.filter_prints' | t |  json }},
+            active_sort: '',
+            ecommerce_maxproduct_per_page: {{ settings.enhanced_ecommerce_maxproduct_per_page }},
+            sale_price_label: {{ 'collections.general.sale_price_label' | t |  json }},
+            page_label: {{ 'general.pagination.page_label' | t |  json }},
+            page_next: {{ 'general.pagination.next' | t |  json }},
+            page_prev: {{ 'general.pagination.previous' | t |  json }},
+            page_current: {{ 'general.pagination.current_page' | t |  json }},
+            page_nav: {{ 'general.pagination.page_nav' | t |  json }},
+            size_grp: {{settings.custom_size_grouping | json}},
+            size_grp1: {{settings.size_grp1 | json}},
+            size_grp2: {{settings.size_grp2 | json}},
+            size_grp3: {{settings.size_grp3 | json}},
+            size_grp4: {{settings.size_grp4 | json}},
+            size_grp5: {{settings.size_grp5 | json}},
+            size_grp_plus: {{settings.plus_size_grp | json}},
+            xtag1: {{ settings.xTag_1 | json }},
+            xtag1_show: {{ settings.xFilter_1_show | json }},
+            xtag1_hide: {{ settings.xFilter_1_hide | json }}
+        }
+    };
+</script>

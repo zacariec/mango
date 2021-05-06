@@ -1,0 +1,457 @@
+{% if customer %}
+  {% capture accClass %}{% endcapture %}
+{% else %}
+  {% capture accTxt %}notLogged{% endcapture %}
+{% endif %}
+{% capture pTag -%}{{product.tags}}{%- endcapture %}
+
+
+<div class="product-template__container {{accTxt}} {% if pTag contains 'auction' %}hasAuctionWidget{% endif %}" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+  {% comment %}
+    Get first variant, or deep linked one
+  {% endcomment %}
+  {%- assign current_variant = product.selected_or_first_available_variant -%}
+  {%- assign product_image_zoom_size = '1024x1024' -%}
+  {%- assign product_image_scale = '2' -%}
+  {%- assign enable_zoom = section.settings.enable_zoom -%}
+  {%- assign product_image_width = '' -%}
+  {%- assign product_description_width = '' -%}
+  {%- assign product_thumbnail_width = 'medium-up--one-eighth' -%}
+  {%- assign height = 1090 -%}
+
+  <div role="none" class="grid product-single{% if section.settings.enable_payment_button %} product-single--{{ section.settings.image_size }}-image{% endif %}">
+    <div class="grid__item medium-up--four-twelfths prodMainBox" style="float: right" aria-labelledby="header-product-title">
+      <div role="none" class="prodMainBoxInner">
+        <div class="specialBadge" data-tag="{%- for tag in product.tags -%}{{ tag }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}"></div>
+        <div class="product-single__meta">
+          <div tabindex="0" aria-label="{{ product.title }}">
+          {% include 'product-badges',  ptag: product.tags %}
+          </div>
+          <h1 id="header-product-title" tabindex="0" aria-label="{{ product.title }}">{% include 'product-title' %}</h1>
+          <div class="priceSection">
+            <div class="priceSectionInner">
+            <p class="product-single__price product-single__price-{{ section.id }}{% unless current_variant.available %} product-price--sold-out{% endunless %}">
+              {% if current_variant.compare_at_price > current_variant.price %}
+                <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                <s id="ComparePrice-{{ section.id }}" com>{{ current_variant.compare_at_price | money_without_trailing_zeros }}</s>
+                <span class="product-price__price product-price__price-{{ section.id }} product-price__sale product-price__sale--single">
+                  <span id="ProductPrice-{{ section.id }}" class="ProductPrice">
+                    {{ current_variant.price | money_without_trailing_zeros }}
+                  </span>
+                  <span class="product-price__sale-label product-price__sale-label-{{ section.id }}">{{ 'products.product.on_sale' | t }}</span>
+                </span>
+                <span class="priceAria visually-hidden">
+                  <span>{{ current_variant.price | money_without_currency }}{{cart.currency.symbol}}</span> instead of 
+                  <strike>{{ current_variant.compare_at_price | money_without_currency }}{{cart.currency.symbol}}</strike>
+                </span>
+              {% else %}
+                <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                <s id="ComparePrice-{{ section.id }}" class="hide">{{ current_variant.compare_at_price | money_without_trailing_zeros }}</s>
+                <span class="product-price__price product-price__price-{{ section.id }}">
+                  <span id="ProductPrice-{{ section.id }}" class="ProductPrice">
+                    {{ current_variant.price | money_without_trailing_zeros }}
+                  </span>
+                  <span class="product-price__sale-label product-price__sale-label-{{ section.id }} hide">{{ 'products.product.on_sale' | t }}</span>
+                </span>
+                <span class="priceAria visually-hidden">
+                  <span>{{ current_variant.price | money_without_currency }}{{cart.currency.symbol}}</span>
+                </span>
+              {% endif %}
+              <span>{{section.settings.additional_price_text}}</span>
+            </p>
+            <a class="priceAriaLabel" tabindex="0" aria-label="{{ current_variant.price | money_without_currency }}{{cart.currency.symbol}}" title="{{ current_variant.price | money_without_currency }}{{cart.currency.symbol}}" >
+            </a>
+            </div>
+
+            {% if settings.enable_zippay %}
+              <div class="zipPay">
+                <!-- Zip WIDGET -->
+                {% include 'zip-widget' %}
+                <style>
+                  #zip-prod-widget > iframe {
+                    position: relative !important;
+                    right: 20px !important;
+                  }
+                </style>
+                <span style="cursor:pointer" id="shopify-zip-prod-widget" data-zm-asset="productwidget" data-zm-widget="popup" data-zm-popup-asset="termsdialog">
+                  {{ 'products.product.zippay_html' | t }}
+                </span>
+                <div class="zipWidgetOver">{{ 'products.product.zippay_html' | t }}</div>
+                <!-- end Zip WIDGET -->
+              </div>
+            {% endif %}
+
+            {% if settings.afterpay_enabled %}
+              <div class="afterpayWidgetBox">
+              {% include 'afterpay' %}
+                <div class="newAfterpayMark"><div></div></div>
+              </div>
+            {% endif %}
+
+          </div><!-- priceSection -->
+          
+          <div class="product-form__filler"></div>
+          <div class="product-form-wrapper {% if product.variants.size == 1 %}singleVariant{% endif %} {% if pTag contains 'auction' %}hasAuction{% endif %}">
+            <div class="product-form-inner">
+              {% capture "form_classes" -%}product-form product-form-{{ section.id }} variantSelect-{{settings.variant_selector}}{%- endcapture %}
+
+              
+              
+              
+              
+              
+              {% form 'product', product, class: form_classes %}
+
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    <div class="selector-wrapper js product-form__item">
+                      <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ forloop.index0 }}">
+                        {{ option.name }}
+                      </label>
+                      <select class="single-option-selector single-option-selector-{{ section.id }} product-form__input" id="SingleOptionSelector-{{ forloop.index0 }}" data-index="option{{ forloop.index }}">
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}" {% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                      <div class="radioSwatchBox">
+                        <div class="radioSwatch">
+                          {% for value in option.values %}
+                            <label>
+                              <input type="radio" value="{{ value | escape }}" name="{{ option.name | handleize  }}" {% if option.selected_value == value %} checked="checked"{% endif %} aria-describedby="description-swatch-{{ option.name | handleize }}">
+                              <span>{{ value }}</span>
+                            </label>
+                          {% endfor %}
+                        </div>
+                        <abbr id="description-swatch-{{ option.name | handleize }}"></abbr>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endunless %}
+
+                <select name="id" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js variantSelectField" data-id="{{product.selected_or_first_available_variant.id}}" data-featured-image="{{product.featured_image}}">
+
+                  {% for variant in product.variants %}
+                    data-inventory="{{ variant.inventory_quantity }}"
+
+                    {% assign variantInventory = variant.inventory_quantity  %}
+                    {% assign lowVariantInventory = section.settings.low_inventory   %}
+                    {% assign variantImageMetafield = variant.metafields.accentuate.variant_image %}
+                    {% assign imageIds = '' %}
+
+                    {% if variant.available %}
+                      <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}" data-available="{{variant.available}}" data-variant="{{ variant.title }}" data-sku="{{ variant.sku  }}" data-variant-price="{{ variant.price | money_without_currency }}" data-msg="{% if variant.inventory_quantity < lowVariantInventory  %}<b>{{ 'products.product.low_stock' | t }}</b>{% endif %}" data-image="{% for imageMetafield in variantImageMetafield %}{{ imageMetafield.id | append: ',' }}{% endfor %}">
+                        {{ variant.title }}
+                      </option>
+                    {% else %}
+                      <option disabled="" data-available="{{variant.available}}" data-variant="{{ variant.title }}" data-msg="{{ 'products.product.sold_out' | t }}" value="{{ variant.id }}"  data-image="{{variant.image.src}}">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                <div class="product-form__item product-form__item--quantity" style="display: none;">
+                  <label for="Quantity">{{ 'products.product.quantity' | t }}</label>
+                  <input type="number" id="Quantity" name="quantity" value="1" min="1" class="product-form__input" pattern="[0-9]*">
+                </div>
+
+                {% unless product.metafields.global.size_guide == 'No' %}
+                  <div class="sizeGuideBox product-form__item">
+                    <a href="/pages/size-guide"
+                       title="{{ 'products.product.size_guide' | t }}"
+                       class="size-guide size-guide-btn sizeGuideLink"
+                       data-size-guide="{{ product.metafields.global.size_guide_link }}"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                       >{{ 'products.product.size_guide' | t }}</a>
+                  </div>
+                {% endunless %}
+                {% unless pTag contains 'auction' %}
+                  <div class="product-form__item product-form__item--submit">
+                    <button type="submit" name="add"  id="AddToCart-{{ section.id }}" {% unless current_variant.available %}disabled="disabled"{% endunless %} {% if bis_enable == true %}style="display: none"{% endif %}  class="btn product-form__cart-submit">
+                      <span id="AddToCartText-{{ section.id }}">
+                        {% unless current_variant.available %}
+                          {{ 'products.product.sold_out' | t }}
+                        {% else %}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {% endunless %}
+                      </span>
+                    </button>
+                    {% include 'bis' %}
+                  </div>
+                {% endunless %}
+              {% endform %} 
+
+              {% comment %}
+              <button class="swym-add-to-wishlist product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}">
+                add to wishlist
+              </button>
+              {% endcomment %}
+              
+
+              {% unless pTag contains 'auction' %}
+                {% include 'swym-product-view', product: product %}
+                <button type="button" class="wishlist-button" data-empi="{{ product.id }}" data-epi="{{product.selected_or_first_available_variant.id}}" data-variant="{{product.selected_or_first_available_variant.title}}" aria-pressed="false" aria-label="{{ 'wishlist.wishlist.add_to_wishlist' | t }}">
+                  <i aria-hidden="true" class="wishlist-icon added fas fa-heart"></i>
+                  <span class="visually-hidden added">{{ 'wishlist.wishlist.remove_from_wishlist' | t }}</span>
+                  <i aria-hidden="true" class="wishlist-icon far fa-heart"></i>
+                  <span class="visually-hidden">{{ 'wishlist.wishlist.add_to_wishlist' | t }}</span>
+                </button>
+              {% endunless %}
+
+
+              {% if pTag contains 'auction' %}
+                <div id="wk-auction" prod-id="{{ product.id }}" cust-id="{{ customer.id }}"></div>
+                <div class="auctionDetail" style="display: none"></div>
+                <div style="clear: both"></div>      
+              {% endif %} 
+
+
+
+            </div>
+          </div><!-- product-form-wrapper -->
+
+        </div>
+
+        {% capture promoBox1 %}{{ 'products.product.free_ship_html' | t }}{% endcapture %}
+        {% capture promoBox2 %}{{ 'products.product.easy_return_html' | t }}{% endcapture %}
+        
+        {%- assign bulkyProd = false -%}
+        {% for tag in product.tags %}
+          {% if tag == settings.bulky_tag %}
+            {%- assign bulkyProd = true -%}
+          {% endif %}
+        {% endfor %}
+
+        {% if settings.enable_bulky == true and bulkyProd == true   %}
+            <div class="promoBox" >
+              <span><i aria-hidden="true" class="icomoon-shipping"></i> <strong>{{ settings.bulky_message }}</strong></span>
+            </div>     
+        {% else %}
+            <div class="promoBox" {% if promoBox1 == '' and  promoBox2 == '' %}style="display:none"{% endif %}>
+              <span tabindex="0">{{ promoBox1 }}</span>
+              <span tabindex="0">{{ promoBox2 }}</span>
+            </div>
+        {% endif %}
+
+        {% render 'product-description' with product as product %}
+
+        {% comment %}
+          {% include 'product-related-tab', class: '' %}
+        {% endcomment %}
+      </div><!-- prodMainBoxInner -->
+    </div><!-- prodMainBox -->
+    <div class="grid__item product-single__photos medium-up--eight-twelfths prodImgBox">
+      {% include 'product-gallery' %}
+    </div><!-- prodImgBox -->
+  </div><!-- product-single -->
+  {% unless pTag contains 'auction' %}
+  <div class="grid relatedBoxWrap">
+    {% if section.settings.dynamic_yield_recommended  %}
+      {% if settings.dy_enable %}
+        {{ section.settings.dynamic_yield_code}}
+      {% endif %}
+    {% else  %}
+      <div class="grid__item relatedBox">
+        {% include 'product-related-tab', class: '' %}
+      </div>
+    {% endif %}
+  </div><!-- relatedBoxWrap -->
+  {% endunless %}
+</div><!-- product-template__container -->
+
+{% if collection %}
+  {% comment %}{% include 'back-to-collection' %}{% endcomment %} 
+{% endif %}
+
+{% unless product == empty %}
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product | json }}
+  </script>
+{% endunless %}
+
+{% if section.blocks.size > 0 %}
+  <div class="productUSP">
+    {% for block in section.blocks %}
+      <dl class="blockEntry">
+        <dt>
+          {% if block.settings.icon =='shipping' %}
+            <i aria-hidden="true" class="icomoon-shipping"></i>
+          {% elsif block.settings.icon =='returns' %}
+            <i aria-hidden="true" class="icomoon-returns"></i>
+          {% else %}
+            <i aria-hidden="true" class="icomoon-style"></i>
+          {% endif %}
+          <strong>{{ block.settings.title }}</strong>
+        </dt>
+        <dd>
+          {{ block.settings.desc }}
+          <a href="{{ block.settings.link-url }}">{{ block.settings.link-title }}</a>
+        </dd>
+      </dl>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "dynamic_yield_recommended",
+        "label": "Enable Dynamic Yield Recommended Products",
+        "default": false
+      },
+      {
+        "type": "textarea",
+        "id": "dynamic_yield_code",
+        "label": "Dynamic Yield Recommended Products Embed Code"
+      },
+      {
+        "type": "checkbox",
+        "id": "bis_enable",
+        "label": "Enable Back In Stock",
+        "default": true
+      }, 
+      {
+        "type":       "text",
+        "id":         "bis",
+        "label":      "Back In Stock Button text",
+        "default":    "Email me when available"
+      },
+      {
+        "type": "text",
+        "id": "bis_title",
+        "label": "Back In Stock Form Title",
+        "default": "Notify Me When available"
+      },
+      {
+        "type": "text",
+        "id": "bis_desc",
+        "label": "Back In Stock Form Description",
+        "default": "Sign up to be notified when back in stock."
+      },
+      {
+        "type": "text",
+        "id": "bis_label",
+        "label": "Back In Stock Email Label",
+        "default": "Enter Email *"
+      },
+      {
+        "type": "text",
+        "id": "bis_email_error",
+        "label": "Back In Stock Email Error Message",
+        "default": "The email address you entered is invalid."
+      },
+      {
+        "type": "text",
+        "id": "bis_submit",
+        "label": "Back In Stock Form Submit",
+        "default": "Submit"
+      },
+      {
+        "type": "text",
+        "id": "bis_sub_desc",
+        "label": "Back In Stock Form Footer Text",
+        "default": "We'll notify you when this product is in stock. We don't share your address with anybody else."
+      },
+      {
+        "type": "text",
+        "id": "bis_success_title",
+        "label": "Back In Stock Success Title",
+        "default": "Thank you."
+      }, 
+      {
+        "type": "text",
+        "id": "bis_success_desc",
+        "label": "Back In Stock Success Description",
+        "default": "We will notify you when this item is available."
+      },
+      {
+         "type":      "html",
+         "id":        "additional_price_text",
+         "label":     "Additional Text Beside the title"
+      },  
+      {
+        "type":       "checkbox",
+        "id":         "enable_zoom",
+        "label":      "Enable image zoom",
+        "default":    false
+      },
+      {
+          "type":     "range",
+          "id":       "low_inventory",
+          "min":       3,
+          "max":       10,
+          "step":      1,
+          "label":     "Low stock inventory",
+          "info":      "Inventory quantity before low stock message shows up", 
+          "default":   3
+      }, 
+      {
+         "type":      "header",
+         "content":   "Additional Panels"
+      },
+      {
+         "type":      "text",
+         "id":        "panel1_title",
+         "label":     "Panel title"
+      },  
+      {
+         "type":      "page",
+         "id":        "panel1_cont",
+         "label":     "Panel content"
+      }, 
+      {
+         "type":      "text",
+         "id":        "panel2_title",
+         "label":     "Panel title"
+      },  
+      {
+         "type":      "page",
+         "id":        "panel2_cont",
+         "label":     "Panel content"
+      } 
+    ],
+     "blocks": [
+      {
+        "type": "content",
+        "name": "Product Block",
+        "settings": [
+          {
+            "type":      "select",
+            "id":        "icon",
+            "label":     "Block Icon",
+            "options": [
+              { "value": "shipping", "label": "Shipping"},
+              { "value": "returns", "label": "Returns"},
+              { "value": "styling", "label": "Styling"}
+            ],
+            "default":   "shipping",
+            "info":      "Select block icon"
+          }, 
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Block Title"
+          },
+          {
+            "id": "desc",
+            "type": "richtext",
+            "label": "Block Content"
+          },
+          {
+            "id": "link-title",
+            "type": "text",
+            "label": "Link Title"
+          },
+          {
+            "id": "link-url",
+            "type": "url",
+            "label": "Link Url"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,45 @@
+{% include 'restricted' %}
+{% capture normal_content %}
+<div class="page-width styling-appointment-page">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header">
+        <h1>{{ page.title }}</h1>
+      </div>
+      <div class="rte grid">
+        {% comment %}
+          Here display the static image or page.content
+        {% endcomment %}
+        {% if page.metafields.global.main_page_image %}
+          <div class="image-block grid__item one-whole medium-up--one-half contactPageImage">
+            <img src="{{ page.metafields.global.main_page_image }}" class="lazyload"
+                 srcset="//images.accentuate.io?options=w495&shop={{ shop.permanent_domain }}&image={{ page.metafields.global.main_page_image }} 1x,
+                         //images.accentuate.io?options=w990&shop={{ shop.permanent_domain }}&image={{ page.metafields.global.main_page_image }} 2x,
+                         //images.accentuate.io?options=w1470&shop={{ shop.permanent_domain }}&image={{ page.metafields.global.main_page_image }} 3x"
+                 alt="{{ page.title }}"/>
+          </div>
+        {% else %}
+          <div class="grid__item one-whole medium-up--one-half">
+            {{ page.content }}
+          </div>
+        {% endif %}
+        {% if page.metafields.global.cognito_form %}
+          <div class="grid__item one-whole medium-up--one-half content-block">
+            {{ page.metafields.global.cognito_form }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endcapture %}
+
+{% if content_restricted == true  %}
+  {% if vip_customer == true %}
+      {{normal_content}}
+  {% else %}
+      {% include 'restricted_msg' %}
+  {% endif %}
+{% else %}
+    {{normal_content}}
+{% endif %}

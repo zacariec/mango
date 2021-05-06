@@ -1,0 +1,181 @@
+<div class="page-width" role="none">
+  <div class="grid" role="none">
+    <div class="grid__item" role="none">
+      <div class="grid flexGrid accountPage" role="none">
+        <div class="accountSB collectionSB grid__item small--one-whole" role="none">
+
+          {%- render 'account-sidebar' -%}
+
+        </div>
+          <div class="accountCont collectionCont grid__item f small--one-whole" aria-labelledby="header-customer_addresses">
+
+            {%- paginate customer.addresses by 5 -%}
+
+              <header class="section-header" role="none">
+                <h1 id="header-customer_addresses">{{ 'customer.addresses.title' | t }}</h1>
+                <div class="centerMobile" role="none">
+                  <p role="none">
+                    <a href="/account">{{ 'customer.account.return' | t }}</a>
+                  </p>
+                  <p role="none">
+                    <button type="button" class="btn address-new-toggle">{{ 'customer.addresses.add_new' | t }}</button>
+                  </p>
+                </div>
+              </header>
+
+              {%- comment -%}
+                Add address form, hidden by default
+              {%- endcomment -%}
+
+              <div class="customerAccount" role="none" style="display: block;">
+                <div class="registerAccountFormWrapper" role="none">
+                  <div id="AddressNewForm" class="form-vertical hide" role="none">
+
+                    {%- form 'customer_address', customer.new_address, aria-labelledby: 'header-customer_addresses_add_new' -%}
+
+                      <h2 id="header-customer_addresses_add_new">{{ 'customer.addresses.add_new' | t }}</h2>
+
+                      <label for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}*</label>
+                      <input type="text" id="AddressFirstNameNew" name="address[first_name]" value="{{ form.first_name }}" required  aria-invalid="false">
+
+                      <label for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}*</label>
+                      <input type="text" id="AddressLastNameNew" name="address[last_name]" value="{{ form.last_name }}" required  aria-invalid="false">
+
+                      <label for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+                      <input type="text" id="AddressCompanyNew" name="address[company]" value="{{ form.company }}">
+
+                      <label for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}*</label>
+                      <input type="text" id="AddressAddress1New" name="address[address1]" value="{{ form.address1 }}" required  aria-invalid="false">
+
+                      <label for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+                      <input type="text" id="AddressAddress2New" name="address[address2]" value="{{ form.address2 }}">
+
+                      <label for="AddressCityNew">{{ 'customer.addresses.city' | t }}*</label>
+                      <input type="text" id="AddressCityNew" name="address[city]" value="{{ form.city }}" required  aria-invalid="false">
+
+                      <label for="AddressCountryNew">{{ 'customer.addresses.country' | t }}*</label>
+                      <select id="AddressCountryNew" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+
+                      <div id="AddressProvinceContainerNew" style="display:none">
+                        <label for="AddressProvinceNew">{{ 'customer.addresses.province' | t }}*</label>
+                        <select id="AddressProvinceNew" name="address[province]" data-default="{{ form.province }}"></select>
+                      </div>
+
+                      <label for="AddressZipNew">{{ 'customer.addresses.zip' | t }}*</label>
+                      <input type="text" id="AddressZipNew" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" required  aria-invalid="false">
+
+                      <label for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}*</label>
+                      <input type="tel" id="AddressPhoneNew" name="address[phone]" value="{{ form.phone }}" required  aria-invalid="false" pattern="[0-9+()\s].{5,15}">
+
+                      <label class="subscribeCheckBoxContainer" role="presentation">
+                        {{ form.set_as_default_checkbox }}
+                        <span role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="label-address_default_address_new"></span>
+                      </label>
+                      <label id="label-address_default_address_new" for="address_default_address_new" class="signUpText">
+                        {{- 'customer.addresses.set_default' | t -}}
+                      </label>
+
+                      <div><input type="submit" class="btn wideBlack" value="{{ 'customer.addresses.add' | t }}"></div>
+                      <div><button type="button" class="text-link address-new-toggle linkButton">{{ 'customer.addresses.cancel' | t }}</button></div>
+
+                    {%- endform -%}
+
+                    <hr>
+                  </div>
+                </div>
+
+                {%- comment -%}
+                  List all customer addresses with a unique edit form.
+                  Also add pagination in case they have a large number of addresses
+                {%- endcomment -%}
+
+                <div class="centerMobile" role="none">
+
+                  {%- for address in customer.addresses -%}
+
+                    <div class="address">
+
+                      {%- if address == customer.default_address -%}
+                        <p><strong>{{ 'customer.addresses.default' | t }}</strong></p>
+                      {%- endif -%}
+
+                      {{- address | format_address -}}
+
+                      <p>
+                        <button type="button" aria-label="{{ 'customer.addresses.edit' | t }} {{- address | format_address | replace: '<br>', ' ' | replace: '<p>', '' | replace: '</p>', ''}}" class="btn btn--small address-edit-toggle" data-form-id="{{ address.id }}">{{ 'customer.addresses.edit' | t }}</button>
+                        <button type="button" aria-label="{{ 'customer.addresses.delete' | t }} {{- address | format_address | replace: '<br>', ' ' | replace: '<p>', '' | replace: '</p>', ''}}" class="btn btn--secondary btn--small address-delete" data-form-id="{{ address.id }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">{{ 'customer.addresses.delete' | t }}</button>
+                      </p>
+                    </div>
+                    <div class="customerAccount" role="none" style="display: block;">
+                      <div class="registerAccountFormWrapper" role="none">
+                        <div id="EditAddress_{{ address.id }}" role="none" class="form-vertical hide">
+
+                          {%- form 'customer_address', address, aria-labelledby: 'header-customer_addresses_edit_address' -%}
+
+                            <h2 id="header-customer_addresses_edit_address" class="h2">{{ 'customer.addresses.edit_address' | t }}</h2>
+                            <label for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}*</label>
+                            <input type="text" id="AddressFirstName_{{ form.id }}" name="address[first_name]" value="{{ form.first_name }}" required  aria-invalid="false">
+
+                            <label for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}*</label>
+                            <input type="text" id="AddressLastName_{{ form.id }}" name="address[last_name]" value="{{ form.last_name }}" required  aria-invalid="false">
+
+
+                            <label for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+                            <input type="text" id="AddressCompany_{{ form.id }}" name="address[company]" value="{{ form.company }}">
+
+                            <label for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}*</label>
+                            <input type="text" id="AddressAddress1_{{ form.id }}" name="address[address1]" value="{{ form.address1 }}" required  aria-invalid="false">
+
+                            <label for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+                            <input type="text" id="AddressAddress2_{{ form.id }}" name="address[address2]" value="{{ form.address2 }}">
+
+                            <label for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}*</label>
+                            <input type="text" id="AddressCity_{{ form.id }}" name="address[city]" value="{{ form.city }}" required  aria-invalid="false">
+
+                            <label for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}*</label>
+                            <select id="AddressCountry_{{ form.id }}" class="address-country-option" data-form-id="{{ form.id }}" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+
+                            <div id="AddressProvinceContainer_{{ form.id }}" style="display:none">
+                              <label for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}*</label>
+                              <select id="AddressProvince_{{ form.id }}" name="address[province]" data-default="{{ form.province }}"></select>
+                            </div>
+
+                            <label for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}*</label>
+                            <input type="text" id="AddressZip_{{ form.id }}" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" required  aria-invalid="false">
+
+                            <label for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}*</label>
+                            <input type="tel" id="AddressPhone_{{ form.id }}" name="address[phone]" value="{{ form.phone }}" required  aria-invalid="false" pattern="[0-9+()\s].{5,15}">
+
+                            <label class="subscribeCheckBoxContainer" role="presentation">
+                              {{ form.set_as_default_checkbox }}
+                              <span role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="label-address_default_address_{{ form.id }}"></span>
+                            </label>
+                            <label id="label-address_default_address_{{ form.id }}" for="address_default_address_{{ form.id }}" class="signUpText">
+                              {{- 'customer.addresses.set_default' | t -}}
+                            </label>
+
+                            <div><input type="submit" class="btn wideBlack" value="{{ 'customer.addresses.update' | t }}"></div>
+                            <div><button type="button" aria-label="" class="text-link address-edit-toggle  linkButton" data-form-id="{{ form.id }}">{{ 'customer.addresses.cancel' | t }}</button></div>
+
+                          {%- endform -%}
+
+                          <hr>
+                        </div>
+                      </div>
+                    </div>
+                  {%- endfor -%}
+
+                </div>
+
+                {%- if paginate.pages > 1 -%}
+                  {%- include 'pagination' -%}
+                {%- endif -%}
+
+              {%- endpaginate -%}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

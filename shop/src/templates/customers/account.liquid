@@ -1,0 +1,91 @@
+<div class="Container Container--narrow">
+  <header class="PageHeader">
+    <a href="/account/logout" class="PageHeader__Back Heading Text--subdued Link Link--primary u-h7">{{ 'customer.account.logout' | t }}</a>
+
+    <div class="SectionHeader">
+      <h1 class="SectionHeader__Heading Heading u-h1">{{ 'customer.account.title' | t }}</h1>
+      <p class="SectionHeader__Description">{{ 'customer.account.welcome' | t: first_name: customer.first_name }}</p>
+    </div>
+  </header>
+
+  <div class="PageLayout PageLayout--breakLap">
+    {%- comment -%}
+    --------------------------------------------------------------------------------------------------------------------
+    ORDER HISTORY
+    --------------------------------------------------------------------------------------------------------------------
+    {%- endcomment -%}
+
+    <div class="PageLayout__Section">
+      {%- if customer.orders.size == 0 -%}
+        <div class="Segment">
+          <h2 class="Segment__Title Heading u-h7">{{ 'customer.account.no_orders_title' | t }}</h2>
+
+          <div class="Segment__Content">
+            <p>{{ 'customer.account.no_orders_content' | t }}</p>
+          </div>
+        </div>
+      {%- else -%}
+        {%- paginate customer.orders by 25 -%}
+          <div class="TableWrapper">
+            <table class="AccountTable Table Table--large">
+              <thead class="Text--subdued">
+                <tr>
+                  <th>{{ 'customer.orders.order_number' | t }}</th>
+                  <th>{{ 'customer.orders.date' | t }}</th>
+                  <th>{{ 'customer.orders.payment_status' | t }}</th>
+                  <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th class="Text--alignRight">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+
+              <tbody class="Heading u-h7">
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}" class="Link Link--underline">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: format: 'month_day_year' }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.fulfillment_status_label }}</td>
+                    <td class="Text--alignRight">{{ order.total_price | money_without_trailing_zeros }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
+
+          {%- include 'pagination' -%}
+        {%- endpaginate -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%}
+    --------------------------------------------------------------------------------------------------------------------
+    ADDRESS
+    --------------------------------------------------------------------------------------------------------------------
+    {%- endcomment -%}
+
+    <div class="PageLayout__Section PageLayout__Section--secondary">
+      <div class="Segment">
+        {%- if customer.addresses_count == 0 -%}
+          <h2 class="Segment__Title Heading u-h7">{{ 'customer.account.no_addresses_title' | t }}</h2>
+
+          <div class="Segment__Content">
+            <p>{{ 'customer.account.no_addresses_content' | t }}</p>
+
+            <div class="Segment__ButtonWrapper">
+              <a href="/account/addresses" class="Button Button--primary">{{ 'customer.account.manage_addresses' | t }}</a>
+            </div>
+          </div>
+        {%- else -%}
+          <h2 class="Segment__Title Heading u-h7">{{ 'customer.account.default_address' | t }}</h2>
+
+          <div class="Segment__Content">
+            {{ customer.default_address | format_address | replace: '<p>', '<p class="AccountAddress"><span>' | replace_first: '<br>', '</span><br>' }}
+            <div class="Segment__ButtonWrapper">
+              <a href="/account/addresses" class="Button Button--primary">{{ 'customer.account.edit_addresses' | t }}</a>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

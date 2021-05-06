@@ -1,0 +1,157 @@
+<div class="page-width customerAccount" role="presentation">
+  <div id="CustomerLoginForm" class="form-vertical" role="presentation">
+    <div class="loginWrapper" role="presentation">
+
+      {%- if settings.account_notice == true -%}
+        <div class="accountNotice" style="background-color: {{settings.account_notice_bg}}" aria-labelledby="header-accont_notice" aria-describedby="description-account_notice">
+          <h2 id="header-accont_notice">{{ settings.account_notice_title }}</h2>
+          <div id="description-account_notice" role="presentation">{{ settings.account_notice_description }}</div>
+          <div class="cta"><a href="{{ settings.account_notice_link }}">{{ settings.account_notice_linktext }}</a></div>
+        </div>  
+      {%- endif -%}
+
+      <div class="passwordUpdateSuccess" role="presentation">
+        <div class="note form-success hide" id="ResetSuccess">
+          {{ 'customer.recover_password.success' | t }}
+        </div>
+      </div>
+      
+      <div class="loginForm" aria-labelledby="header-customer_login">
+        <h1 id="header-customer_login" class="formHeaderText">{{ 'customer.login.title' | t }}</h1>
+
+        {%- form 'customer_login', aria-describedby: 'alert-customer_login_form' -%}
+
+          
+
+          
+          {%- if form.errors -%}
+            <div id="alert-customer_login_form" role="alert">
+              {{- form.errors | default_errors -}}
+            </div>
+          {%- endif -%}
+
+          <label for="CustomerEmail">{{ 'customer.login.email' | t }}<span aria-hidden="true">*</span></label>
+          <input type="email" name="customer[email]" id="CustomerEmail" required  aria-invalid="false" class="{% if form.errors contains 'email' %} input--error{% endif %}" autocorrect="off" autocapitalize="off" autofocus>
+
+          {%- if form.password_needed -%}
+            <p class="forgotPassword smallLink" role="presentation"><a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a></p>
+          {%- endif -%}
+
+          {%- if form.password_needed -%}
+            <label for="CustomerPassword">{{ 'customer.login.password' | t }}<span aria-hidden="true">*</span></label>
+            <input type="password" value="" name="customer[password]" id="CustomerPassword" required  aria-invalid="false" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+          {%- endif -%}
+
+          <input type="submit" class="btn mainButton" value="{{ 'customer.login.sign_in' | t }}">
+
+        {%- endform -%}
+      </div>
+
+      {{- blank -}}
+
+      <div class="createAccountWrapper" aria-labelledby="header-new_account">
+        <h1 id="header-new_account" class="formHeaderText">{{ 'customer.login.new_account' | t }}</h1>
+        <div class="memeberBenefits" role="presentation">
+          <p id="description-new_account">{{ 'customer.login.member_benefits' | t }}</p>
+        </div>
+        <a href="/account/register" aria-describedby="description-new_account" class="btn mainButton">{{ 'customer.login.create_an_account' | t }}</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="RecoverPasswordForm" class="hide" role="presentation">
+    <div class="forgotPasswordWrapper" aria-labelledby="header-recover_customer_password">
+
+      {%- form 'recover_customer_password', aria-describedby: 'alert-recover_customer_password_form' -%}
+
+        <div class="formHeaderHolder" role="presentation">
+          <h1 id="header-recover_customer_password" class="formHeaderText">{{ 'customer.login.forgot_password' | t }}</h1>
+        </div>
+
+        {%- if form.posted_successfully? -%}
+          <h2 class="formSubHeaderText">{{ 'customer.recover_password.title' | t }}</h2>
+          <div class="form--success" role="presentation">{{ 'customer.recover_password.success' | t }}</div>
+        {%- else -%}
+          <p>{{ 'customer.recover_password.subtext' | t }}</p>
+        {%- endif -%}
+
+        <div class="form-vertical" role="presentation">
+
+          {%- if form.errors -%}
+            <div id="alert-recover_customer_password_form" role="alert">
+              {{- form.errors | default_errors -}}
+            </div>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            {%- comment -%}
+              Add a hidden span to indicate the form was submitted succesfully.
+            {%- endcomment -%}
+
+            <span class="hide reset-password-success"></span>
+          {%- endif -%}
+
+          {%- unless form.posted_successfully? -%}
+            <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}<span aria-hidden="true">*</span></label>
+            <input type="email" value="" name="email" id="RecoverEmail" required  aria-invalid="false" class="input-full" autocorrect="off" autocapitalize="off">
+            <input type="submit" class="btn mainButton" value="{{ 'customer.recover_password.submit' | t }}">
+
+            <div class="text-center" role="presentation">
+              <p class="smallLink" role="presentation">
+                <button type="button" id="HideRecoverPasswordLink" class="text-link">{{ 'customer.recover_password.cancel' | t }}</button>
+              </p>
+            </div>
+          {%- endunless -%}
+
+        </div>
+
+      {%- endform -%}
+
+    </div>
+  </div>
+
+  {%- if shop.checkout.guest_login -%}
+    {%- comment -%}
+      If accounts are set as optional, the following will be shown as an option
+      during checkout, not on the default /login page.
+    {%- endcomment -%}
+
+    <div class="grid" role="presentation" aria-labelledby="header-guest_login">
+      <div class="grid__item medium-up--one-half medium-up--push-one-quarter" role="presentation">
+        <div class="text-center" role="presentation">
+          <hr class="hr--invisible" role="presentation">
+          <h2 id="header-guest_login">{{ 'customer.login.guest_title' | t }}</h2>
+
+          {%- form 'guest_login' -%}
+            <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+          {%- endform -%}
+
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        if (theme.gec == true) {
+            var gtmPush =  false;
+            $('#customer_login .mainButton').click(function () {
+                var emailx = Base64.encode($('#CustomerEmail').val());
+                dataLayer.push({
+                    'event': 'validate',
+                    'email': emailx,
+                    'eventCallback': function () {
+                        gtmPush =  true
+                        $('#customer_login ').submit();
+                    }
+                });
+                if (gtmPush ==  false) {
+                    $('#customer_login ').submit();
+                }
+                return false;
+            });
+        }
+    });
+</script>
