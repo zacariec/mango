@@ -1,14 +1,15 @@
 const fs = require('fs-extra');
 const spawn = require('cross-spawn'); 
+const path = require('path');
 const chokidar = require('chokidar');
+const glob = require('fast-glob');
 
 const _Directorys = {
     developmentRoot: './shop/src',
     productionRoot: './shop/dist',
+    devRoot: './shop/src/dev',
     stylesRoot: './shop/src/dev/styles',
-    stylesCss: './shop/src/dev/styles/*.css',
-    stylesScss: './shop/src/dev/styles/*.scss',
-    scriptsRoot: './shop/src/dev/js/*.js',
+    scriptsRoot: './shop/src/dev/js',
     fontsRoot: './shop/src/dev/fonts',
     imagesRoot: './shop/src/dev/images',
     layoutRoot: './shop/src/layout',
@@ -31,50 +32,79 @@ const progressiveTerminalLine = (data) => {
     process.stdout.write(data);
 };
 
-// const cloneDirectory = async (directoryToCopy, directoryDestination) => {
-//     try {
-//         return await fs.copy(directoryToCopy, directoryDestination);
-//     } catch (err) {
-//         return console.error(err);
-//     }
-// };
+const cloneDirectory = async (directoryToCopy, directoryDestination) => {
+    try {
+        return await fs.copy(directoryToCopy, directoryDestination);
+    } catch (err) {
+        return console.error(err);
+    }
+};
 
-// const createDistDirectory = async () => {
-//     // TODO: Glob .js && .css || .scss files, 
-//     // Anything at the top level of the /js or /styles 
-//     // Directoy should be deployed to /dist/assets for the flexibility
-//     // of allowing the end user to add files, other than images & fonts.
+const moveFile = async (fileToMove, fileDestination) => {
+    try {
+        return await fs.move(fileToMove, `${fileDestination}/${path.basename(fileToMove)}`);
+    } catch (err) {
+        return console.error(err);
+    }
+};
 
-//     // Maybe we should just use the assets directory in src as well.
-//     const directories = [
-//         _Directorys.configRoot, 
-//         _Directorys.layoutRoot, 
-//         _Directorys.localesRoot,
-//         _Directorys.sectionsRoot,
-//         _Directorys.snippetsRoot,
-//         _Directorys.templatesRoot,
-//         _Directorys.imagesRoot,
-//         _Directorys.fontsRoot,
-//         _Directorys.scriptsRoot,
-//         _Directorys.stylesScss,
-//         _Directorys.stylesCss,
-//     ];
+const createWorkingDirectory = async () => {
+    await cloneDirectory(_Directorys.productionRoot, _Directorys.developmentRoot)
+    .then(() => moveAssetsToDev())
+    .catch(err => console.error(err));
+};
 
-//     function createDestinationPath(path) {
-//         let destinationFolder = path.substring(path.lastIndexOf('/') + 1);
-//         if(path.indexOf('dev') != -1) destinationFolder = 'assets';
-//         return _Directorys.productionRoot + '/' + destinationFolder;
-//     }
+const moveAssetsToDev = async () => {
+    
+    const watcher = chokidar.watch('./shop/src/assets');
+    watcher.on('unlink', async () => {
+        const assets = await fs.readdirSync('./shop/src/assets');
+        if(assets.length === 0) {
+            await fs.removeSync('./shop/src/assets');
+            watcher.close();
+        }
+    });
 
-//     for(const directory of directories) {
-//         await cloneDirectory(directory, createDestinationPath(directory));
-//     }
-// }
+    const images = await glob(['./shop/src/assets/*.jpg', './shop/src/assets/*.png', './shop/src/assets/*.gif', './shop/src/assets/*.webp', './shop/src/assets/*.svg']);
+    const fonts = await glob(['./shop/src/assets/*.otf', './shop/src/assets/*.ttf', './shop/src/assets/*.eot', './shop/src/assets/*.woff', './shop/src/assets/*.woff2', './shop/src/assets/*.txt']);
+    const styles = await glob(['./shop/src/assets/*.css', './shop/src/assets/*.scss', './shop/src/assets/*.css.liquid', './shop/src/assets/*.scss.liquid']);
+    const scripts = await glob(['./shop/src/assets/*.js', './shop/src/assets/*.js.liquid']);
 
-const spawnCallback = (data, isProgressive = false) => {
+    for(const image of images) {
+        await moveFile(image, _Directorys.imagesRoot);
+    }
+
+    for(const font of fonts) {
+        await moveFile(font, _Directorys.fontsRoot);
+    }
+
+    for(const style of styles) {
+        await moveFile(style, _Directorys.stylesRoot);
+    }
+
+    for(const script of scripts) {
+        await moveFile(script, _Directorys.scriptsRoot)
+    }
+    
+};
+
+const spawnCallback = (data, isProgressive = false, callback = null) => {
     const dataToLog = (Buffer.isBuffer(data) == true) ? data.toString() : data;
-    if(isProgressive) progressiveTerminalLine(dataToLog);
-    else console.log(dataToLog);
+    if(typeof callback === 'function') {
+        if(isProgressive) {
+            progressiveTerminalLine(dataToLog);
+            callback(dataToLog);
+        } else {
+            console.log(dataToLog);
+            callback(dataToLog);
+        }
+    } else {
+        if(isProgressive) {
+            progressiveTerminalLine(dataToLog);
+        } else {
+            console.log(dataToLog);
+        }
+    }
 };
 
 // const createWatcher = (directory) => {
@@ -82,41 +112,32 @@ const spawnCallback = (data, isProgressive = false) => {
 // };
 
 const downloadThemeFiles = () => {
-    const command = spawn('theme', ['download', `--dir=${_Directorys.developmentRoot}`]);
-    command.stdout.on('data', data => spawnCallback(data, true));
-    command.stderr.on('data', spawnCallback);
-    command.on('error', handleError);
+    const callback = (data) => (data.indexOf('100 %') != -1) ? createWorkingDirectory() : null;
+    const command = spawn('theme', ['download']);
+    command.stdout.on('data', data => spawnCallback(data, true, callback(data)));
+    command.stderr.on('data', data => spawnCallback(data, true));
+    command.on('error', err => handleError(err.errno, err));
 };
 
 // const deployThemeFile = (file = '') => {
 //     const command = spawn('theme', ['deploy', file]);
 //     command.stdout.on('data', data => spawnCallback(data, true));
-//     command.stderr.on('data', spawnCallback);
-//     command.on('error', handleError);
+//     command.stderr.on('data', data => spawnCallback(data, false));
+//     command.on('error', err => handleError(err.errno, err));
 // };
 
 const watchJsThemeFiles = () => {
     const command = spawn('npx', ['webpack']);
     command.stdout.on('data', data => spawnCallback(data, false));
-    command.stderr.on('data', spawnCallback);
-    command.on('error', handleError);
+    command.stderr.on('data', data => spawnCallback(data, false));
+    command.on('error', err => handleError(err.errno, err));
 };
 
-const watchStyleFiles = (type = 'sass', input, output) => {
-    // TODO: Chokidar + postcss to compile node -sass 
-    const postcss = require('postcss');
-    const postcssSass = require('postcss-node-sass');
-
-    const fileType = (type === 'sass') ? 'shop/src/dev/css/**.scss' : 'shop/src/dev/css/**.css';
-    const watchCommand = (type === 'sass') ? spawn('npx', ['sass', input, output, '--watch']) : spawn('npx', ['postcss', input, output, '--watch']);
-    watchCommand.stdout.on('data', data => spawnCallback(data, false));
-    watchCommand.stderr.on('data', data => spawnCallback(data, false));
-    watchCommand.on('error', err => handleError(err.errno, err));
-
-    const styleCommand = spawn('npx', ['stylelint', fileType]);
-    styleCommand.stdout.on('data', data => spawnCallback(data, false));
-    styleCommand.stderr.on('data', data => spawnCallback(data, false));
-    styleCommand.on('error', err => handleError(err.errno, err));
+const watchStyleFiles = (input, output) => {
+    const command = spawn('npx', ['sass', input, output, '--watch']);
+    command.stdout.on('data', data => spawnCallback(data, false));
+    command.stderr.on('data', data => spawnCallback(data, false));
+    command.on('error', err => handleError(err.errno, err));
 };
 
 
@@ -129,4 +150,4 @@ const watchStyleFiles = (type = 'sass', input, output) => {
 // };
 
 
-watchScssThemeFiles();
+createWorkingDirectory();
