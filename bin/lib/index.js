@@ -5,20 +5,20 @@ const chokidar = require('chokidar');
 const glob = require('fast-glob');
 
 const _Directorys = {
-    developmentRoot: './shop/src',
-    productionRoot: './shop/dist',
-    devRoot: './shop/src/dev',
-    stylesRoot: './shop/src/dev/styles',
-    scriptsRoot: './shop/src/dev/js',
-    fontsRoot: './shop/src/dev/fonts',
-    imagesRoot: './shop/src/dev/images',
-    layoutRoot: './shop/src/layout',
-    templatesRoot: './shop/src/templates',
-    snippetsRoot: './shop/src/snippets',
-    sectionsRoot: './shop/src/sections',
-    configRoot: './shop/src/config',
-    localesRoot: './shop/src/locales',
-    assetsRoot: './shop/src/assets'
+    developmentRoot: 'shop/src',
+    productionRoot: 'shop/dist',
+    devRoot: 'shop/src/dev',
+    stylesRoot: 'shop/src/dev/styles',
+    scriptsRoot: 'shop/src/dev/js',
+    fontsRoot: 'shop/src/dev/fonts',
+    imagesRoot: 'shop/src/dev/images',
+    layoutRoot: 'shop/src/layout',
+    templatesRoot: 'shop/src/templates',
+    snippetsRoot: 'shop/src/snippets',
+    sectionsRoot: 'shop/src/sections',
+    configRoot: 'shop/src/config',
+    localesRoot: 'shop/src/locales',
+    assetsRoot: 'shop/src/assets'
 };
 
 const handleError = (code = 1, message = '') => {
@@ -32,7 +32,7 @@ const progressiveTerminalLine = (data) => {
     process.stdout.write(data);
 };
 
-const cloneDirectory = async (directoryToCopy, directoryDestination) => {
+const cloneDirectory = async (directoryToCopy = _Directorys.productionRoot, directoryDestination = _Directorys.developmentRoot) => {
     try {
         return await fs.copy(directoryToCopy, directoryDestination);
     } catch (err) {
@@ -107,13 +107,54 @@ const spawnCallback = (data, isProgressive = false, callback = null) => {
     }
 };
 
-// const createWatcher = (directory) => {
-//     return chokidar.watch(directory);
-// };
 
-const downloadThemeFiles = () => {
+const watchWorkingDirectoryForChanges = () => {
+    // TODO: Probably need some sort of error handling in here at some stage.
+    // Need to see how well it works to begin with.
+    const addFile = async (e, watcher) => {
+        let fileKey = e.replace(/src(.*?)/, 'dist');
+        fileKey = fileKey.replace(/dev(.*?)/, 'assets');
+        fileKey = fileKey.replace(/images(.*?)/, '');
+        fileKey = fileKey.replace(/fonts(.*?)/, '');
+
+        const dataToWrite = await fs.readFileSync(e);
+
+        await fs.writeFileSync(fileKey, dataToWrite);
+    };
+
+    const updateFile = async (e, watcher) => {
+        let fileKey = e.replace(/src(.*?)/, 'dist');
+        fileKey = fileKey.replace(/dev(.*?)/, 'assets');
+        fileKey = fileKey.replace(/images(.*?)/, '');
+        fileKey = fileKey.replace(/fonts(.*?)/, '');
+
+        const source = await fs.readFileSync(e);
+        const target = await fs.readFileSync(fileKey);
+        if(Buffer.compare(source, target) !== 0) await fs.writeFileSync(fileKey, source);
+    };
+
+    const removeFile = async (e, watcher) => {
+        let fileKey = e.replace(/src/g, 'dist');
+        fileKey = fileKey.replace(/dev(.*?)/, 'assets');
+        fileKey = fileKey.replace(/images(.*?)/, '');
+        fileKey = fileKey.replace(/fonts(.*?)/, '');
+        const isFileExists = await fs.existsSync(fileKey);
+
+        if(isFileExists === true) await fs.removeSync(fileKey);
+    };
+
+    const watcher = chokidar.watch(_Directorys.developmentRoot, { ignored: ['shop/src/dev/js', 'shop/src/dev/styles'] });
+    watcher.on('change', updateFile);
+    watcher.on('add', addFile);
+    watcher.on('unlink', removeFile);
+};
+
+const downloadThemeFiles = async () => {
+    const isDirExists = await fs.existsSync('/shop/dist');
+    if(isDirExists === false) await fs.mkdirSync(path.join(__dirname, '/shop/dist'), { recursive: true });
+
     const callback = (data) => (data.indexOf('100 %') != -1) ? createWorkingDirectory() : null;
-    const command = spawn('theme', ['download']);
+    const command = spawn('theme', ['download', `--dir=${path.relative(__dirname, '/shop/dist')}`]);
     command.stdout.on('data', data => spawnCallback(data, true, callback(data)));
     command.stderr.on('data', data => spawnCallback(data, true));
     command.on('error', err => handleError(err.errno, err));
@@ -126,28 +167,14 @@ const downloadThemeFiles = () => {
 //     command.on('error', err => handleError(err.errno, err));
 // };
 
-const watchJsThemeFiles = () => {
+const intializeWebpack = () => {
     const command = spawn('npx', ['webpack']);
     command.stdout.on('data', data => spawnCallback(data, false));
     command.stderr.on('data', data => spawnCallback(data, false));
     command.on('error', err => handleError(err.errno, err));
 };
 
-const watchStyleFiles = (input, output) => {
-    const command = spawn('npx', ['sass', input, output, '--watch']);
-    command.stdout.on('data', data => spawnCallback(data, false));
-    command.stderr.on('data', data => spawnCallback(data, false));
-    command.on('error', err => handleError(err.errno, err));
+
+module.exports = {
+    downloadThemeFiles,
 };
-
-
-// const watchFontsThemeFiles = () => {
-//     const watcher = createWatcher(_Directorys.fontsRoot);
-// };
-
-// const watchImagesThemeFiles = () => {
-//     const watcher = createWatcher(_Directorys.imagesRoot);
-// };
-
-
-createWorkingDirectory();

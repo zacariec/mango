@@ -3,27 +3,44 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, "/shop/src/dev/js/theme.js"),
-  mode: "production",
+  entry: path.join(__dirname, '/shop/src/dev/js/theme.js'),
+  mode: 'production',
+  watch: true,
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ["babel-loader"]
+        use: ['babel-loader']
       },
       {
-        test: /\.(sa|sc|c)ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.css%/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader'
+        ]
       }
     ]
   },
   optimization: {
     minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin({
+      test: /\.js(\?.*)?$/i,
+      parallel: true
+    })],
     splitChunks: {
       cacheGroups: {
         styles: {
@@ -34,7 +51,7 @@ module.exports = {
     }
   },
   output: {
-    path: path.join(__dirname, "/shop/dist/assets"),
+    path: path.join(__dirname, '/shop/dist/assets'),
     filename: '[name].min.js'
   },
   plugins: [
@@ -43,9 +60,9 @@ module.exports = {
       files: ['**/*.js'],
       failOnError: false
     }),
-    new MiniCssExtractPlugin({ 
+    new MiniCssExtractPlugin({
       filename: '[name].min.css'
-    }), 
+    }),
     new StyleLintPlugin({
       configFile: '.stylelintrc.json',
       context: 'shop/src',
@@ -55,6 +72,5 @@ module.exports = {
   ],
   resolve: {
     modules: [path.resolve(__dirname, 'node_modules'), 'node_modules']
-  },
-  watch: true,
+  }
 };

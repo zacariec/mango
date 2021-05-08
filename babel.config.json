@@ -1,10 +1,6 @@
 {
     "presets": [
         ["@babel/preset-env", {
-            "targets": {
-                "ie": 11,
-                "browsers": "last 2 versions"
-            },
             "useBuiltIns": "usage",
             "debug": true,
             "corejs": { "version": "3.11", "proposals": true }
