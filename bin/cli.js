@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const cli = require('commander');
-const { createWorkingDirectory, downloadThemeFiles, initalizeWatchers, liveReload } = require('./lib/index'); 
+const { createWorkingDirectory, downloadThemeFiles, initializeWatchers, liveReload } = require('./lib/index'); 
 
 cli
   .command('convert')
@@ -16,7 +16,7 @@ cli
 cli
   .command('watch')
   .description('Start watching theme files')
-  .action(() => initalizeWatchers())
+  .action(() => initializeWatchers())
 
 cli
   .command('reload')

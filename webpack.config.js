@@ -1,4 +1,5 @@
 const path = require('path');
+const glob = require('fast-glob');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -6,14 +7,17 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  entry: path.join(__dirname, '/shop/src/dev/js/theme.js'),
+  entry: {
+    theme: glob.sync(path.resolve('./shop/src/dev/js/*.js')),
+    vendor: glob.sync(path.resolve('./shop/src/dev/js/vendor/*.js'))
+  },
   mode: 'production',
   watch: true,
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [/node_modules/, path.resolve('./shop/src/dev/js/vendor')],
         use: ['babel-loader']
       },
       {
@@ -39,6 +43,7 @@ module.exports = {
     minimize: true,
     minimizer: [new CssMinimizerPlugin(), new TerserPlugin({
       test: /\.js(\?.*)?$/i,
+      exclude: path.resolve('./shop/src/dev/js/vendor'),
       parallel: true
     })],
     splitChunks: {
@@ -51,7 +56,7 @@ module.exports = {
     }
   },
   output: {
-    path: path.join(__dirname, '/shop/dist/assets'),
+    path: path.resolve('./shop/dist/assets'),
     filename: '[name].min.js'
   },
   plugins: [

@@ -17,8 +17,9 @@ const createWorkingDirectory = () => {
     .catch(err => console.error(err));
 };
 
-const initalizeWatchers = () => {
+const initializeWatchers = () => {
     initializeThemekit()
+    .then(() => liveReload())
     .then(() => initializeWebpack())
     .then(() => initializeWorkingDirectory())
     .catch(err => console.error(err));
@@ -28,6 +29,6 @@ module.exports = {
     createWorkingDirectory,
     deployThemeFile,
     downloadThemeFiles,
-    initalizeWatchers,
+    initializeWatchers,
     liveReload,
 };
