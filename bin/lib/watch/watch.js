@@ -74,7 +74,7 @@ const initializeThemekit = () => {
     const liveReloadCallback = (data) => (typeof client != 'undefined' && data.includes('Updated')) ? client.send('event') : null; 
 
     return new Promise(resolve => {
-        const command = spawn('npx', ['theme', 'watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
+        const command = spawn('theme', ['watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
         command.stdout.on('data', data => {
             spawnCallback(data, false, liveReloadCallback);
             if(data.toString().includes('Watching for file changes')) resolve();
