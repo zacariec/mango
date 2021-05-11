@@ -2,3 +2,4 @@ _tmp_*
 node_modules
 shop
 config.yml
+*.tgz
