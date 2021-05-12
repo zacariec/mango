@@ -10,11 +10,10 @@ const { initializeWebpack, initializeThemekit, initializeWorkingDirectory } = re
 // TODO: Handle console.errors(), probably prettify output with
 // chalk and a handler that takes in a callback etc - across all modules.
 
-const createWorkingDirectory = () => {
-    cloneDirectory(_Directorys.productionRoot, _Directorys.developmentRoot)
-    .then(() => createDevDirectory())
-    .then(() => moveAssetsToDev())
-    .catch(err => console.error(err));
+const createWorkingDirectory = async () => {
+    await cloneDirectory();
+    await createDevDirectory();
+    await moveAssetsToDev();
 };
 
 const initializeWatchers = () => {

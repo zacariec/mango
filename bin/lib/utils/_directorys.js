@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+    shopRoot: path.resolve('./shop'),
     developmentRoot: path.resolve('./shop/src'),
     productionRoot: path.resolve('./shop/dist'),
     devRoot: path.resolve('./shop/src/dev'),
@@ -16,5 +17,7 @@ module.exports = {
     sectionsRoot: path.resolve('./shop/src/sections'),
     configRoot: path.resolve('./shop/src/config'),
     localesRoot: path.resolve('./shop/src/locales'),
-    assetsRoot: path.resolve('./shop/src/assets')
+    assetsRoot: path.resolve('./shop/src/assets'),
+    recommendedSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/recommended'),
+    standardSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/standard'),
 };
