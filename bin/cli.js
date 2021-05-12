@@ -1,7 +1,8 @@
 #! /usr/bin/env node
 
 const cli = require('commander');
-const { createWorkingDirectory, downloadThemeFiles, initializeWatchers, liveReload } = require('./lib/index'); 
+const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
+const { initializeTheme } = require('./lib/init/init');
 
 cli
   .command('convert')
@@ -19,8 +20,10 @@ cli
   .action(() => initializeWatchers())
 
 cli
-  .command('reload')
-  .description('live reload')
-  .action(() => liveReload())
+  .command('init')
+  .option('-r, --recommended', 'Use the recommended directory setup, prefilled babel, eslint & webpack configs.', false)
+  .option('-s, --standard', 'Use the recommended directory setup, prefilled babel, eslint & webpack configs.', false)
+  .description('Initialize Working Directory')
+  .action(command => initializeTheme(command));
 
 cli.parse(process.argv);
