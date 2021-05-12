@@ -1,0 +1,3 @@
+{
+    "ignorePatterns": [" /shop/dist/assets/*.js"]
+}
