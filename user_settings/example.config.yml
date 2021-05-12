@@ -1,7 +1,0 @@
-development:
-  password: example-password
-  theme_id: "123124323232"
-  store: example.myshopify.com
-  directory: shop/dist
-  ignore_files:
-  - config/settings_data.json
