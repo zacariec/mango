@@ -37,7 +37,7 @@ const createDevDirectory = async () => {
 };
 
 const moveAssets = async (array, directory, type) => {
-    const spinner = ora('Moving images to working directory').start();
+    const spinner = ora(`Moving ${type} to working directory`).start();
     try {
         const files = await glob(array);
         for(const [index, file] of files.entries()) {
