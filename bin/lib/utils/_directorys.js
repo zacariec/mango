@@ -18,6 +18,13 @@ module.exports = {
     configRoot: path.resolve('./shop/src/config'),
     localesRoot: path.resolve('./shop/src/locales'),
     assetsRoot: path.resolve('./shop/src/assets'),
+    distLayoutRoot: path.resolve('./shop/dist/layout'),
+    distTemplatesRoot: path.resolve('./shop/dist/templates'),
+    distSnippetsRoot: path.resolve('./shop/dist/snippets'),
+    distSectionsRoot: path.resolve('./shop/dist/sections'),
+    distConfigRoot: path.resolve('./shop/dist/config'),
+    distLocalesRoot: path.resolve('./shop/dist/locales'),
+    distAssetsRoot: path.resolve('./shop/dist/assets'),
     recommendedSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/recommended'),
     standardSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/standard'),
 };
