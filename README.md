@@ -6,8 +6,6 @@
 [![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/zacariecarr/)
 
 
-
-<!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
@@ -26,8 +24,6 @@
 </p>
 
 
-
-<!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
@@ -71,8 +67,6 @@ Shopackify is build with Pure NodeJS sprinkled with a little bit of Commander an
 * [Cross-Spawn](https://github.com/moxystudio/node-cross-spawn)
 
 
-
-<!-- GETTING STARTED -->
 ## Getting Started
 
 Shopackify is easy to get started with, although it depends on Themekit - why reinvent the wheel?
@@ -92,10 +86,86 @@ https://shopify.dev/tools/theme-kit
 ### Installation
 
 1. Super easy, install the @shopackify/shopackify package in your dev environment and away you go.
-2.  `npm install @shopackify/shopackify`
+2.  ```sh
+    npm install @shopackify/shopackify
+    ```
 
-<!-- USAGE EXAMPLES -->
 ## Usage
+
+### Caveats
+* We rely on both `./shop/dist` & `./shop/src` folders for this to work, ThemeKit watches the `./shop/dist` folder for changes.
+* We expect you to follow our folder structure listed below.
+### What to expect
+Using the recommended config `npx shopackify init -r` or `npx shopackify init --recommended`
+It will layout the directory structure that Shopackify uses.
+
+**PLEASE NOTE: WE DO NOT SUPPORT LIQUID IN SASS/CSS AND OR JS FILES, THESE WILL NOT BE COMPILED AND WILL THROW ERRORS**
+**SHOPIFY HAS DISCONTINUED SUPPORT FOR THESE FILES, PLEASE STORE ALL NEEDED LIQUID VARS IN A SNIPPET FOR CSS VARS OR JSON OBJECT**
+
+* All **VENDOR** - files need to be placed into the vendor folder, this will not be minified/transpiled or polyfilled
+  - Outputs as vendor.min.js
+
+* All **JS** - files should be placed in the modules folder, or if you want to use your own js structure that's fine as well
+  These need to be imported in the top level .js file for webpack to access
+  ``` javascript
+  app.js
+
+  import './modules/my-module';
+  ```
+  - Outputs as theme.min.js
+
+* All **SCSS/CSS** - files should be placed in the styles folder, you should probably split these up into whatever folder structure
+  you like if you haven't done so already and imported into a `style.scss` file or `styles.css` file.
+  This master file should be imported in our top level .js file.
+  ```javascript
+  app.js
+
+  import '../styles/main.scss';
+  import './modules/my-js-module';
+  ```
+  - Outputs as theme.min.css
+### Directory Structure
+Make sure your directory structure follows this if you're not starting from scratch:
+A few notes, you can use whatever structure you like for `./shop/src/dev/js/modules` rename or nest more folders.
+as long as you're importing them into a top-level .js file
+
+This is the same for the styles directory, as long as they're imported into a top-level file then imported
+into the top-level .js file.
+
+```
+  |-- shop
+      |-- dist
+          |-- assets
+          |-- config
+          |-- layout
+          |-- locales
+          |-- sections
+          |-- snippets
+          |-- templates
+              |-- customers
+      |-- src
+          |-- config
+          |-- dev
+              |-- fonts
+              |-- images
+              |-- js
+                  |-- vendor
+                  |-- modules
+                  |-- app.js
+              |-- styles
+                  |-- structure
+                  |-- styles.css/scss
+          |-- layout
+          |-- locales
+          |-- sections
+          |-- snippets
+          |-- templates
+              |-- customers
+```
+
+**Shopackify Build**
+`npx shopackify build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
+folder in your repo, or your current working directory is just src. 
 
 **Shopackify Download**
 `npx shopackify download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
@@ -109,16 +179,13 @@ It takes in an option flag `-r` or `--recommended` this is the default, which se
 
 **Shopackify Watch**
 `npx shopackify watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
+We will also write a script to `./layout/theme.liquid` which contains a live-reload script at the bottom before `</body>`. Feel free to delete
+this if you don't want live reload, or you don't want it in your live production build.
 
-
-<!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
 
-
-
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -129,16 +196,10 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
-<!-- CONTACT -->
 ## Contact
 
 Zacarie Carr - [LinkedIn](https://www.linkedin.com/in/zacariecarr) - zacariealancarr@gmail.com
@@ -146,9 +207,6 @@ Zacarie Carr - [LinkedIn](https://www.linkedin.com/in/zacariecarr) - zacariealan
 Project Link: [Shopackify](https://github.com/raylway/shopackify)
 NPM Link: [Shopackify](https://www.npmjs.com/package/@shopackify/shopackify)
 
-
-
-<!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 * [Shopify](https://www.shopify.com/)
 * [Themekit](https://shopify.dev/tools/theme-kit)
@@ -165,10 +223,6 @@ NPM Link: [Shopackify](https://www.npmjs.com/package/@shopackify/shopackify)
 * [Best README Template](https://github.com/othneildrew/Best-README-Template)
 
 
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
