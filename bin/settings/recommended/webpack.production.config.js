@@ -11,8 +11,8 @@ module.exports = {
     theme: glob.sync(path.resolve('./shop/src/dev/js/*.js')),
     vendor: glob.sync(path.resolve('./shop/src/dev/js/vendor/*.js'))
   },
-  mode: 'development',
-  watch: true,
+  mode: 'production',
+  watch: false,
   module: {
     rules: [
       {

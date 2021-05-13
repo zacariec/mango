@@ -6,7 +6,7 @@ module.exports = {
     theme: glob.sync(path.resolve('./shop/src/dev/js/*.js')),
     vendor: glob.sync(path.resolve('./shop/src/dev/js/vendor/*.js'))
   },
-  mode: 'development',
+  mode: 'production',
   watch: true,
   output: {
     path: path.resolve('./shop/dist/assets'),
