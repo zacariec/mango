@@ -3,11 +3,17 @@
 const cli = require('commander');
 const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
 const { initializeTheme } = require('./lib/init/init');
+const { buildDistFiles } = require('./lib/build/build');
 
 cli
   .command('convert')
   .description('Convert the currently downloaded Shopify Theme to use Shopackify workflow')
   .action(() => createWorkingDirectory());
+
+cli
+  .command('build')
+  .description('Build the current working directory into a ready to distribute theme')
+  .action(() => buildDistFiles());
 
 cli
   .command('download')
