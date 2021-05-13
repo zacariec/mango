@@ -1,5 +1,3 @@
-const _Directorys = require('./utils/_directorys');
-
 const { cloneDirectory } = require('./utils/_fsUtils');
 const { createDevDirectory, moveAssetsToDev } = require('./convert/convert');
 const { deployThemeFile } = require('./deploy/deploy');
@@ -29,5 +27,4 @@ module.exports = {
     deployThemeFile,
     downloadThemeFiles,
     initializeWatchers,
-    liveReload,
 };
