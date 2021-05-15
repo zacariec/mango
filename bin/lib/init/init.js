@@ -11,7 +11,8 @@ const installDependencies = (type) => {
     const spinner = ora('Installing peer dependencies').start();
     if(type.recommended === true || type === true) {
         const command = spawn('npm', [
-            'install', 
+            'install',
+            '-D', 
             '@babel/core', 
             '@babel/preset-env', 
             'autoprefixer', 
