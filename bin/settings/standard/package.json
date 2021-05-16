@@ -1,0 +1,12 @@
+
+{
+    "name": "shopackify-project",
+    "version": "1.0.0",
+    "description": "A project initialized by @shopackify/shopackify",
+    "devDependencies": {
+        "fast-glob": "^3.2.5"
+    },
+    "author": "@Shopackify",
+    "license": "ISC"
+}
+  
