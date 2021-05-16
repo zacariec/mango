@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const cli = require('commander');
-const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
+const { createWorkingDirectory, downloadThemeFiles, initializeWatchers, getVersion } = require('./lib/index'); 
 const { initializeTheme } = require('./lib/init/init');
 const { buildDistFiles } = require('./lib/build/build');
 
@@ -31,5 +31,7 @@ cli
   .option('-s, --standard', 'Use the recommended directory setup, prefilled babel, eslint & webpack configs.', false)
   .description('Initialize Working Directory')
   .action(command => initializeTheme(command));
+
+cli.version(getVersion(), '-V --version', 'Output the version number');
 
 cli.parse(process.argv);
