@@ -1,6 +1,6 @@
 {
   "name": "@shopackify/shopackify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A highly modular Theme development tool, to create world class & production ready Shopify themes, using Webpack and your choice of PostCSS or SASS, while transpiling & polyfilling ECMAScript to allow for backwards compatibility and newer code. ",
   "preferGlobal": true,
   "bin": {
