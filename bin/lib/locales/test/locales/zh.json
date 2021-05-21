@@ -1,0 +1,13 @@
+{
+  "404": {
+    "general": {
+      "title": "Page not found"
+    }
+  },
+  "hello_world": {
+    "general": {
+      "hello": "HELLO",
+      "world": "world"
+    }
+  }
+}
