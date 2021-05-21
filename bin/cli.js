@@ -4,6 +4,7 @@ const cli = require('commander');
 const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
 const { initializeTheme } = require('./lib/init/init');
 const { buildDistFiles } = require('./lib/build/build');
+const { compileLocales } = require('./lib/locales/locales');
 
 cli
   .command('convert')
@@ -19,6 +20,11 @@ cli
   .command('download')
   .description('Download the Shopify Theme Files from the currently defined theme in config.yml')
   .action(() => downloadThemeFiles());
+
+cli
+  .command('locales')
+  .description('Compiles your locales folder with the configured localization defined in shop/src/dev/locales.config.json')
+  .action(() => compileLocales())
 
 cli
   .command('watch')

@@ -182,6 +182,25 @@ It takes in an option flag `-r` or `--recommended` this is the default, which se
 We will also write a script to `./layout/theme.liquid` which contains a live-reload script at the bottom before `</body>`. Feel free to delete
 this if you don't want live reload, or you don't want it in your live production build.
 
+**Shopackify Locales**
+`shopackify locales` - Will look for `./src/dev/locales.config.json`, check `./src/locales/` for existing localization, and performs a deep merge of these settings. If path is already set in your locales folder, it will not override it.
+Only the designated default locale will receive the initial translations. The rest will receive blanks to be set from admin.
+This is so the shopify translation system will detect missing translations.
+
+Below is an example schema of `./src/dev/locales.config.json`:
+```
+{
+  "locales": ["en.default", "ja"],
+  "translations": {
+    "404": {
+      "general": {
+        "title": "Page not found"
+      }
+    }
+  }
+}
+```
+
 ## Roadmap
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).

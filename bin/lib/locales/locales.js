@@ -14,9 +14,18 @@ const bufferToJson = buffer => {
   }
 }
 
+const emptyLeaves = json => {
+  for (let k in json) {
+    if (json[k] && typeof json[k] === 'object') {
+      traverse(json[k]);
+    } else {
+      json[k] = "";
+    }
+  }
+}
 const writeLocale = (locale, content) => fs.writeJSON(`${localesRoot}/${locale}.json`, content, { spaces: 2 });
 
-const compileLocale = async (locale, existingFiles, translations) => {
+const compileLocale = async (locale, existingFiles, translations, blanks) => {
   const spinner = ora(`${ORA_NAMESPACE} - Compiling ${locale}`).start();
   // check if exists
   const targetLocale = existingFiles.find(file => file === `${locale}.json`);
@@ -29,7 +38,8 @@ const compileLocale = async (locale, existingFiles, translations) => {
   }
   
   try {
-    const combined = defaultsDeep({}, existingJson, translations);
+    const isDefault = locale.includes('default');
+    const combined = defaultsDeep({}, existingJson, isDefault ? translations : blanks);
     spinner.text = `Writing ${locale}`;
     await writeLocale(locale, combined);
     spinner.succeed(`${locale} done`);
@@ -48,8 +58,8 @@ const compileLocales = async () => {
     const localesConfigJsonBuffer = await fs.readFile(`${devRoot}/${localesConfigJsonFile}`);
 
     const { locales, translations } = bufferToJson(localesConfigJsonBuffer);
-
-    await Promise.all(locales.map(locale => compileLocale(locale, existingFiles, translations)));
+    const blankTranslations = emptyLeaves(translations);
+    await Promise.all(locales.map(locale => compileLocale(locale, existingFiles, translations, blankTranslations)));
 
     spinner.succeed(`${ORA_NAMESPACE} - Complete`);
   } catch (e) {
