@@ -1,5 +1,6 @@
 const ora = require('ora');
-const defaultsDeep = require('lodash/defaultsDeep');
+const { emptyLeaves } = require('./empty-leaves');
+const { defaultsDeep, cloneDeep } = require('lodash');
 const fs = require('fs-extra');
 const { devRoot, localesRoot } = require('../utils/_directorys');
 
@@ -14,15 +15,6 @@ const bufferToJson = buffer => {
   }
 }
 
-const emptyLeaves = json => {
-  for (let k in json) {
-    if (json[k] && typeof json[k] === 'object') {
-      traverse(json[k]);
-    } else {
-      json[k] = "";
-    }
-  }
-}
 const writeLocale = (locale, content) => fs.writeJSON(`${localesRoot}/${locale}.json`, content, { spaces: 2 });
 
 const compileLocale = async (locale, existingFiles, translations, blanks) => {
@@ -39,7 +31,7 @@ const compileLocale = async (locale, existingFiles, translations, blanks) => {
   
   try {
     const isDefault = locale.includes('default');
-    const combined = defaultsDeep({}, existingJson, isDefault ? translations : blanks);
+    const combined = defaultsDeep({}, existingJson, (isDefault ? translations : blanks));
     spinner.text = `Writing ${locale}`;
     await writeLocale(locale, combined);
     spinner.succeed(`${locale} done`);
@@ -51,14 +43,12 @@ const compileLocale = async (locale, existingFiles, translations, blanks) => {
 
 const compileLocales = async () => {
   const spinner = ora().start(`${ORA_NAMESPACE} - Start`);
-  // grab src/locales
-
   try {
     const existingFiles = await fs.readdir(localesRoot);
     const localesConfigJsonBuffer = await fs.readFile(`${devRoot}/${localesConfigJsonFile}`);
 
     const { locales, translations } = bufferToJson(localesConfigJsonBuffer);
-    const blankTranslations = emptyLeaves(translations);
+    const blankTranslations = emptyLeaves(cloneDeep(translations));
     await Promise.all(locales.map(locale => compileLocale(locale, existingFiles, translations, blankTranslations)));
 
     spinner.succeed(`${ORA_NAMESPACE} - Complete`);
@@ -67,8 +57,6 @@ const compileLocales = async () => {
     return console.error(e);
   }
 }
-
-compileLocales();
 
 module.exports = {
   compileLocales
