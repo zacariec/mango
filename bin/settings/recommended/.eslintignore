@@ -1,3 +1,2 @@
-{
-    "ignorePatterns": [" /shop/dist/assets/*.js"]
-}
+shop/dist/assets/*.js
+**/*.spec.js
