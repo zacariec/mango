@@ -1,6 +1,7 @@
 const ora = require('ora');
 const { emptyLeaves } = require('./empty-leaves');
-const { defaultsDeep, cloneDeep } = require('lodash');
+const defaultsDeep = require('lodash/defaultsDeep');
+const cloneDeep = require('lodash/cloneDeep');
 const fs = require('fs-extra');
 const { devRoot, localesRoot } = require('../utils/_directorys');
 
