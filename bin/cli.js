@@ -2,6 +2,7 @@
 
 const cli = require('commander');
 const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
+const { getVersion } = require('./lib/version/version');
 const { initializeTheme } = require('./lib/init/init');
 const { buildDistFiles } = require('./lib/build/build');
 const { compileLocales } = require('./lib/locales/locales');
@@ -38,4 +39,5 @@ cli
   .description('Initialize Working Directory')
   .action(command => initializeTheme(command));
 
+cli.version(getVersion(), '-V --version', 'Output the version number');
 cli.parse(process.argv);
