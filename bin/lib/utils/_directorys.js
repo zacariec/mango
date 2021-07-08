@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+    projectRoot: path.resolve('./'),
     shopRoot: path.resolve('./shop'),
     developmentRoot: path.resolve('./shop/src'),
     productionRoot: path.resolve('./shop/dist'),
