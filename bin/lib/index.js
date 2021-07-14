@@ -4,6 +4,7 @@ const { deployThemeFile } = require('./deploy/deploy');
 const { downloadThemeFiles } = require('./download/download');
 const { liveReload } = require('./reload/liveReload');
 const { initializeWebpack, initializeThemekit, initializeWorkingDirectory } = require('./watch/watch');
+const { getVersion } = require('./version/version');
 
 // TODO: Handle console.errors(), probably prettify output with
 // chalk and a handler that takes in a callback etc - across all modules.
@@ -27,4 +28,5 @@ module.exports = {
     deployThemeFile,
     downloadThemeFiles,
     initializeWatchers,
+    getVersion,
 };

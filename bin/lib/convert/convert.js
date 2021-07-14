@@ -4,7 +4,7 @@ const chokidar = require('chokidar');
 const glob = require('fast-glob');
 const ora = require('ora');
 const _Directorys = require('../utils/_directorys');
-const { moveFile, createDirectory, checkWorkingDirectory } = require('../utils/_fsUtils');
+const { moveFile, createRecursiveDirectory, checkWorkingDirectory } = require('../utils/_fsUtils');
 
 const createDevDirectory = async () => {
     const spinner = ora('Creating working directory').start();
@@ -29,7 +29,7 @@ const createDevDirectory = async () => {
     ];
 
     try {
-        for (const dir of directoriesToMake) await createDirectory(dir);
+        await createRecursiveDirectory(directoriesToMake);
         if(await checkWorkingDirectory() === true) spinner.succeed('Finished creating working directory');
     } catch (err) {
         spinner.fail('Failed creating working directory, maybe it already exists');
@@ -49,7 +49,7 @@ const moveAssets = async (array, directory, type) => {
         spinner.fail(`Error moving ${type} to working directory`);
         return console.error(err);
     }
-}
+};
 
 const moveAssetsToDev = async () => {
     

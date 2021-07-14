@@ -8,6 +8,15 @@ const createDirectory = async (directoryToMake) => {
     if(await fs.pathExists(directoryToMake) === false) await fs.mkdir(directoryToMake);
 };
 
+const createRecursiveDirectory = async (directoriesToMake) => {
+    try {
+        await sleep(250);
+        for (const dir of directoriesToMake) await createDirectory(dir);
+    } catch (err) {
+        return console.error(err);
+    }
+};
+
 const checkWorkingDirectory = async () => {
     await sleep(250);
     if(await fs.pathExists(_Directorys.shopRoot) === true
@@ -22,6 +31,19 @@ const checkWorkingDirectory = async () => {
     && await fs.pathExists(_Directorys.imagesRoot) === true) return true;
 };
 
+const checkDistDirectory = async () => {
+    await sleep(250);
+    if(await fs.pathExists(_Directorys.shopRoot) === true
+    && await fs.pathExists(_Directorys.productionRoot) === true
+    && await fs.pathExists(_Directorys.distAssetsRoot) === true
+    && await fs.pathExists(_Directorys.distConfigRoot) === true
+    && await fs.pathExists(_Directorys.distLayoutRoot) === true
+    && await fs.pathExists(_Directorys.distLocalesRoot) === true
+    && await fs.pathExists(_Directorys.distSectionsRoot) === true
+    && await fs.pathExists(_Directorys.distSnippetsRoot) === true
+    && await fs.pathExists(_Directorys.distTemplatesRoot) === true) return true;
+};
+
 const cloneDirectory = async (directoryToCopy = _Directorys.productionRoot, directoryDestination = _Directorys.developmentRoot) => {
     await sleep(250);
     await fs.copy(directoryToCopy, directoryDestination);
@@ -34,7 +56,9 @@ const moveFile = async (fileToMove, fileDestination) => {
 
 module.exports = {
     createDirectory,
+    createRecursiveDirectory,
     checkWorkingDirectory,
+    checkDistDirectory,
     cloneDirectory,
     moveFile
 };

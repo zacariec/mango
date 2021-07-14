@@ -87,7 +87,7 @@ https://shopify.dev/tools/theme-kit
 
 1. Super easy, install the @shopackify/shopackify package in your dev environment and away you go.
 2.  ```sh
-    npm install @shopackify/shopackify
+    npm install @shopackify/shopackify -g
     ```
 
 ## Usage
@@ -96,7 +96,7 @@ https://shopify.dev/tools/theme-kit
 * We rely on both `./shop/dist` & `./shop/src` folders for this to work, ThemeKit watches the `./shop/dist` folder for changes.
 * We expect you to follow our folder structure listed below.
 ### What to expect
-Using the recommended config `npx shopackify init -r` or `npx shopackify init --recommended`
+Using the recommended config `shopackify init -r` or `shopackify init --recommended`
 It will layout the directory structure that Shopackify uses.
 
 **PLEASE NOTE: WE DO NOT SUPPORT LIQUID IN SASS/CSS AND OR JS FILES, THESE WILL NOT BE COMPILED AND WILL THROW ERRORS**
@@ -164,23 +164,42 @@ into the top-level .js file.
 ```
 
 **Shopackify Build**
-`npx shopackify build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
+`shopackify build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
 folder in your repo, or your current working directory is just src. 
 
 **Shopackify Download**
-`npx shopackify download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
+`shopackify download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
 
 **Shopackify Init**
-`npx shopackify init` - Will initialize the project directory with the right directory structure.
+`shopackify init` - Will initialize the project directory with the right directory structure.
 It takes in an option flag `-r` or `--recommended` this is the default, which sets up all the config files for you and `-s` or `--standard` which provides the config files, but they're not populated.
 
 **Shopackify Convert**
-`npx shopackify convert` - Will convert the currently downloaded theme to a working directory, you should usually run this command after directory initialization. Everything gets shuffled into the dev directory, with respective folder naming.
+`shopackify convert` - Will convert the currently downloaded theme to a working directory, you should usually run this command after directory initialization. Everything gets shuffled into the dev directory, with respective folder naming.
 
 **Shopackify Watch**
-`npx shopackify watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
+`shopackify watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
 We will also write a script to `./layout/theme.liquid` which contains a live-reload script at the bottom before `</body>`. Feel free to delete
 this if you don't want live reload, or you don't want it in your live production build.
+
+**Shopackify Locales**
+`shopackify locales` - Will look for `./src/dev/locales.config.json`, check `./src/locales/` for existing localization, and performs a deep merge of these settings. If path is already set in your locales folder, it will not override it.
+Only the designated default locale will receive the initial translations. The rest will receive blanks to be set from admin.
+This is so the shopify translation system will detect missing translations.
+
+Below is an example schema of `./src/dev/locales.config.json`:
+```
+{
+  "locales": ["en.default", "ja"],
+  "translations": {
+    "404": {
+      "general": {
+        "title": "Page not found"
+      }
+    }
+  }
+}
+```
 
 ## Roadmap
 
