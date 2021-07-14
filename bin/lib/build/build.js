@@ -16,7 +16,8 @@ const buildDistDirectory = async () => {
         _Directorys.distLocalesRoot,
         _Directorys.distSectionsRoot,
         _Directorys.distSnippetsRoot,
-        _Directorys.distTemplatesRoot
+        _Directorys.distTemplatesRoot,
+        _Directorys.distCustomersRoot,
     ];
 
     try {
@@ -59,9 +60,11 @@ const buildDistFiles = async () => {
         await copyToDist(_Directorys.snippetsRoot, _Directorys.distSnippetsRoot, 'Snippets');
         /* src/templates to dist/templates */
         await copyToDist(_Directorys.templatesRoot, _Directorys.distTemplatesRoot, 'Templates');
+        /* src/templates/customers to dist/templates/customers */
+        await copyToDist(_Directorys.customersRoot, _Directorys.distCustomersRoot, 'Templates');
         await sleep(500);
         const webPackSpinner = ora('Packing styles and scripts with Webpack').start();
-        const command = spawn('webpack', ['--config', './webpack.production.config.js']);
+        const command = spawn('npx webpack', ['--config', './webpack.production.config.js']);
         command.stdout.on('data', data => {
             spawnCallback(data, false)
             if(data.toString().includes('ERROR')) {
