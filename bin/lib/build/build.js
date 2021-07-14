@@ -64,7 +64,9 @@ const buildDistFiles = async () => {
         await copyToDist(_Directorys.customersRoot, _Directorys.distCustomersRoot, 'Templates');
         await sleep(500);
         const webPackSpinner = ora('Packing styles and scripts with Webpack').start();
-        const command = spawn('npx webpack', ['--config', './webpack.production.config.js']);
+
+        const command = spawn('npx', ['webpack', '--config', `${_Directorys.projectRoot}/webpack.production.config`]);
+      
         command.stdout.on('data', data => {
             spawnCallback(data, false)
             if(data.toString().includes('ERROR')) {
