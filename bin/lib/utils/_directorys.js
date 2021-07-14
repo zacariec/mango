@@ -25,6 +25,6 @@ module.exports = {
     distConfigRoot: path.resolve('./shop/dist/config'),
     distLocalesRoot: path.resolve('./shop/dist/locales'),
     distAssetsRoot: path.resolve('./shop/dist/assets'),
-    recommendedSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/recommended'),
-    standardSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/standard'),
+    recommendedSettings: path.resolve(`${require.main.path}/settings/recommended`),
+    standardSettings: path.resolve(`${require.main.path}/settings/standard`),
 };
