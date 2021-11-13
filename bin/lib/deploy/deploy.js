@@ -13,7 +13,9 @@ const deployCommand = (parameters) => {
 module.exports = deployThemeFiles = async (options) => {
   const parameters = [
     `--dir=${options.dir}`,
+    options.file ? `--ignores=${options.file}` : ``,
     options.allowLive ? `--allow-live` : ``,
+    options.verbose ? `-v`: ``,
   ];
 
   if (options.new) {
