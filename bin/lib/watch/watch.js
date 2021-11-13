@@ -74,6 +74,7 @@ const initializeThemekit = () => {
     const liveReloadCallback = (data) => (typeof client != 'undefined' && data.includes('Updated')) ? client.send('event') : null; 
 
     return new Promise(resolve => {
+        spawn('theme', ['open'], { stdio: 'pipe' });
         const command = spawn('theme', ['watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
         command.stdout.on('data', data => {
             spawnCallback(data, false, liveReloadCallback);
