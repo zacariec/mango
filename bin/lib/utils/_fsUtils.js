@@ -4,22 +4,22 @@ const _Directorys = require('./_directorys');
 const sleep = require('./_sleep');
 
 const createDirectory = async (directoryToMake) => {
-    await sleep(250);
-    if(await fs.pathExists(directoryToMake) === false) await fs.mkdir(directoryToMake);
+  await sleep(250);
+  if (await fs.pathExists(directoryToMake) === false) await fs.mkdir(directoryToMake);
 };
 
 const createRecursiveDirectory = async (directoriesToMake) => {
-    try {
-        await sleep(250);
-        for (const dir of directoriesToMake) await createDirectory(dir);
-    } catch (err) {
-        return console.error(err);
-    }
+  try {
+    await sleep(250);
+    for (const dir of directoriesToMake) await createDirectory(dir);
+  } catch (err) {
+    return console.error(err);
+  }
 };
 
 const checkWorkingDirectory = async () => {
-    await sleep(250);
-    if(await fs.pathExists(_Directorys.shopRoot) === true
+  await sleep(250);
+  if (await fs.pathExists(_Directorys.shopRoot) === true
     && await fs.pathExists(_Directorys.productionRoot) === true
     && await fs.pathExists(_Directorys.developmentRoot) === true
     && await fs.pathExists(_Directorys.devRoot) === true
@@ -32,8 +32,8 @@ const checkWorkingDirectory = async () => {
 };
 
 const checkDistDirectory = async () => {
-    await sleep(250);
-    if(await fs.pathExists(_Directorys.shopRoot) === true
+  await sleep(250);
+  if (await fs.pathExists(_Directorys.shopRoot) === true
     && await fs.pathExists(_Directorys.productionRoot) === true
     && await fs.pathExists(_Directorys.distAssetsRoot) === true
     && await fs.pathExists(_Directorys.distConfigRoot) === true
@@ -45,20 +45,20 @@ const checkDistDirectory = async () => {
 };
 
 const cloneDirectory = async (directoryToCopy = _Directorys.productionRoot, directoryDestination = _Directorys.developmentRoot) => {
-    await sleep(250);
-    await fs.copy(directoryToCopy, directoryDestination);
+  await sleep(250);
+  await fs.copy(directoryToCopy, directoryDestination);
 };
 
 const moveFile = async (fileToMove, fileDestination) => {
-    await sleep(250);
-    await fs.move(fileToMove, `${fileDestination}/${path.basename(fileToMove)}`)
+  await sleep(250);
+  await fs.move(fileToMove, `${fileDestination}/${path.basename(fileToMove)}`)
 };
 
 module.exports = {
-    createDirectory,
-    createRecursiveDirectory,
-    checkWorkingDirectory,
-    checkDistDirectory,
-    cloneDirectory,
-    moveFile
+  createDirectory,
+  createRecursiveDirectory,
+  checkWorkingDirectory,
+  checkDistDirectory,
+  cloneDirectory,
+  moveFile
 };

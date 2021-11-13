@@ -1,6 +1,6 @@
 {
   "name": "@shopackify/shopackify",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A highly modular Theme development tool, to create world class & production ready Shopify themes, using Webpack and your choice of PostCSS or SASS, while transpiling & polyfilling ECMAScript to allow for backwards compatibility and newer code. ",
   "preferGlobal": true,
   "bin": {
@@ -9,11 +9,13 @@
   "author": "Zacarie A. Carr",
   "license": "ISC",
   "dependencies": {
+    "@shopify/shopify-api": "^2.0.0",
     "chokidar": "^3.5.1",
     "commander": "^7.2.0",
     "cross-spawn": "^7.0.3",
     "fast-glob": "^3.2.5",
     "fs-extra": "^10.0.0",
+    "global-modules-path": "^2.3.1",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "ora": "^5.4.0",
