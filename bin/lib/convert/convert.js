@@ -8,24 +8,30 @@ const { moveFile, createRecursiveDirectory, checkWorkingDirectory } = require('.
 
 const createDevDirectory = async () => {
   const spinner = ora('Creating working directory').start();
-
   const directoriesToMake = [
-    _Directorys.shopRoot,
-    _Directorys.productionRoot,
-    _Directorys.developmentRoot,
-    _Directorys.devRoot,
-    _Directorys.scriptsRoot,
-    _Directorys.scriptsModuleRoot,
-    _Directorys.scriptsVendorRoot,
-    _Directorys.stylesRoot,
-    _Directorys.fontsRoot,
-    _Directorys.imagesRoot,
-    _Directorys.templatesRoot,
-    _Directorys.customersRoot,
-    _Directorys.snippetsRoot,
-    _Directorys.sectionsRoot,
-    _Directorys.configRoot,
-    _Directorys.localesRoot,
+      _Directorys.shopRoot,
+      _Directorys.productionRoot,
+      _Directorys.developmentRoot,
+      _Directorys.devRoot,
+      _Directorys.staticRoot,
+      _Directorys.scriptsRoot,
+      _Directorys.scriptsModuleRoot,
+      _Directorys.stylesRoot,
+      _Directorys.stylesBase,
+      _Directorys.stylesComponents,
+      _Directorys.stylesMixins,
+      _Directorys.stylesSections,
+      _Directorys.stylesTemplates,
+      _Directorys.stylesTypography,
+      _Directorys.stylesVariables,
+      _Directorys.fontsRoot,
+      _Directorys.imagesRoot,
+      _Directorys.templatesRoot,
+      _Directorys.customersRoot,
+      _Directorys.snippetsRoot,
+      _Directorys.sectionsRoot,
+      _Directorys.configRoot,
+      _Directorys.localesRoot,
   ];
 
   try {
