@@ -42,10 +42,11 @@ const copyToDist = async (directory, output, type) => {
 };
 
 const buildDistFiles = async () => {
-
   try {
     await removeLiveReload();
     await buildDistDirectory();
+    /* src/dev/static to dist/assets */
+    await copyToDist(_Directorys.staticRoot, _Directorys.distAssetsRoot, 'Static');
     /* src/dev/images to dist/assets */
     await copyToDist(_Directorys.imagesRoot, _Directorys.distAssetsRoot, 'Images');
     /* src/dev/fonts to dist/assets */
