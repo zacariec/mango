@@ -4,3 +4,4 @@ shop
 /config.yml
 *.tgz
 /mango.config.yml
+.DS_Store
