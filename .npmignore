@@ -4,3 +4,4 @@ node_modules
 /config.yml
 /pnpm-lock.yaml
 /.gitignore
+/mango.config.yml
