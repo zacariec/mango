@@ -1,14 +1,22 @@
 const path = require('path');
+const { getPath } = require('global-modules-path');
 
 module.exports = {
   shopRoot: path.resolve('./shop'),
   developmentRoot: path.resolve('./shop/src'),
   productionRoot: path.resolve('./shop/dist'),
   devRoot: path.resolve('./shop/src/dev'),
+  staticRoot: path.resolve('./shop/src/dev/static'),
   stylesRoot: path.resolve('./shop/src/dev/styles'),
+  stylesBase: path.resolve('./shop/src/dev/styles/base'),
+  stylesComponents: path.resolve('./shop/src/dev/styles/components'),
+  stylesMixins: path.resolve('./shop/src/dev/styles/mixins'),
+  stylesSections: path.resolve('./shop/src/dev/styles/sections'),
+  stylesTemplates: path.resolve('./shop/src/dev/styles/templates'),
+  stylesTypography: path.resolve('./shop/src/dev/styles/typography'),
+  stylesVariables: path.resolve('./shop/src/dev/styles/variables'),
   scriptsRoot: path.resolve('./shop/src/dev/js'),
   scriptsModuleRoot: path.resolve('./shop/src/dev/js/modules'),
-  scriptsVendorRoot: path.resolve('./shop/src/dev/js/vendor'),
   fontsRoot: path.resolve('./shop/src/dev/fonts'),
   imagesRoot: path.resolve('./shop/src/dev/images'),
   layoutRoot: path.resolve('./shop/src/layout'),
@@ -27,6 +35,6 @@ module.exports = {
   distConfigRoot: path.resolve('./shop/dist/config'),
   distLocalesRoot: path.resolve('./shop/dist/locales'),
   distAssetsRoot: path.resolve('./shop/dist/assets'),
-  recommendedSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/recommended'),
-  standardSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/standard'),
+  recommendedSettings: `${getPath('@shopackify/mango')}/bin/settings/recommended`,
+  standardSettings: `${getPath('@shopackify/mango')}/bin/settings/standard`,
 };
