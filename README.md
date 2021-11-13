@@ -9,10 +9,10 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://imgur.com/iY7E4cN.png" alt="Shopackify" width="400">
+    <img src="https://imgur.com/iY7E4cN.png" alt="Mango" width="400">
   </a>
 
-  <h3 align="center">Shopackify</h3>
+  <h3 align="center">Mango</h3>
 
   <p align="center">
     A fully modular build tool to plug and play with Shopify theme development.
@@ -51,17 +51,17 @@
 
 ## About The Project
 
-Shopackify is a fully modular build tool for theme development on the Shopify platform. 
+Mango is a fully modular build tool for theme development on the Shopify platform. 
 This tool aims to fill the void where there are no ready to go & fully featured tooling out there that isn't deprecated or has a lot of setup to do first.
 
 Use either SASS or PostCSS when using our recommended settings.
 
-Shopackify also includes it's own live reload - based on a Web Socket implementation, so we know exactly when to refresh the browser.
+Mango also includes it's own live reload - based on a Web Socket implementation, so we know exactly when to refresh the browser.
 
-Shopackify aims to provide you with the strongest tooling to build high-level, production ready, backwards browser compatible code - so you don't need to worry about using Promises on that enterprise client, because IE doesn't support them. 
+Mango aims to provide you with the strongest tooling to build high-level, production ready, backwards browser compatible code - so you don't need to worry about using Promises on that enterprise client, because IE doesn't support them. 
 
 ### Built With
-Shopackify is build with Pure NodeJS sprinkled with a little bit of Commander and cross-spawn to handle different computer environments and nothing else - no tasks runners; nothing else.
+Mango is build with Pure NodeJS sprinkled with a little bit of Commander and cross-spawn to handle different computer environments and nothing else - no tasks runners; nothing else.
 * [NodeJS](https://nodejs.org/en/)
 * [Commander](https://tj.github.io/commander.js/)
 * [Cross-Spawn](https://github.com/moxystudio/node-cross-spawn)
@@ -69,7 +69,7 @@ Shopackify is build with Pure NodeJS sprinkled with a little bit of Commander an
 
 ## Getting Started
 
-Shopackify is easy to get started with, although it depends on Themekit - why reinvent the wheel?
+Mango is easy to get started with, although it depends on Themekit - why reinvent the wheel?
 
 ### Prerequisites
 
@@ -85,9 +85,9 @@ https://shopify.dev/tools/theme-kit
 
 ### Installation
 
-1. Super easy, install the @shopackify/shopackify package in your dev environment and away you go.
+1. Super easy, install the @shopackify/mango package in your dev environment and away you go.
 2.  ```sh
-    npm install @shopackify/shopackify -g
+    npm install @shopackify/mango -g
     ```
 
 ## Usage
@@ -96,8 +96,8 @@ https://shopify.dev/tools/theme-kit
 * We rely on both `./shop/dist` & `./shop/src` folders for this to work, ThemeKit watches the `./shop/dist` folder for changes.
 * We expect you to follow our folder structure listed below.
 ### What to expect
-Using the recommended config `shopackify init -r` or `shopackify init --recommended`
-It will layout the directory structure that Shopackify uses.
+Using the recommended config `mango init -r` or `mango init --recommended`
+It will layout the directory structure that mango uses.
 
 **PLEASE NOTE: WE DO NOT SUPPORT LIQUID IN SASS/CSS AND OR JS FILES, THESE WILL NOT BE COMPILED AND WILL THROW ERRORS**
 **SHOPIFY HAS DISCONTINUED SUPPORT FOR THESE FILES, PLEASE STORE ALL NEEDED LIQUID VARS IN A SNIPPET FOR CSS VARS OR JSON OBJECT**
@@ -163,27 +163,27 @@ into the top-level .js file.
               |-- customers
 ```
 
-**Shopackify Build**
-`shopackify build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
+**Mango Build**
+`mango build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
 folder in your repo, or your current working directory is just src. 
 
-**Shopackify Download**
-`shopackify download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
+**Mango Download**
+`mango download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
 
-**Shopackify Init**
-`shopackify init` - Will initialize the project directory with the right directory structure.
+**Mango Init**
+`mango init` - Will initialize the project directory with the right directory structure.
 It takes in an option flag `-r` or `--recommended` this is the default, which sets up all the config files for you and `-s` or `--standard` which provides the config files, but they're not populated.
 
-**Shopackify Convert**
-`shopackify convert` - Will convert the currently downloaded theme to a working directory, you should usually run this command after directory initialization. Everything gets shuffled into the dev directory, with respective folder naming.
+**Mango Convert**
+`mango convert` - Will convert the currently downloaded theme to a working directory, you should usually run this command after directory initialization. Everything gets shuffled into the dev directory, with respective folder naming.
 
-**Shopackify Watch**
-`shopackify watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
+**Mango Watch**
+`mango watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
 We will also write a script to `./layout/theme.liquid` which contains a live-reload script at the bottom before `</body>`. Feel free to delete
 this if you don't want live reload, or you don't want it in your live production build.
 
-**Shopackify Locales**
-`shopackify locales` - Will look for `./src/dev/locales.config.json`, check `./src/locales/` for existing localization, and performs a deep merge of these settings. If path is already set in your locales folder, it will not override it.
+**Mango Locales**
+`mango locales` - Will look for `./src/dev/locales.config.json`, check `./src/locales/` for existing localization, and performs a deep merge of these settings. If path is already set in your locales folder, it will not override it.
 Only the designated default locale will receive the initial translations. The rest will receive blanks to be set from admin.
 This is so the shopify translation system will detect missing translations.
 
@@ -223,8 +223,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Zacarie Carr - [LinkedIn](https://www.linkedin.com/in/zacariecarr) - zacariealancarr@gmail.com
 
-Project Link: [Shopackify](https://github.com/raylway/shopackify)
-NPM Link: [Shopackify](https://www.npmjs.com/package/@shopackify/shopackify)
+Project Link: [Mango](https://github.com/raylway/shopackify)
+NPM Link: [Mango](https://www.npmjs.com/package/@shopackify/mango)
 
 ## Acknowledgements
 * [Shopify](https://www.shopify.com/)
