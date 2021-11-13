@@ -9,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://imgur.com/iY7E4cN.png" alt="Mango" width="400">
+    <img src="https://i.pinimg.com/originals/1b/8f/fa/1b8ffa8be742e08bacbf36b7f05463f4.gif" alt="Mango" width="400">
   </a>
 
   <h3 align="center">Mango</h3>
