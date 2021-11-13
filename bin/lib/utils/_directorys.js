@@ -1,4 +1,5 @@
 const path = require('path');
+const { getPath } = require('global-modules-path');
 
 module.exports = {
   shopRoot: path.resolve('./shop'),
@@ -27,6 +28,6 @@ module.exports = {
   distConfigRoot: path.resolve('./shop/dist/config'),
   distLocalesRoot: path.resolve('./shop/dist/locales'),
   distAssetsRoot: path.resolve('./shop/dist/assets'),
-  recommendedSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/recommended'),
-  standardSettings: path.resolve('./node_modules/@shopackify/shopackify/bin/settings/standard'),
+  recommendedSettings: `${getPath('@shopackify/shopackify')}/bin/settings/recommended`,
+  standardSettings: `${getPath('@shopackify/shopackify')}/bin/settings/standard`,
 };
