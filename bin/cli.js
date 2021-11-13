@@ -7,6 +7,7 @@ const { initializeTheme } = require('./lib/init/init');
 const { buildDistFiles } = require('./lib/build/build');
 const { compileLocales } = require('./lib/locales/locales');
 const deployThemeFiles = require('./lib/deploy/deploy');
+const configureYML = require('./lib/configure/configure');
 
 cli
   .command('convert')
@@ -25,7 +26,21 @@ cli
   .option('-l, --allow-live', 'Allow deployment to the live theme')
   .option('-e, --env <env>', 'Which environment to use', 'development')
   .option('-n, --new <name>', 'Specify whether or not to generate a new theme to deploy to')
+  .option('-v, --verbose', 'Specify if you want Verbose output')
+  .option('-i, --ignores <file>', 'The ignores file you want to use')
   .action((options) => deployThemeFiles(options));
+
+cli
+  .command('config')
+  .description('Configure/provision your environment with a config.yml file')
+  .requiredOption('-t, --themeid <theme>', 'Theme ID')
+  .requiredOption('-p, --password <password>', 'Private App Password')
+  .requiredOption('-s, --store <store>', '.myshopify.com Store URL')
+  .option('-i, --ignores <file>', 'Optional ignores file')
+  .option('-e, --env <env>', 'Optional environment, default is development')
+  .option('-d, --dir <dir>', 'Optional directory, default is shop/dist')
+  .action(options => configureYML(options));
+
 
 cli
   .command('download')
