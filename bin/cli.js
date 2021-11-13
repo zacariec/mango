@@ -10,7 +10,7 @@ const deployThemeFiles = require('./lib/deploy/deploy');
 
 cli
   .command('convert')
-  .description('Convert the currently downloaded Shopify Theme to use Shopackify workflow')
+  .description('Convert the currently downloaded Shopify Theme to use Mango workflow')
   .action(() => createWorkingDirectory());
 
 cli

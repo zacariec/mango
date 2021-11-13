@@ -35,6 +35,6 @@ module.exports = {
   distConfigRoot: path.resolve('./shop/dist/config'),
   distLocalesRoot: path.resolve('./shop/dist/locales'),
   distAssetsRoot: path.resolve('./shop/dist/assets'),
-  recommendedSettings: `${getPath('@shopackify/shopackify')}/bin/settings/recommended`,
-  standardSettings: `${getPath('@shopackify/shopackify')}/bin/settings/standard`,
+  recommendedSettings: `${getPath('@shopackify/mango')}/bin/settings/recommended`,
+  standardSettings: `${getPath('@shopackify/mango')}/bin/settings/standard`,
 };
