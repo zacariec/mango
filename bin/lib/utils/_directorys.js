@@ -7,6 +7,7 @@ module.exports = {
   productionRoot: path.resolve('./shop/dist'),
   devRoot: path.resolve('./shop/src/dev'),
   stylesRoot: path.resolve('./shop/src/dev/styles'),
+  staticRoot: path.resolve('./shop/src/dev/static'),
   scriptsRoot: path.resolve('./shop/src/dev/js'),
   scriptsModuleRoot: path.resolve('./shop/src/dev/js/modules'),
   scriptsVendorRoot: path.resolve('./shop/src/dev/js/vendor'),
