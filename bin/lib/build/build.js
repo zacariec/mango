@@ -44,6 +44,8 @@ const buildDistFiles = async () => {
     
     try {
         await buildDistDirectory();
+        /* src/dev/static to dist/assets */
+        await copyToDist(_Directorys.staticRoot, _Directorys.distAssetsRoot, 'Static');
         /* src/dev/images to dist/assets */
         await copyToDist(_Directorys.imagesRoot, _Directorys.distAssetsRoot, 'Images');
         /* src/dev/fonts to dist/assets */
@@ -61,7 +63,7 @@ const buildDistFiles = async () => {
         /* src/templates to dist/templates */
         await copyToDist(_Directorys.templatesRoot, _Directorys.distTemplatesRoot, 'Templates');
         /* src/templates/customers to dist/templates/customers */
-        await copyToDist(_Directorys.customersRoot, _Directorys.distCustomersRoot, 'Templates');
+        await copyToDist(_Directorys.customersRoot, _Directorys.distCustomersRoot, 'Customer Templates');
         await sleep(500);
         const webPackSpinner = ora('Packing styles and scripts with Webpack').start();
 
