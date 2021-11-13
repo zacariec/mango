@@ -10,13 +10,13 @@ const { getVersion } = require('./version/version');
 // chalk and a handler that takes in a callback etc - across all modules.
 
 const createWorkingDirectory = async () => {
-    await cloneDirectory();
-    await createDevDirectory();
-    await moveAssetsToDev();
+  await cloneDirectory();
+  await createDevDirectory();
+  await moveAssetsToDev();
 };
 
 const initializeWatchers = () => {
-    initializeThemekit()
+  initializeThemekit()
     .then(() => liveReload())
     .then(() => initializeWebpack())
     .then(() => initializeWorkingDirectory())
@@ -24,9 +24,9 @@ const initializeWatchers = () => {
 };
 
 module.exports = {
-    createWorkingDirectory,
-    deployThemeFile,
-    downloadThemeFiles,
-    initializeWatchers,
-    getVersion,
+  createWorkingDirectory,
+  deployThemeFile,
+  downloadThemeFiles,
+  initializeWatchers,
+  getVersion,
 };
