@@ -1,13 +1,16 @@
 #! /usr/bin/env node
 
 const cli = require('commander');
-const { createWorkingDirectory, downloadThemeFiles, initializeWatchers } = require('./lib/index'); 
+const { createWorkingDirectory, initializeWatchers } = require('./lib/index'); 
 const { getVersion } = require('./lib/version/version');
-const { initializeTheme } = require('./lib/init/init');
 const { buildDistFiles } = require('./lib/build/build');
 const { compileLocales } = require('./lib/locales/locales');
+const initializeTheme = require('./lib/init/init');
+const downloadThemeFiles = require('./lib/download/download');
 const deployThemeFiles = require('./lib/deploy/deploy');
 const configureYML = require('./lib/configure/configure');
+const updateData = require('./lib/updateData/updateData');
+const install = require('./lib/install/install');
 
 cli
   .command('convert')
@@ -17,7 +20,11 @@ cli
 cli
   .command('build')
   .description('Build the current working directory into a ready to distribute theme')
-  .action(() => buildDistFiles());
+  .option(
+    '-u, --update-config [id]',
+    'Specify whether or not to update the settings_data.json file with a config from the live or specified theme id.'
+  )
+  .action((options) => buildDistFiles(options));
 
 cli
   .command('deploy')
@@ -41,6 +48,14 @@ cli
   .option('-d, --dir <dir>', 'Optional directory, default is shop/dist')
   .action(options => configureYML(options));
 
+cli
+  .command('update-data')
+  .description('Update settings_data.json with the published theme settings_data.json')
+  .option(
+    '-id, --themeId [id]',
+    'Specify whether or not to update the settings_data.json file with a config from the live or specified theme id.'
+  )
+  .action((options) => updateData(options));
 
 cli
   .command('download')
@@ -50,19 +65,22 @@ cli
 cli
   .command('locales')
   .description('Compiles your locales folder with the configured localization defined in shop/src/dev/locales.config.json')
-  .action(() => compileLocales())
+  .action(() => compileLocales());
 
 cli
   .command('watch')
   .description('Start watching theme files')
-  .action(() => initializeWatchers())
+  .action(() => initializeWatchers());
+
+cli
+  .command('install')
+  .description('Install Theme kit from Shopify')
+  .action(() => install());
 
 cli
   .command('init')
-  .option('-r, --recommended', 'Use the recommended directory setup, prefilled babel, eslint & webpack configs.', false)
-  .option('-s, --standard', 'Use the recommended directory setup, prefilled babel, eslint & webpack configs.', false)
   .description('Initialize Working Directory')
-  .action(command => initializeTheme(command));
+  .action(() => initializeTheme());
 
 cli.version(getVersion(), '-V --version', 'Output the version number');
 cli.parse(process.argv);
