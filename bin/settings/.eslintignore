@@ -1,0 +1,11 @@
+shop/dist/assets/*.js
+**/*.spec.js
+.eslintrc.js
+.stylelintrc.json
+babel.config.json
+config.yml
+package-lock.json
+package.json
+postcss.config.js
+webpack.config.js
+shop/src/dev/static
