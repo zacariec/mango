@@ -2,6 +2,7 @@ const path = require('path');
 const { getPath } = require('global-modules-path');
 
 module.exports = {
+  theme: path.join(`${getPath('@shopackify/mango')}/bin/theme`, process.platform === 'win32' ? 'theme.exe' : 'theme'),
   shopRoot: path.resolve('./shop'),
   developmentRoot: path.resolve('./shop/src'),
   productionRoot: path.resolve('./shop/dist'),
@@ -35,6 +36,5 @@ module.exports = {
   distConfigRoot: path.resolve('./shop/dist/config'),
   distLocalesRoot: path.resolve('./shop/dist/locales'),
   distAssetsRoot: path.resolve('./shop/dist/assets'),
-  recommendedSettings: `${getPath('@shopackify/mango')}/bin/settings/recommended`,
-  standardSettings: `${getPath('@shopackify/mango')}/bin/settings/standard`,
+  configSettings: `${getPath('@shopackify/mango')}/bin/settings`
 };
