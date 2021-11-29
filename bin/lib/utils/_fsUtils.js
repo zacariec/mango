@@ -25,7 +25,6 @@ const checkWorkingDirectory = async () => {
     && await fs.pathExists(_Directorys.devRoot) === true
     && await fs.pathExists(_Directorys.scriptsRoot) === true
     && await fs.pathExists(_Directorys.scriptsModuleRoot) === true
-    && await fs.pathExists(_Directorys.scriptsVendorRoot) === true
     && await fs.pathExists(_Directorys.stylesRoot) === true
     && await fs.pathExists(_Directorys.fontsRoot) === true
     && await fs.pathExists(_Directorys.imagesRoot) === true) return true;
