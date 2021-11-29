@@ -1,56 +1,12 @@
 const path = require('path');
-const fs = require('fs-extra');
 const chokidar = require('chokidar');
 const WebSocket = require('ws');
 const spawn = require('cross-spawn');
 const _Directorys = require('../utils/_directorys');
 const { spawnCallback, handleError } = require('../utils/_logUtils');
+const { addFile, updateFile, removeFile } = require('../utils/_fileHelpers');
 
 const initializeWorkingDirectory = () => {
-    // TODO: Probably need some sort of error handling in here at some stage.
-    // Need to see how well it works to begin with.
-    const addFile = async (e, watcher) => {  
-      try {
-          let fileKey = e.replace(/src(.*?)/, 'dist');
-          fileKey = fileKey.replace(/dev(.*?)/, 'assets');
-          fileKey = fileKey.replace(/images(.*?)/, '');
-          fileKey = fileKey.replace(/fonts(.*?)/, '');
-          fileKey = fileKey.replace(/static(.*?)/, '');
-          const source = await fs.readFile(e);
-          await fs.writeFile(fileKey, source);
-      } catch (err) {
-          return console.error(err);
-      }
-    };
-
-    const updateFile = async (e, watcher) => {       
-      try {
-          let fileKey = e.replace(/src(.*?)/, 'dist');
-          fileKey = fileKey.replace(/dev(.*?)/, 'assets');
-          fileKey = fileKey.replace(/images(.*?)/, '');
-          fileKey = fileKey.replace(/fonts(.*?)/, '');
-          fileKey = fileKey.replace(/static(.*?)/, '');
-          const source = await fs.readFile(e);
-          const target = await fs.readFile(fileKey);
-          if(Buffer.compare(source, target) !== 0) await fs.writeFile(fileKey, source);
-      } catch (err) {
-          return console.error(err);
-      }
-    };
-
-  const removeFile = async (e, watcher) => {
-    try {
-        let fileKey = e.replace(/src/g, 'dist');
-        fileKey = fileKey.replace(/dev(.*?)/, 'assets');
-        fileKey = fileKey.replace(/images(.*?)/, '');
-        fileKey = fileKey.replace(/fonts(.*?)/, '');
-        fileKey = fileKey.replace(/static(.*?)/, '');
-        const isFileExists = await fs.pathExists(fileKey);
-        if(isFileExists === true) await fs.remove(fileKey);
-    } catch (err) {
-        return console.error(err);
-    }
-  };
 
   const watcher = chokidar.watch(_Directorys.developmentRoot, {
     ignored: [
@@ -76,8 +32,8 @@ const initializeThemekit = () => {
   const liveReloadCallback = (data) => (typeof client != 'undefined' && data.includes('Updated')) ? client.send('event') : null;
 
   return new Promise(resolve => {
-    spawn('theme', ['open'], { stdio: 'pipe' });
-    const command = spawn('theme', ['watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
+    spawn(_Directorys.theme, ['open'], { stdio: 'pipe' });
+    const command = spawn(_Directorys.theme, ['watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
     command.stdout.on('data', data => {
         spawnCallback(data, false, liveReloadCallback);
         if(data.toString().includes('Watching for file changes')) resolve();
