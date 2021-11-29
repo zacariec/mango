@@ -5,6 +5,7 @@ const { cloneDirectory, createDirectory } = require('../utils/_fsUtils');
 const { spawnCallback, handleError } = require('../utils/_logUtils');
 const { removeLiveReload } = require('../reload/liveReload');
 const sleep = require('../utils/_sleep');
+const updateData = require('../updateData/updateData');
 
 const buildDistDirectory = async () => {
   const spinner = ora('Creating distribution directory').start();
@@ -41,8 +42,9 @@ const copyToDist = async (directory, output, type) => {
   }
 };
 
-const buildDistFiles = async () => {
+const buildDistFiles = async (options) => {
   try {
+    if (options.updateConfig) await updateData(options);
     await removeLiveReload();
     await buildDistDirectory();
     /* src/dev/static to dist/assets */

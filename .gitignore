@@ -1,7 +1,5 @@
 _tmp_*
 node_modules
-shop
-/config.yml
 *.tgz
-/mango.config.yml
 .DS_Store
+bin/theme
