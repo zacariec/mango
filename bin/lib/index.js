@@ -1,7 +1,7 @@
 const { cloneDirectory } = require('./utils/_fsUtils');
 const { createDevDirectory, moveAssetsToDev } = require('./convert/convert');
 const { deployThemeFile } = require('./deploy/deploy');
-const { downloadThemeFiles } = require('./download/download');
+const downloadThemeFiles = require('./download/download');
 const { liveReload } = require('./reload/liveReload');
 const { initializeWebpack, initializeThemekit, initializeWorkingDirectory } = require('./watch/watch');
 const { getVersion } = require('./version/version');
