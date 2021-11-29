@@ -27,48 +27,33 @@ const createDistDirectory = async () => {
   }
 }
 
-const installDependencies = (type) => {
+const installDependencies = () => {
   const spinner = ora('Installing peer dependencies').start();
-  if (type.recommended === true || type === true) {
-    const command = spawn('npm', ['install', '-D']);
-    command.stdout.on('data', data => spawnCallback(data, false));
-    command.stderr.on('data', data => {
-      spawnCallback(data, false);
-    });
-    command.stdout.on('end', () => spinner.succeed('Installed standard dependencies successfully, please update your package.json if needed.'));
-    command.on('error', err => {
-      spinner.fail('Error installing standard dependencies');
-      handleError(err.errno, err);
-    });
-  } else {
-    const command = spawn('npm', ['install', '-D']);
-    command.stdout.on('data', data => spawnCallback(data, false));
-    command.stderr.on('data', data => {
-      spawnCallback(data, false);
-    });
-    command.stdout.on('end', () => spinner.succeed('Installed standard dependencies successfully, please update your package.json if needed.'));
-    command.on('error', err => {
-      spinner.fail('Error installing standard dependencies');
-      handleError(err.errno, err);
-    });
-  }
+
+  const command = spawn('npm', ['install', '-D']);
+
+  command.stdout.on('data', data => spawnCallback(data, false));
+  command.stderr.on('data', data => {
+    spawnCallback(data, false);
+  });
+
+  command.stdout.on('end', () => spinner.succeed('Installed project dependencies successfully, please update your package.json if needed.'));
+  command.on('error', err => {
+    spinner.fail('Error installing project dependencies');
+    handleError(err.errno, err);
+  });
 };
 
-const initializeTheme = async (type = true) => {
+module.exports = initializeTheme = async () => {
   try {
-    const settings = (type.recommended === true || type === true) ? _Directorys.recommendedSettings : _Directorys.standardSettings;
+    const settings = _Directorys.configSettings;
     await createDevDirectory();
     await createDistDirectory();
 
     await cloneDirectory(path.resolve(settings), path.resolve('./'));
-    installDependencies(type);
+    installDependencies();
 
   } catch (err) {
     return console.error(err);
   }
-};
-
-
-module.exports = {
-  initializeTheme,
 };
