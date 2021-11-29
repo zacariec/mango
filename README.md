@@ -1,31 +1,25 @@
-[![Contributors][contributors-shield]](https://github.com/raylway/shopackify/graphs/contributors)
-[![Forks][forks-shield]](https://github.com/raylway/shopackify/network/members)
-[![Stargazers][stars-shield]](https://github.com/raylway/shopackify/stargazers)
-[![Issues][issues-shield]](https://github.com/raylway/shopackify/issues)
-[![MIT License][license-shield]](https://github.com/raylway/shopackify/blob/master/LICENSE.txt)
-[![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/zacariecarr/)
 
 
-<br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="https://i.pinimg.com/originals/1b/8f/fa/1b8ffa8be742e08bacbf36b7f05463f4.gif" alt="Mango" width="400">
   </a>
 
+
   <h3 align="center">Mango</h3>
 
   <p align="center">
-    A fully modular build tool to plug and play with Shopify theme development.
+    A fully modular, open source build tool. Made to plug and play with Shopify theme development.
     <br />
-    <a href="https://github.com/raylway/shopackify/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/raylway/shopackify/issues">Request Feature</a>
+    🥭 <a href="https://github.com/raylway/mango/issues">Report Bug</a>
+    🥭
+    <a href="https://github.com/raylway/mango/issues">Request Feature</a> 🥭
   </p>
-</p>
+
 
 
 <details open="open">
-  <summary>Table of Contents</summary>
+  <summary><h3>Table of Contents</h3></summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -36,12 +30,10 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -49,88 +41,130 @@
   </ol>
 </details>
 
-## About The Project
-
-Mango is a fully modular build tool for theme development on the Shopify platform. 
-This tool aims to fill the void where there are no ready to go & fully featured tooling out there that isn't deprecated or has a lot of setup to do first.
-
-Use either SASS or PostCSS when using our recommended settings.
-
-Mango also includes it's own live reload - based on a Web Socket implementation, so we know exactly when to refresh the browser.
-
-Mango aims to provide you with the strongest tooling to build high-level, production ready, backwards browser compatible code - so you don't need to worry about using Promises on that enterprise client, because IE doesn't support them. 
-
-### Built With
-Mango is build with Pure NodeJS sprinkled with a little bit of Commander and cross-spawn to handle different computer environments and nothing else - no tasks runners; nothing else.
-* [NodeJS](https://nodejs.org/en/)
-* [Commander](https://tj.github.io/commander.js/)
-* [Cross-Spawn](https://github.com/moxystudio/node-cross-spawn)
 
 
-## Getting Started
+## 🥭 About The Project
 
-Mango is easy to get started with, although it depends on Themekit - why reinvent the wheel?
+Mango is made to work in tandem with Shopify Theme Kit, Webpack and a little bit of NodeJS magic.
 
-### Prerequisites
+The goal of mango, was to provide developers with a quick and easy setup to start using modern day technologies when doing Shopify development and to solve the baseline issues Theme Kit was having.
 
-* **Shopify ThemeKit**
-Make sure you have Shopifys Themekit installed, follow these directions:
-https://shopify.dev/tools/theme-kit
+Mango makes sure all needed Theme Kit & web pack commands are ran in conjunction with one another, while working out of one terminal.
 
-* **npm**
-  ```sh
-  npm install npm@latest -g
-  ```
+Mango aims to provide a set ideology, with a direct and concise Project Scaffolding to allow for rapid and modern development on Shopify.
 
 
-### Installation
 
-1. Super easy, install the @shopackify/mango package in your dev environment and away you go.
-2.  ```sh
-    npm install @shopackify/mango -g
-    ```
+### 🥭 Built With
 
-## Usage
+Mango is purely open source and built with NodeJS.
 
-### Caveats
-* We rely on both `./shop/dist` & `./shop/src` folders for this to work, ThemeKit watches the `./shop/dist` folder for changes.
-* We expect you to follow our folder structure listed below.
-### What to expect
-Using the recommended config `mango init -r` or `mango init --recommended`
-It will layout the directory structure that mango uses.
 
-**PLEASE NOTE: WE DO NOT SUPPORT LIQUID IN SASS/CSS AND OR JS FILES, THESE WILL NOT BE COMPILED AND WILL THROW ERRORS**
-**SHOPIFY HAS DISCONTINUED SUPPORT FOR THESE FILES, PLEASE STORE ALL NEEDED LIQUID VARS IN A SNIPPET FOR CSS VARS OR JSON OBJECT**
 
-* All **VENDOR** - files need to be placed into the vendor folder, this will not be minified/transpiled or polyfilled
-  - Outputs as vendor.min.js
 
-* All **JS** - files should be placed in the modules folder, or if you want to use your own js structure that's fine as well
-  These need to be imported in the top level .js file for webpack to access
-  ``` javascript
-  app.js
+## 🥭 Getting Started
 
-  import './modules/my-module';
-  ```
-  - Outputs as theme.min.js
 
-* All **SCSS/CSS** - files should be placed in the styles folder, you should probably split these up into whatever folder structure
-  you like if you haven't done so already and imported into a `style.scss` file or `styles.css` file.
-  This master file should be imported in our top level .js file.
-  ```javascript
-  app.js
 
-  import '../styles/main.scss';
-  import './modules/my-js-module';
-  ```
-  - Outputs as theme.min.css
-### Directory Structure
-Make sure your directory structure follows this if you're not starting from scratch:
-A few notes, you can use whatever structure you like for `./shop/src/dev/js/modules` rename or nest more folders.
-as long as you're importing them into a top-level .js file
+### 🥭 Installation
 
-This is the same for the styles directory, as long as they're imported into a top-level file then imported
-into the top-level .js file.
+```sh
+npm install @shopackify/mango -g
+```
+
+
+
+## 🥭 Usage
+
+
+
+### 🥭 Initializing a Project
+
+`mango init` will set up the base project, copy all of the configuration files from either `/bin/settings/recommended` or `/bin/settings/standard` and install all project depedencies. 
+
+
+
+### 🥭 Files Mango rely on
+
+Mango actively looks for:
+
+1. `webpack.config.js`
+2. `webpack.production.config.js`
+3. `mango.config.yml`
+4. `config.yml`
+
+These files should be in your project root at all times.
+
+
+
+### 🥭 Configuration Files
+
+##### config.yml
+
+Stores all of your Shopify environment data, mango will read and write from this when needing to make API calls.
+
+```yaml
+development:
+  password: example_password
+  theme_id: "1234567890123"
+  store: example.myshopify.com
+  directory: shop/dist
+  ignores:
+  - themekit_ignores
+  
+staging:
+  password: example_password
+  theme_id: "1234567890123"
+  store: example.myshopify.com
+  directory: shop/dist
+  ignores:
+  - themekit_ignores
+  
+production:
+  password: example_password
+  theme_id: "1234567890123"
+  store: example.myshopify.com
+  directory: shop/dist
+  ignores:
+  - themekit_ignores
+```
+
+
+
+##### mango.config.yml
+
+Currently only stores a key/value pair of each store & password, these are used to make API requests to Shopify for dynamically getting `config/settings_data.json` and deploying to uncreated themes.
+
+```yaml
+store: example.myshopify.com
+password: example_password
+```
+
+
+
+##### webpack.config.js and webpack.production.config.js
+
+Mango uses both of these files as core files. The production config is only ever used on build, and the standard config is used while watching. To learn more about webpack configuration files see: https://webpack.js.org/
+
+
+
+### 🥭 Caveats
+
+Mango uses Chokidar under the hood and rely's on both `./shop/dist` & `./shop/src` folders to work.
+
+Theme Kit watches the `./shop/dist` folder for changes, while Chokidar watches and moves anything from the src folders to their respective distrobution folder.
+
+
+
+### 🥭 What to expect
+
+Using the recommended config `mango init -r` or `mango init --recommended` will setup the project directory with all of the recommended configurations out of the box.
+
+If you'd like to do something completely different or custom, you can run  `mango init -s` mango doesn't deny you this right, only as long as you fork the tooling and update the directory's privately or you follow the below directory structure.
+
+
+
+### 🥭 Directory Structure
 
 ```
   |-- shop
@@ -149,12 +183,26 @@ into the top-level .js file.
               |-- fonts
               |-- images
               |-- js
-                  |-- vendor
                   |-- modules
-                  |-- app.js
+                  		|-- *.js
+              |-- static
+                  |-- static-files
+                  		|-- *.*
               |-- styles
-                  |-- structure
-                  |-- styles.css/scss
+                  |-- base
+                  		|-- *.css
+                  |-- components
+                  		|-- *.css
+                  |-- mixins
+                  		|-- *.css
+                  |-- sections
+                  		|-- *.css
+                  |-- templates
+                  		|-- *.css
+                  |-- typography
+                  		|-- *.css
+                  |-- variables
+                  		|-- *.css
           |-- layout
           |-- locales
           |-- sections
@@ -163,31 +211,73 @@ into the top-level .js file.
               |-- customers
 ```
 
+
+
+### 🥭 Mango Commands
+
+
+
 **Mango Build**
-`mango build` - Will build the dist folder based on your src folder, this is useful if you don't like storing your dist
-folder in your repo, or your current working directory is just src. 
+`mango build` - Builds the distrobution `/shop/dist` folder ready for deployment from the `/shop/src` directory.
+
+*<u>Optional flags</u>*:  
+
+1. `-u` `--update-config` - Used to specify whether you'd like to update the `config/settings_data.json` with either the current Live theme settings, or by passing an id `-u some-id` `--update-config=some-id` to fetch settings from.
+
+
+
+**Mango Deploy**
+`mango deploy` - Will deploy the `/shop/dist` folder to the current theme.
+
+*<u>Optional flags</u>*:  
+
+1. `-d` `--dir` - Which directory to deploy (default: `/shop/dist`)
+2. `-l` `--allow-live` - Allow deployment to the live theme
+3. `-e` `--env` - Which environment to use (default: `development`)
+4. `-n` `--new` - Specify whether or not to generate a new theme to deploy to
+5. `-v` `--verbose` - Specify if you want Verbose output
+6. `-i` `--ignores` - The ignores file you want to use
+
+
 
 **Mango Download**
-`mango download` - Will download the currently defined theme in your `config.yml` file. See [here](https://shopify.dev/tools/theme-kit/configuration-reference) for more information about `config.yml` 
+`mango download` - Will download the currently defined theme in your `config.yml` file.
 
-**Mango Init**
-`mango init` - Will initialize the project directory with the right directory structure.
-It takes in an option flag `-r` or `--recommended` this is the default, which sets up all the config files for you and `-s` or `--standard` which provides the config files, but they're not populated.
+
+
+**Mango Config**
+`mango config` - Configure/provision your environment with a config.yml file
+
+*<u>Optional flags</u>*:  
+
+1. `-t` `--themeid` - Theme ID
+2. `-p` `--password` - Private App Password
+3. `-s` `--store` - The .myshopify store URL
+4. `-i` `--ignores` - The optional ignores file.
+5. `-e` `--env` - Optional environment, default is development
+6. `-d` `--dir` - Optional directory to watch, default is `shop/dist`
+
+
 
 **Mango Convert**
-`mango convert` - Will convert the currently downloaded theme to a working directory, you should usually run this command after directory initialization. Everything gets shuffled into the dev directory, with respective folder naming.
+`mango convert` - Convert the currently downloaded Shopify Theme to use Mango workflow
 
-**Mango Watch**
-`mango watch` - Will start watching our `src` directory with custom watchers, but makes Themekit watch our `dist` directory. Any changes in the `src` directory will be reflected/compiled in the respective place in `dist`.
-We will also write a script to `./layout/theme.liquid` which contains a live-reload script at the bottom before `</body>`. Feel free to delete
-this if you don't want live reload, or you don't want it in your live production build.
+
+
+**Mango Init**
+`mango init` - Will initialize the project directory for mango ready builds.
+
+
+
+**Mango Install**
+`mango install` - Runs on `npm i @shopackify/mango -g` to install the bin for theme kit, can manually run to update the theme kit bin.
+
+
 
 **Mango Locales**
-`mango locales` - Will look for `./src/dev/locales.config.json`, check `./src/locales/` for existing localization, and performs a deep merge of these settings. If path is already set in your locales folder, it will not override it.
-Only the designated default locale will receive the initial translations. The rest will receive blanks to be set from admin.
-This is so the shopify translation system will detect missing translations.
+`mango locales` - Compiles your locales folder with the configured localization defined in `shop/src/dev/locales.config.json`
+example:
 
-Below is an example schema of `./src/dev/locales.config.json`:
 ```
 {
   "locales": ["en.default", "ja"],
@@ -201,9 +291,21 @@ Below is an example schema of `./src/dev/locales.config.json`:
 }
 ```
 
-## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+
+**Mango Update-Data**
+`mango updata-data` - Update `config/settings_data.json` with the published theme `settings_data.json`
+
+*<u>Optional flags</u>*:  
+
+1. `-id` `--themeId` - Used to specify whether you'd like to update the `config/settings_data.json` with either the current Live theme settings, or by passing an id `-id some-id` `--themeId=some-id` to fetch settings from.
+
+
+
+**Mango Watch**
+`mango watch` - Will start watching for file changes.
+
+
 
 ## Contributing
 
@@ -227,6 +329,7 @@ Project Link: [Mango](https://github.com/raylway/shopackify)
 NPM Link: [Mango](https://www.npmjs.com/package/@shopackify/mango)
 
 ## Acknowledgements
+
 * [Shopify](https://www.shopify.com/)
 * [Themekit](https://shopify.dev/tools/theme-kit)
 * [Webpack](https://webpack.js.org/)
@@ -240,14 +343,4 @@ NPM Link: [Mango](https://www.npmjs.com/package/@shopackify/mango)
 * [Sass](https://sass-lang.com/)
 * [Postcss](https://postcss.org/)
 * [Best README Template](https://github.com/othneildrew/Best-README-Template)
-
-
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[product-screenshot]: images/screenshot.png
 
