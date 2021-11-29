@@ -17,9 +17,8 @@
   </p>
 
 
-
+<h3>Table of Contents</h3>
 <details open="open">
-  <summary><h3>Table of Contents</h3></summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -80,7 +79,7 @@ npm install @shopackify/mango -g
 
 ### 🥭 Initializing a Project
 
-`mango init` will set up the base project, copy all of the configuration files from either `/bin/settings/recommended` or `/bin/settings/standard` and install all project depedencies. 
+`mango init` will set up the base project, copy all of the configuration files.
 
 
 
