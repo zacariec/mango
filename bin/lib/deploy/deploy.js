@@ -1,9 +1,10 @@
 const spawn = require('cross-spawn');
 const { spawnCallback, handleError } = require('../utils/_logUtils');
 const createTheme = require('../shopify/create');
+const _Directorys = require('../utils/_directorys');
 
 const deployCommand = (parameters) => {
-  const command = spawn('theme', ['deploy', ...parameters], { stdio: 'pipe' });
+  const command = spawn(_Directorys.theme, ['deploy', ...parameters], { stdio: 'pipe' });
 
   command.stdout.on('data', data => spawnCallback(data, true));
   command.stderr.on('data', data => spawnCallback(data, false));
