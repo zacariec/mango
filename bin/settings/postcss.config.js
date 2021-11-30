@@ -1,8 +1,8 @@
 module.exports = {
-  plugins: [
+  plugins: {
     'postcss-import': {},
     'postcss-custom-media': {},
     precss: {},
     autoprefixer: {},
-  ]
+  }
 };
