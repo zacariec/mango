@@ -26,6 +26,7 @@ const createDevDirectory = async () => {
       _Directorys.stylesVariables,
       _Directorys.fontsRoot,
       _Directorys.imagesRoot,
+      _Directorys.layoutRoot,
       _Directorys.templatesRoot,
       _Directorys.customersRoot,
       _Directorys.snippetsRoot,
