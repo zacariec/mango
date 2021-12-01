@@ -24,6 +24,9 @@
     "webpack-cli": "^4.7.0",
     "ws": "^7.4.6"
   },
+  "scripts": {
+    "postinstall": "mango install"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/raylway/shopackify.git"
