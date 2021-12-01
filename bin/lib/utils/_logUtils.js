@@ -1,11 +1,13 @@
+const readline = require('readline');
+
 const handleError = (code = 1, message = '') => {
   console.error(message);
   process.exit(code);
 };
 
 const progressiveTerminalLine = (data) => {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0);
+  readline.cursorTo(process.stdout, 0, null);
   process.stdout.write(data);
 };
 
