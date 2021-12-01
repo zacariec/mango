@@ -2,6 +2,7 @@ const path = require('path');
 const spawn = require('cross-spawn');
 const fs = require('fs-extra');
 const { spawnCallback, handleError } = require('../utils/_logUtils');
+const _Directorys = require('../utils/_directorys');
 
 module.exports = downloadThemeFiles = async () => {
   try {
