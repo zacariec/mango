@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 
 module.exports = readThemeConfig = async () => {
   try {
-    const config = await yaml.load(fs.readFileSync('mango.config.yml'));
+    const config = await yaml.load(fs.readFileSync('config.yml'));
     return config;
   } catch (err) {
     console.error(err);

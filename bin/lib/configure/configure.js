@@ -10,7 +10,11 @@ module.exports = configureYML = async (options) => {
         password: options.password,
         theme_id: `${options.themeid}`,
         store: options.store,
-        ignores: options.file ? options.file : `themekit_ignores`
+        ignores: [options.file ? options.file : `.shopifyignores`]
+      },
+      'mango_private_app': {
+        store: options.store,
+        password: options.password
       }
     }
   
