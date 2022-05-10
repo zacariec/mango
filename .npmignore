@@ -3,3 +3,5 @@ node_modules
 /.gitignore
 .DS_Store
 bin/theme
+.idea
+.vscode

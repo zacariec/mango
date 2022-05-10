@@ -3,3 +3,5 @@ node_modules
 *.tgz
 .DS_Store
 bin/theme
+.idea
+.vscode
