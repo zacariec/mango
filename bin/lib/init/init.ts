@@ -2,9 +2,10 @@ import path from 'path';
 import spawn from 'cross-spawn';
 import ora from 'ora';
 import { createDevDirectory } from '../convert/convert';
-import { cloneDirectory, createRecursiveDirectory, checkDistDirectory } from '../utils/_fsUtils';
+import { createRecursiveDirectory, checkDistDirectory } from '../utils/_fsUtils';
 import _Directories from '../utils/_directorys';
 import { spawnCallback, handleError } from '../utils/_logUtils';
+import createProjectFiles from '../settings/create-settings';
 
 const createDistDirectory = async (): Promise<void> => {
   const spinner = ora('Creating distribution directory').start();
@@ -16,6 +17,7 @@ const createDistDirectory = async (): Promise<void> => {
     _Directories.distSectionsRoot,
     _Directories.distSnippetsRoot,
     _Directories.distTemplatesRoot,
+    _Directories.distCustomersRoot,
   ];
 
   try {
@@ -44,11 +46,10 @@ const installDependencies = (): void => {
 
 const initializeTheme = async (): Promise<void> => {
   try {
-    const settings = _Directories.configSettings;
     await createDevDirectory();
     await createDistDirectory();
 
-    await cloneDirectory(path.resolve(settings), path.resolve('./'));
+    await createProjectFiles();
     installDependencies();
 
   } catch (err) {
