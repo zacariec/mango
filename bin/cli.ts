@@ -1,5 +1,4 @@
-#! /usr/bin/env node
-
+#!/usr/bin/env node
 import cli from 'commander';
 import { createWorkingDirectory, initializeWatchers } from './lib';
 import getVersion from './lib/version/version';
