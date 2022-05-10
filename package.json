@@ -25,6 +25,7 @@
     "ws": "^7.4.6"
   },
   "scripts": {
+    "dev": "tsc -w",
     "build": "tsc --build",
     "postinstall": "mango install"
   },
@@ -57,6 +58,8 @@
   },
   "homepage": "https://github.com/raylway/shopackify#readme",
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^17.0.31",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.15.0",
