@@ -5,3 +5,4 @@ node_modules
 bin/theme
 .idea
 .vscode
+dist
