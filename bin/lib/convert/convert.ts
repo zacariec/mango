@@ -1,13 +1,14 @@
-import * as path from 'path';
+import path from 'path';
 import fs from 'fs-extra';
-import * as chokidar from 'chokidar';
+import chokidar from 'chokidar';
 import glob from 'fast-glob';
-import ora from'ora';
+import ora, { Ora } from 'ora';
 import _Directories from '../utils/_directorys';
 import { moveFile, createRecursiveDirectory, checkWorkingDirectory } from '../utils/_fsUtils';
 
-const createDevDirectory = async (): Promise<void> => {
-  const spinner = ora('Creating working directory').start();
+// creates the initial dev directory for working.
+const createDevDirectory = async (): Promise<void | Ora> => {
+  const spinner: Ora = ora('Creating working directory').start();
   const directoriesToMake = [
     _Directories.shopRoot,
     _Directories.productionRoot,
@@ -37,13 +38,21 @@ const createDevDirectory = async (): Promise<void> => {
 
   try {
     await createRecursiveDirectory(directoriesToMake);
-    if (await checkWorkingDirectory() === true) spinner.succeed('Finished creating working directory');
+    if (await checkWorkingDirectory() === true){
+      return spinner.succeed('Finished creating working directory');
+    }
   } catch (err) {
     spinner.fail('Failed creating working directory, maybe it already exists');
     return console.error(err);
   }
 };
 
+/**
+ * Moves assets to the correct directory in dev folder.
+ * @param array
+ * @param directory
+ * @param type
+ */
 const moveAssets = async (array, directory, type): Promise<void> => {
   const spinner = ora(`Moving ${type} to working directory`).start();
   try {
