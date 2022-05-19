@@ -1,18 +1,21 @@
 import createClient from './client';
-import {ThemeResponse} from "../../../types/types";
+import { StoreEnvironment, ThemeResponse } from "../../../types/types";
 
-const getAsset = async (theme, asset): Promise<ThemeResponse> => {
-  try {
-    const client = await createClient();
-    const request = await client.get({
-      path: `themes/${theme}/assets`,
-      query: {"asset[key]":asset},
-    });
+/**
+ * Takes in a environment string, which looks for the environment in the config.yml
+ * Returns the request body as ThemeResponse, or a boolean as false if errored.
+ * @param environment - String
+ * @param asset - String
+ * @returns ThemeResponse
+ */
+const getAsset = async (environment: StoreEnvironment, id, asset: string): Promise<ThemeResponse> => {
+  const client = await createClient(environment);
+  const request = await client.get({
+    path: `themes/${id}/assets`,
+    query: {"asset[key]":asset},
+  });
 
-    return await request.body as ThemeResponse;
-  } catch (err) {
-    console.error(err);
-  }
+  return await request.body as ThemeResponse;
 };
 
 export default getAsset;
