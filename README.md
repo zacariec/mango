@@ -304,6 +304,9 @@ example:
 **Mango Watch**
 `mango watch` - Will start watching for file changes.
 
+*<u>Optional flags</u>*:  
+
+1. `-e` `--env` Specify the development config to be used from the config.yml file. Wrap in quotes to use multiple, eg `mango watch -e development` or `mango watch -e "development_1 development_2"`
 
 
 ## Contributing
