@@ -21,7 +21,7 @@ const deployThemeFiles = async ({ dir, file, allowLive, verbose, name, env }: Th
   ];
 
   if (name) {
-    const theme = await createTheme(name);
+    const theme = await createTheme(name, null);
     parameters.push(`--env=${theme.theme.name}`);
     deployCommand(parameters);
   } else {

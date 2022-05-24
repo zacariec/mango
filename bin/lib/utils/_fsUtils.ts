@@ -3,52 +3,86 @@ import fs from 'fs-extra';
 import _Directories from './_directorys';
 import sleep from './_sleep';
 
-const createDirectory = async (directoryToMake) => {
+/**
+ * Creates a directory from a path as a string.
+ * @param directoryToMake
+ */
+const createDirectory = async (directoryToMake: string): Promise<boolean> => {
   await sleep(250);
-  if (await fs.pathExists(directoryToMake) === false) await fs.mkdir(directoryToMake);
+
+  if (await fs.pathExists(directoryToMake) === true) {
+    return false;
+  }
+
+  await fs.mkdir(directoryToMake);
+  return true;
 };
 
-const createRecursiveDirectory = async (directoriesToMake) => {
+/**
+ * Creates the directories from an array recursively.
+ * @param directoriesToMake
+ */
+const createRecursiveDirectory = async (directoriesToMake: string[]): Promise<void> => {
   try {
     await sleep(250);
-    for (const dir of directoriesToMake) await createDirectory(dir);
+    for await (const dir of directoriesToMake) {
+      await createDirectory(dir);
+    }
   } catch (err) {
     return console.error(err);
   }
 };
 
-const checkWorkingDirectory = async () => {
+// TODO: Refactor checks for directories into one function that takes an array of directories..
+
+/**
+ * Checks the working directory, and returns true if all directories exist.
+ */
+const checkWorkingDirectory = async (): Promise<boolean> => {
   await sleep(250);
-  if (await fs.pathExists(_Directories.shopRoot) === true
-    && await fs.pathExists(_Directories.productionRoot) === true
-    && await fs.pathExists(_Directories.developmentRoot) === true
-    && await fs.pathExists(_Directories.devRoot) === true
-    && await fs.pathExists(_Directories.scriptsRoot) === true
-    && await fs.pathExists(_Directories.scriptsModuleRoot) === true
-    && await fs.pathExists(_Directories.stylesRoot) === true
-    && await fs.pathExists(_Directories.fontsRoot) === true
-    && await fs.pathExists(_Directories.imagesRoot) === true) return true;
+  const directories = [
+    await fs.pathExists(_Directories.shopRoot),
+    await fs.pathExists(_Directories.productionRoot),
+    await fs.pathExists(_Directories.developmentRoot),
+    await fs.pathExists(_Directories.devRoot),
+    await fs.pathExists(_Directories.scriptsRoot),
+    await fs.pathExists(_Directories.scriptsModuleRoot),
+    await fs.pathExists(_Directories.stylesRoot),
+    await fs.pathExists(_Directories.fontsRoot),
+    await fs.pathExists(_Directories.imagesRoot),
+  ];
+
+  return !directories.includes(false);
 };
 
-const checkDistDirectory = async () => {
+/**
+ * Checks the production directory and returns true if all directories exist.
+ */
+const checkDistDirectory = async (): Promise<boolean> => {
   await sleep(250);
-  if (await fs.pathExists(_Directories.shopRoot) === true
-    && await fs.pathExists(_Directories.productionRoot) === true
-    && await fs.pathExists(_Directories.distAssetsRoot) === true
-    && await fs.pathExists(_Directories.distConfigRoot) === true
-    && await fs.pathExists(_Directories.distLayoutRoot) === true
-    && await fs.pathExists(_Directories.distLocalesRoot) === true
-    && await fs.pathExists(_Directories.distSectionsRoot) === true
-    && await fs.pathExists(_Directories.distSnippetsRoot) === true
-    && await fs.pathExists(_Directories.distTemplatesRoot) === true) return true;
+  const directories = [
+    await fs.pathExists(_Directories.shopRoot),
+    await fs.pathExists(_Directories.productionRoot),
+    await fs.pathExists(_Directories.distAssetsRoot),
+    await fs.pathExists(_Directories.distConfigRoot),
+    await fs.pathExists(_Directories.distLayoutRoot),
+    await fs.pathExists(_Directories.distLocalesRoot),
+    await fs.pathExists(_Directories.distSectionsRoot),
+    await fs.pathExists(_Directories.distSnippetsRoot),
+    await fs.pathExists(_Directories.distTemplatesRoot),
+  ];
+
+  return !directories.includes(false);
 };
 
-const cloneDirectory = async (directoryToCopy = _Directories.productionRoot, directoryDestination = _Directories.developmentRoot) => {
-  await sleep(250);
-  await fs.copy(directoryToCopy, directoryDestination);
+const cloneDirectory = async (
+  directoryToCopy = _Directories.productionRoot,
+  directoryDestination = _Directories.developmentRoot): Promise<void> => {
+    await sleep(250);
+    await fs.copy(directoryToCopy, directoryDestination);
 };
 
-const moveFile = async (fileToMove, fileDestination) => {
+const moveFile = async (fileToMove, fileDestination): Promise<void> => {
   await sleep(250);
   await fs.move(fileToMove, `${fileDestination}/${path.basename(fileToMove)}`)
 };

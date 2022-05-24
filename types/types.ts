@@ -1,6 +1,15 @@
 interface BuildOptions {
-  updateConfig: boolean,
+  environment: boolean | string,
+  themeid: number | string,
 }
+
+interface Directory {
+  from: string,
+  to: string,
+  name: string,
+}
+
+type Directories = Directory[]
 
 interface ThemeOptions {
   dir: string[],
@@ -8,7 +17,10 @@ interface ThemeOptions {
   allowLive: boolean,
   verbose: boolean,
   name: string[],
-  env: string
+  env: string,
+  themeid: string,
+  store: string,
+  password: string,
 }
 
 interface Theme {
@@ -28,17 +40,34 @@ interface ThemeResponse extends Theme {
   },
 }
 
+interface ServerAddressInfo {
+  address: string,
+  family:string,
+  port: number,
+}
+
 interface StorefrontConfig {
   [key: string]: {
     store: string,
     password: string,
+    theme_id: string,
   }
+}
+
+interface StoreEnvironment {
+  store: string,
+  password: string,
+  theme_id: string,
+  name: string,
 }
 
 export {
   BuildOptions,
+  Directories,
   Theme,
   ThemeOptions,
   ThemeResponse,
+  ServerAddressInfo,
   StorefrontConfig,
+  StoreEnvironment,
 };

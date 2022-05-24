@@ -14,16 +14,17 @@ import install from './lib/install/install';
 cli
   .command('convert')
   .description('Convert the currently downloaded Shopify Theme to use Mango workflow')
-  .action(() => createWorkingDirectory());
+  .action((): Promise<void> => createWorkingDirectory());
 
 cli
   .command('build')
   .description('Build the current working directory into a ready to distribute theme')
   .option(
-    '-u, --update-config [id]',
+    '-env, --environment [environment]',
     'Specify whether or not to update the settings_data.json file with a config from the live or specified theme id.'
   )
-  .action((options) => buildDistFiles(options));
+  .option('-id --id [themeid]', 'A specified theme id to get the settings from, otherwise the published theme in the environment by default')
+  .action((options): Promise<void> => buildDistFiles(options));
 
 cli
   .command('deploy')
@@ -34,7 +35,7 @@ cli
   .option('-n, --new <name>', 'Specify whether or not to generate a new theme to deploy to')
   .option('-v, --verbose', 'Specify if you want Verbose output')
   .option('-i, --ignores <file>', 'The ignores file you want to use')
-  .action((options) => deployThemeFiles(options));
+  .action((options): Promise<void> => deployThemeFiles(options));
 
 cli
   .command('config')
@@ -45,31 +46,35 @@ cli
   .option('-i, --ignores <file>', 'Optional ignores file')
   .option('-e, --env <env>', 'Optional environment, default is development')
   .option('-d, --dir <dir>', 'Optional directory, default is shop/dist')
-  .action(options => configureYML(options));
+  .action((options): Promise<void> => configureYML(options));
 
 cli
   .command('update-data')
   .description('Update settings_data.json with the published theme settings_data.json')
   .option(
-    '-id, --themeId [id]',
+    '-env, --environment [environment]',
     'Specify whether or not to update the settings_data.json file with a config from the live or specified theme id.'
   )
-  .action((options) => updateData(options));
+  .option('-id --id [themeid]', 'A specified theme id to get the settings from, otherwise the published theme in the environment by default')
+  .action((options): Promise<void> => updateData(options));
 
 cli
   .command('download')
   .description('Download the Shopify Theme Files from the currently defined theme in config.yml')
-  .action(() => downloadThemeFiles());
+  .action((): Promise<void> => downloadThemeFiles());
 
 cli
   .command('locales')
   .description('Compiles your locales folder with the configured localization defined in shop/src/dev/locales.config.json')
-  .action(() => compileLocales());
+  .action((): Promise<void> => compileLocales());
 
 cli
   .command('watch')
+  .option('-e, --env [environment]', 
+  'Specify environment from the config.yml fil, wrap in quotes to pass multiple: -e "development1 development2"'
+  )
   .description('Start watching theme files')
-  .action(() => initializeWatchers());
+  .action((options): Promise<void> => initializeWatchers(options));
 
 cli
   .command('install')

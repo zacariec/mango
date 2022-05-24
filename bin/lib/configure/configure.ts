@@ -1,20 +1,17 @@
 import yaml from 'js-yaml';
 import fs from 'fs-extra';
+import { ThemeOptions } from '../../../types/types';
 
-const configureYML = async (options) => {
+const configureYML = async ({ env, dir, password, themeid, file, store }: ThemeOptions): Promise<void> => {
   try {
-    const environmentKey = options.env ? options.env : 'development';
+    const environmentKey = env ? env : 'development';
     const config = {
       [environmentKey]: {
-        directory: options.dir ? options.dir : `shop/dist`,
-        password: options.password,
-        theme_id: `${options.themeid}`,
-        store: options.store,
-        ignores: [options.file ? options.file : `.shopifyignores`]
-      },
-      'mango_private_app': {
-        store: options.store,
-        password: options.password
+        directory: dir ? dir : `shop/dist`,
+        password: password,
+        theme_id: `${themeid}`,
+        store: store,
+        ignores: [file ? file : `.shopifyignores`]
       }
     }
 
