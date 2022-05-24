@@ -16,13 +16,14 @@ const createWorkingDirectory = async (): Promise<void> => {
   await moveAssetsToDev();
 };
 
-const initializeWatchers = async (): Promise<void> => {
+const initializeWatchers = async (environment: object): Promise<void> => {
   const port = await _randomPort();
+  const env = environment;
   const stepsToRun = [
     initializeWebpack,
     initializeWorkingDirectory,
   ];
-  await initializeThemekit(port);
+  await initializeThemekit(port, env);
   await removeLiveReload();
   await liveReload(port);
 

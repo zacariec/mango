@@ -24,7 +24,12 @@ const initializeWorkingDirectory = (): void => {
   watcher.on('unlink', removeFile);
 };
 
-const initializeThemekit = async (port: number): Promise<void> => {
+const initializeThemekit = async (port: number, environment: object): Promise<void> => {
+  let environments = [];
+  if (Object.prototype.hasOwnProperty.call(environment, "env")) {
+    environments = environment['env'].split(' ')
+  }
+
   const wss = new WebSocket.Server({ port });
   let client: undefined | WebSocket = undefined;
 
@@ -33,8 +38,24 @@ const initializeThemekit = async (port: number): Promise<void> => {
   const liveReloadCallback = (data: string) => (typeof client != 'undefined' && data.includes('Updated')) ? client.send('event') : null;
 
   return new Promise((resolve) => {
-    spawn(_Directories.theme, ['open'], { stdio: 'pipe' });
-    const command = spawn(_Directories.theme, ['watch', `--dir=${path.resolve('./shop/dist')}`], { stdio: 'pipe' });
+    // Open the theme for each specified environment
+    if (environments.length) {
+      environments.forEach(env => {
+        spawn(_Directories.theme, ['open', `-e=${env}`], { stdio: 'pipe' });
+      });
+    } else {
+      spawn(_Directories.theme, ['open'], { stdio: 'pipe' });
+    }
+
+    // Start a themekit listener for each specified environment
+    let themekitArguments = ['watch', `--dir=${path.resolve('./shop/dist')}`]
+
+    environments.forEach(env => {
+      themekitArguments.push(`-e=${env}`)
+    });
+
+    const command = spawn(_Directories.theme, themekitArguments, { stdio: 'pipe' });
+
     command.stdout.on('data', data => {
         spawnCallback(data, false, liveReloadCallback);
         if(data.toString().includes('Watching for file changes')) resolve();

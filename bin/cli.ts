@@ -70,8 +70,11 @@ cli
 
 cli
   .command('watch')
+  .option('-e, --env [environment]', 
+  'Specify environment from the config.yml fil, wrap in quotes to pass multiple: -e "development1 development2"'
+  )
   .description('Start watching theme files')
-  .action((): Promise<void> => initializeWatchers());
+  .action((options): Promise<void> => initializeWatchers(options));
 
 cli
   .command('install')
