@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import linkStyles from "../style-linking/styleLinking";
 // TODO: Probably need some sort of error handling in here at some stage.
 // Need to see how well it works to begin with.
 
@@ -27,7 +28,9 @@ const addFile = async (file: string): Promise<void> => {
     const fileKey = replaceFileKey(file);
     const source = await fs.readFile(file);
 
-    return await fs.writeFile(fileKey, source);
+    await fs.writeFile(fileKey, source);
+    await linkStyles(fileKey);
+    return
   } catch (err) {
     return console.error(err);
   }
@@ -44,7 +47,9 @@ const updateFile = async (file: string): Promise<void> => {
     const target = await fs.readFile(fileKey);
 
     if (Buffer.compare(source, target) !== 0) {
-      return await fs.writeFile(fileKey, source);
+      await fs.writeFile(fileKey, source);
+      await linkStyles(fileKey);
+      return;
     }
 
     return;
