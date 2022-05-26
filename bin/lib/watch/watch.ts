@@ -48,7 +48,7 @@ const initializeThemekit = async (port: number, environment: object): Promise<vo
     }
 
     // Start a themekit listener for each specified environment
-    let themekitArguments = ['watch', `--dir=${path.resolve('./shop/dist')}`]
+    const themekitArguments = ['watch', `--dir=${path.resolve('./shop/dist')}`]
 
     environments.forEach(env => {
       themekitArguments.push(`-e=${env}`)
@@ -78,5 +78,5 @@ const initializeWebpack = (): Promise<void> => {
 export {
   initializeWorkingDirectory,
   initializeThemekit,
-  initializeWebpack
+  initializeWebpack,
 };
