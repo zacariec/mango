@@ -8,6 +8,7 @@ import { removeLiveReload } from '../reload/liveReload';
 import sleep from '../utils/_sleep';
 import updateData from '../updateData/updateData';
 import { BuildOptions, Directories } from '../../../types/types';
+import linkStyles from "../style-linking/styleLinking";
 
 
 const removeDistDirectory = async (): Promise<void> => {
@@ -90,20 +91,19 @@ const runWebpackBuild = async (): Promise<void> => {
     successString: 'Finished packing output files',
   };
 
-  command.stdout.on('data', (data: Buffer): void => {
+  command.stdout.on('data', async (data: Buffer): Promise<void> => {
     spawnCallback(data, false);
     const outputString: string = data.toString().toLowerCase();
 
-
-    console.log(outputString);
-
     if (outputString.includes('error')) {
       webPackSpinner.warn(strings.errorString);
+      await linkStyles(null);
       return process.exit(1);
     }
 
     if (outputString.includes('compiled successfully')) {
       webPackSpinner.succeed();
+      await linkStyles(null);
       return process.exit(1);
     }
   });
@@ -113,10 +113,15 @@ const runWebpackBuild = async (): Promise<void> => {
     return webPackSpinner.warn(strings.errorString);
   });
 
-  command.stdout.on('end', (): Ora => webPackSpinner.succeed('Finished packing styles and scripts'));
-  command.on('error', (err) => {
+  command.stdout.on('end', async (): Promise<Ora> => {
+    await linkStyles(null);
+    return webPackSpinner.succeed('Finished packing styles and scripts')
+  });
+
+  command.on('error', async (err): Promise<void> => {
     webPackSpinner.fail('Error packing styles and scripts');
     handleError(err.errno, err);
+    await linkStyles(null);
   });
 
   return;
