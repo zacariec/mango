@@ -22,10 +22,16 @@ const createStyleSheet = (content: Buffer, fileKey: string): string => {
  * @param stylesheetFile - The linked stylesheet file to be used.
  * @param templateString - the string to be replaced, usually <!--mango-link: something/mango.something.css-->
  */
-const insertStyleSheet = async (fileKey: string, fileContents: string, stylesheetFile: string, templateString: string): Promise<void> => {
-  const styleSheet: Buffer = await fs.readFile(`${_Directories.distAssetsRoot}/${stylesheetFile}`);
-  const styleSheetContent = createStyleSheet(styleSheet, fileKey);
-  const newFileContents = fileContents.replace(templateString, styleSheetContent);
+const insertStyleSheet = async (fileKey: string, fileContents: string, templateString: string[]): Promise<void> => {
+  let newFileContents = fileContents;
+  
+  for await (const match of templateString) {
+    const stylesheetFile = match.match(/<!--mango-link:(.*?)-->/)[1].trim();
+    const styleSheet: Buffer = await fs.readFile(`${_Directories.distAssetsRoot}/${stylesheetFile}`);
+    const styleSheetContent = createStyleSheet(styleSheet, fileKey);
+    newFileContents = newFileContents.replace(match, styleSheetContent);
+  }
+  
   await fs.writeFile(fileKey, newFileContents);
 }
 
@@ -45,12 +51,8 @@ const linkStyles = async (fileKey: string | null): Promise<void> => {
     const fileContents: string = fileBuffer.toString();
     const fileContentsMatch: string[] = fileContents.match(linkRegex);
 
-    if (fileContentsMatch && fileContentsMatch.length) {
-      for await (const match of fileContentsMatch) {
-        const stylesheetFile: string = match.match(/<!--mango-link:(.*?)-->/)[1].trim();
-        await insertStyleSheet(liquidFile, fileContents, stylesheetFile, match)
-      }
-    }
+    if (fileContentsMatch)
+      await insertStyleSheet(liquidFile, fileContents, fileContentsMatch)
   }
 };
 
