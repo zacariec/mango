@@ -46,6 +46,12 @@ interface ServerAddressInfo {
   port: number,
 }
 
+interface SettingsSchema {
+  settings: {
+    id: string,
+  },
+}
+
 interface StorefrontConfig {
   [key: string]: {
     store: string,
@@ -68,6 +74,7 @@ export {
   ThemeOptions,
   ThemeResponse,
   ServerAddressInfo,
+  SettingsSchema,
   StorefrontConfig,
   StoreEnvironment,
 };

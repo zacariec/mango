@@ -87,7 +87,46 @@ const moveFile = async (fileToMove, fileDestination): Promise<void> => {
   await fs.move(fileToMove, `${fileDestination}/${path.basename(fileToMove)}`)
 };
 
+const auditFile = async (file: string, auditSettings: string[]): Promise<string[]> => {
+  const settings: string[] = [];
+  if (file.includes('.liquid')) {
+    const fileContent: Buffer = await fs.readFile(file);
+  
+    for await (const setting of auditSettings) {
+      const settingString = `settings.${setting}`;
+      if (fileContent.toString().includes(settingString)) {
+        settings.push(settingString);
+      }
+    }
+  }
+
+  return settings;
+};
+
+const auditDirectoryFiles = async (): Promise<string[]> => {
+  const files: string[] = [];
+  const auditDirectories: string[] = [
+    _Directories.layoutRoot,
+    _Directories.templatesRoot,
+    _Directories.customersRoot,
+    _Directories.snippetsRoot,
+    _Directories.sectionsRoot,
+  ];
+
+  for await (const directory of auditDirectories) {
+    const filesToAudit = await fs.readdir(directory);
+
+    for await (const file of filesToAudit) {
+      await Promise.resolve(files.push(`${directory}/${file}`));
+    }
+  }
+
+  return files;
+};
+
 export {
+  auditDirectoryFiles,
+  auditFile,
   createDirectory,
   createRecursiveDirectory,
   checkWorkingDirectory,
