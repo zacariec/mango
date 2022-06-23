@@ -10,7 +10,13 @@ import deployThemeFiles from './lib/deploy/deploy';
 import configureYML from './lib/configure/configure';
 import updateData from './lib/updateData/updateData';
 import install from './lib/install/install';
-import linkStyles from "./lib/style-linking/styleLinking";
+import linkStyles from './lib/style-linking/styleLinking';
+import audit from './lib/audit/audit';
+
+cli
+  .command('audit')
+  .description('Audits the current theme for unused code, currently audits locales, snippets & settings_schema')
+  .action((): Promise<void> => audit());
 
 // build command to build the src folder into the dist folder for distribution.
 cli
