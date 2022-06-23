@@ -1,6 +1,6 @@
 {
   "name": "@shopackify/mango",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "A highly modular Theme development tool, to create world class & production ready Shopify themes, using Webpack and your choice of PostCSS or SASS, while transpiling & polyfilling ECMAScript to allow for backwards compatibility and newer code. ",
   "preferGlobal": true,
   "bin": {
@@ -25,6 +25,8 @@
     "ws": "^7.4.6"
   },
   "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc --build",
     "postinstall": "mango install"
   },
   "repository": {
@@ -54,5 +56,13 @@
   "bugs": {
     "url": "https://github.com/raylway/shopackify/issues"
   },
-  "homepage": "https://github.com/raylway/shopackify#readme"
+  "homepage": "https://github.com/raylway/shopackify#readme",
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^17.0.31",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0",
+    "typescript": "^4.6.4"
+  }
 }
