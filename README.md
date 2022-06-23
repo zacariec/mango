@@ -300,7 +300,6 @@ example:
 1. `-env --environment` - Specify environment from the config.yml fil, wrap in quotes to pass multiple: -e "development1 development2"
 
 
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
