@@ -43,7 +43,7 @@
 
 
 ## 🥭 About The Project
-
+---
 Mango is made to work in tandem with Shopify Theme Kit, Webpack and a little bit of NodeJS magic.
 
 The goal of mango, was to provide developers with a quick and easy setup to start using modern day technologies when doing Shopify development and to solve the baseline issues Theme Kit was having.
@@ -55,18 +55,18 @@ Mango aims to provide a set ideology, with a direct and concise Project Scaffold
 
 
 ### 🥭 Built With
-
+---
 Mango is purely open source and built with NodeJS.
 
 
 
 
 ## 🥭 Getting Started
-
+---
 
 
 ### 🥭 Installation
-
+---
 ```sh
 npm install @shopackify/mango -g
 ```
@@ -74,22 +74,21 @@ npm install @shopackify/mango -g
 
 
 ## 🥭 Usage
-
+---
 
 
 ### 🥭 Initializing a Project
-
+---
 `mango init` will set up the base project, copy all of the configuration files.
 
 
 
 ### 🥭 Files Mango rely on
-
+---
 Mango actively looks for:
 
 1. `webpack.config.js`
 2. `webpack.production.config.js`
-3. `mango.config.yml`
 4. `config.yml`
 
 These files should be in your project root at all times.
@@ -97,10 +96,9 @@ These files should be in your project root at all times.
 
 
 ### 🥭 Configuration Files
-
+---
 ##### config.yml
-
-Stores all of your Shopify environment data, mango will read and write from this when needing to make API calls.
+- Stores all of your Shopify environment data, mango will read and write from this when needing to make API calls.
 
 ```yaml
 development:
@@ -127,44 +125,24 @@ production:
   ignores:
   - themekit_ignores
 ```
-
-
-
-##### mango.config.yml
-
-Currently only stores a key/value pair of each store & password, these are used to make API requests to Shopify for dynamically getting `config/settings_data.json` and deploying to uncreated themes.
-
-```yaml
-store: example.myshopify.com
-password: example_password
-```
-
-
-
 ##### webpack.config.js and webpack.production.config.js
-
-Mango uses both of these files as core files. The production config is only ever used on build, and the standard config is used while watching. To learn more about webpack configuration files see: https://webpack.js.org/
-
+- Mango uses both of these files as core files. The production config is only ever used on build, and the standard config is used while watching. To learn more about webpack configuration files see: https://webpack.js.org/
 
 
-### 🥭 Caveats
 
-Mango uses Chokidar under the hood and rely's on both `./shop/dist` & `./shop/src` folders to work.
-
-Theme Kit watches the `./shop/dist` folder for changes, while Chokidar watches and moves anything from the src folders to their respective distrobution folder.
+### 🥭 Opinionated
+---
+Mango is an opinionated build tool and expects you to follow the outlined structure to properly work, however you can edit the `webpack.production.config.js` & `webpack.config.js` files to suit your needs.
 
 
 
 ### 🥭 What to expect
-
-Using the recommended config `mango init -r` or `mango init --recommended` will setup the project directory with all of the recommended configurations out of the box.
-
-If you'd like to do something completely different or custom, you can run  `mango init -s` mango doesn't deny you this right, only as long as you fork the tooling and update the directory's privately or you follow the below directory structure.
-
+---
+Using the recommended config `mango init` or will setup the project directory with all of the recommended configurations out of the box.
 
 
 ### 🥭 Directory Structure
-
+---
 ```
   |-- shop
       |-- dist
@@ -213,20 +191,47 @@ If you'd like to do something completely different or custom, you can run  `mang
 
 
 ### 🥭 Mango Commands
+---
 
+**Mango Audit**
+
+- `mango audit` - Audits the `/shop/src` directory for unusued settings from `settings_schema.json`, unusued snippets from `/shop/src/snippets` and unusued locales from your `*.default.json` locale file.
+
+- Will output a `mango-audit.md` file with the results from the audit.
 
 
 **Mango Build**
-`mango build` - Builds the distrobution `/shop/dist` folder ready for deployment from the `/shop/src` directory.
+
+- `mango build` - Builds the distrobution `/shop/dist` folder ready for deployment from the `/shop/src` directory.
 
 *<u>Optional flags</u>*:  
 
-1. `-u` `--update-config` - Used to specify whether you'd like to update the `config/settings_data.json` with either the current Live theme settings, or by passing an id `-u some-id` `--update-config=some-id` to fetch settings from.
+1. `-env` `--environment` - The environment from your config.yml that you would like to use to update your settings_schema.json with.
+
+**Mango Config**
+
+- `mango config` - Will setup the config.yml file required for Shopify themes to work.
+
+*<u>Required flags</u>*:
+
+1. `-t --themeid` - The theme id you'd like to work with
+2. `-p --password` - The password of the admin app you use to communicate with Shopify.
+3. `-s --store` - The .myshopify url of the store you want to work on.
 
 
+*<u>Optional flags</u>*:
+
+1. `-i --ignores` - The ignores file you want to use, defaults to `.shopifyignores`
+2. `-e --env` - The environment you want to use, defaults to `development`
+3. `-d --dir` - The directory for themekit to watch, defaults to `./shop/dist`
+
+**Mango Convert**
+
+- `mango convert` - Will take the theme structure you have in `shop/dist` and convert it to work with mango, sometimes there's manual steps required.
 
 **Mango Deploy**
-`mango deploy` - Will deploy the `/shop/dist` folder to the current theme.
+
+- `mango deploy` - Will deploy the `/shop/dist` folder to the current theme.
 
 *<u>Optional flags</u>*:  
 
@@ -237,43 +242,30 @@ If you'd like to do something completely different or custom, you can run  `mang
 5. `-v` `--verbose` - Specify if you want Verbose output
 6. `-i` `--ignores` - The ignores file you want to use
 
-
-
 **Mango Download**
+
 `mango download` - Will download the currently defined theme in your `config.yml` file.
 
+**Mango Style-Link**
 
+`mango style-link` - A manual command to dynamically link any of your styles you have defined to be linked using `<!-- mango-link: mango.style.css -->`, this will find the file in the `shop/dist/assets` directory and inline it accordingly.
 
-**Mango Config**
-`mango config` - Configure/provision your environment with a config.yml file
-
-*<u>Optional flags</u>*:  
-
-1. `-t` `--themeid` - Theme ID
-2. `-p` `--password` - Private App Password
-3. `-s` `--store` - The .myshopify store URL
-4. `-i` `--ignores` - The optional ignores file.
-5. `-e` `--env` - Optional environment, default is development
-6. `-d` `--dir` - Optional directory to watch, default is `shop/dist`
-
-
-
-**Mango Convert**
-`mango convert` - Convert the currently downloaded Shopify Theme to use Mango workflow
-
-
+**NOTES**:
+Mango style-link happens at build time and during development, you will hardly need to run this command manually if at all.
 
 **Mango Init**
+
 `mango init` - Will initialize the project directory for mango ready builds.
 
 
-
 **Mango Install**
+
 `mango install` - Runs on `npm i @shopackify/mango -g` to install the bin for theme kit, can manually run to update the theme kit bin.
 
 
 
 **Mango Locales**
+
 `mango locales` - Compiles your locales folder with the configured localization defined in `shop/src/dev/locales.config.json`
 example:
 
@@ -290,23 +282,22 @@ example:
 }
 ```
 
-
-
 **Mango Update-Data**
+
 `mango updata-data` - Update `config/settings_data.json` with the published theme `settings_data.json`
 
 *<u>Optional flags</u>*:  
 
-1. `-id` `--themeId` - Used to specify whether you'd like to update the `config/settings_data.json` with either the current Live theme settings, or by passing an id `-id some-id` `--themeId=some-id` to fetch settings from.
-
+1. `-env --environment` - Specify whether or not to update the settings_data.json file with a config from the live or specified theme id.
 
 
 **Mango Watch**
+
 `mango watch` - Will start watching for file changes.
 
 *<u>Optional flags</u>*:  
 
-1. `-e` `--env` Specify the development config to be used from the config.yml file. Wrap in quotes to use multiple, eg `mango watch -e development` or `mango watch -e "development_1 development_2"`
+1. `-env --environment` - Specify environment from the config.yml fil, wrap in quotes to pass multiple: -e "development1 development2"
 
 
 ## Contributing
