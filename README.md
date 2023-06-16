@@ -202,7 +202,7 @@ Using the recommended config `mango init` or will setup the project directory wi
 
 **Mango Build**
 
-- `mango build` - Builds the distrobution `/shop/dist` folder ready for deployment from the `/shop/src` directory.
+- `mango build` - Builds the distribution `/shop/dist` folder ready for deployment from the `/shop/src` directory.
 
 *<u>Optional flags</u>*:  
 
