@@ -1,31 +1,32 @@
-import ora, { Ora } from 'ora';
-import fs from 'fs-extra';
-import spawn from 'cross-spawn';
-import _Directories from '../utils/_directorys';
-import { cloneDirectory, createDirectory } from '../utils/_fsUtils';
-import { spawnCallback, handleError } from '../utils/_logUtils';
-import { removeLiveReload } from '../reload/liveReload';
-import sleep from '../utils/_sleep';
-import updateData from '../updateData/updateData';
-import { BuildOptions, Directories } from '../../../types/types';
+import ora, { Ora } from "ora";
+import fs, { existsSync } from "fs-extra";
+import spawn from "cross-spawn";
+import _Directories from "../utils/_directorys";
+import { cloneDirectory, createDirectory } from "../utils/_fsUtils";
+import { spawnCallback, handleError } from "../utils/_logUtils";
+import { removeLiveReload } from "../reload/liveReload";
+import sleep from "../utils/_sleep";
+import updateData from "../updateData/updateData";
+import { BuildOptions, Directories } from "../../../types/types";
 import linkStyles from "../style-linking/styleLinking";
 
-
 const removeDistDirectory = async (): Promise<void> => {
-  const spinner: Ora = ora('Cleaning up distribution directory').start();
+  const spinner: Ora = ora("Cleaning up distribution directory").start();
 
   // this gets wrapped in its own try...catch as we don't want to fail the build.
   try {
-    const productionDirectory: string[] = await fs.readdir(_Directories.productionRoot);
+    const productionDirectory: string[] = await fs.readdir(
+      _Directories.productionRoot,
+    );
 
     if (productionDirectory.length) {
       await fs.remove(_Directories.productionRoot);
     }
 
-    spinner.succeed('Distribution directory sanitized');
+    spinner.succeed("Distribution directory sanitized");
     return;
   } catch {
-    spinner.succeed('Distribution directory sanitized');
+    spinner.succeed("Distribution directory sanitized");
     return;
   }
 };
@@ -35,7 +36,7 @@ const removeDistDirectory = async (): Promise<void> => {
  * asynchronously, before we can do anything else.
  */
 const buildDistDirectory = async (): Promise<Ora | Error> => {
-  const spinner: Ora = ora('Creating distribution directory').start();
+  const spinner: Ora = ora("Creating distribution directory").start();
   // Array of directories contained in the dist folder for Shopify.
   const directoriesToMake: string[] = [
     _Directories.productionRoot,
@@ -56,11 +57,13 @@ const buildDistDirectory = async (): Promise<Ora | Error> => {
 
   // If any of the directories failed creating, it will be contained in the created array.
   if (created.includes(false)) {
-    spinner.fail('Failed creating distribution directory, maybe it already exists');
-    throw new Error('Error creating the distribution directory');
+    spinner.fail(
+      "Failed creating distribution directory, maybe it already exists",
+    );
+    throw new Error("Error creating the distribution directory");
   }
 
-  return spinner.succeed('Finished creating distribution directory');
+  return spinner.succeed("Finished creating distribution directory");
 };
 
 /**
@@ -70,7 +73,11 @@ const buildDistDirectory = async (): Promise<Ora | Error> => {
  * @param type - String
  * @returns Promise<Ora>
  */
-const copyToDist = async (directory: string, output: string, type: string): Promise<Ora> => {
+const copyToDist = async (
+  directory: string,
+  output: string,
+  type: string,
+): Promise<Ora> => {
   const spinner: Ora = ora(`Moving ${type} to ${output}`).start();
 
   // Gets its own try...catch statement, so we don't fail the build step.
@@ -84,42 +91,76 @@ const copyToDist = async (directory: string, output: string, type: string): Prom
 };
 
 const runWebpackBuild = async (): Promise<void> => {
-  const webPackSpinner: Ora = ora('Packing styles and scripts with Webpack').start();
-  const command = spawn('npx', ['webpack', '--config', `webpack.production.config`]);
-  const strings = {
-    errorString: 'There was an error in Webpack, maybe it still compiled - check the logging output above',
-    successString: 'Finished packing output files',
+  const webPackSpinner: Ora = ora(
+    "Packing styles and scripts with Webpack",
+  ).start();
+  const webpackConfig: { exists: boolean; name: string } = {
+    exists: false,
+    name: "webpack.production.config.js",
   };
 
-  command.stdout.on('data', async (data: Buffer): Promise<void> => {
+  const productionConfigs = [
+    "webpack.production.config.js",
+    "webpack.production.config.cjs",
+    "webpack.production.config.mjs",
+    "webpack.production.config.ts",
+    "webpack.production.config.cts",
+    "webpack.production.config.mts",
+  ];
+
+  productionConfigs.every((filename) => {
+    const exists = existsSync(filename);
+
+    if (exists === true) {
+      webpackConfig.name = filename;
+      webpackConfig.exists = true;
+
+      return false;
+    }
+
+    return true;
+  })
+
+  const command = spawn("npx", [
+    "webpack",
+    "--config",
+    webpackConfig.name,
+  ]);
+  const strings = {
+    errorString:
+      "There was an error in Webpack, maybe it still compiled - check the logging output above",
+    successString: "Finished packing output files",
+  };
+
+  command.stdout.on("data", async (data: Buffer): Promise<void> => {
     spawnCallback(data, false);
     const outputString: string = data.toString().toLowerCase();
 
-    if (outputString.includes('error')) {
+    if (outputString.includes("error")) {
       webPackSpinner.warn(strings.errorString);
       await linkStyles(null);
       return process.exit(1);
     }
 
-    if (outputString.includes('compiled successfully')) {
+    if (outputString.includes("compiled successfully")) {
       webPackSpinner.succeed();
       await linkStyles(null);
       return process.exit(1);
     }
   });
 
-  command.stderr.on('data', (data: Buffer): Ora => {
-    spawnCallback(data, false)
+  command.stderr.on("data", (data: Buffer): Ora => {
+    spawnCallback(data, false);
     return webPackSpinner.warn(strings.errorString);
   });
 
-  command.stdout.on('end', async (): Promise<Ora> => {
+  command.stdout.on("end", async (): Promise<Ora> => {
     await linkStyles(null);
-    return webPackSpinner.succeed('Finished packing styles and scripts')
+    return webPackSpinner.succeed("Finished packing styles and scripts");
   });
 
-  command.on('error', async (err): Promise<void> => {
-    webPackSpinner.fail('Error packing styles and scripts');
+  command.on("error", async (err): Promise<void> => {
+    webPackSpinner.fail("Error packing styles and scripts");
     handleError(err.errno, err);
     await linkStyles(null);
   });
@@ -132,7 +173,7 @@ const runWebpackBuild = async (): Promise<void> => {
  * @param options
  */
 const buildDistFiles = async (options: BuildOptions): Promise<void> => {
-  const spinner = ora('Building distribution folder.').start();
+  const spinner = ora("Building distribution folder.").start();
   try {
     // Update the settings_data.json if --env is passed.
     if (options.environment) {
@@ -144,55 +185,59 @@ const buildDistFiles = async (options: BuildOptions): Promise<void> => {
       {
         from: _Directories.staticRoot,
         to: _Directories.distAssetsRoot,
-        name: 'Static',
+        name: "Static",
       },
       {
         from: _Directories.imagesRoot,
         to: _Directories.distAssetsRoot,
-        name: 'Images',
+        name: "Images",
       },
       {
         from: _Directories.fontsRoot,
         to: _Directories.distAssetsRoot,
-        name: 'Fonts',
+        name: "Fonts",
       },
       {
         from: _Directories.configRoot,
         to: _Directories.distConfigRoot,
-        name: 'Config',
+        name: "Config",
       },
       {
         from: _Directories.layoutRoot,
         to: _Directories.distLayoutRoot,
-        name: 'Layout',
+        name: "Layout",
       },
       {
         from: _Directories.localesRoot,
         to: _Directories.distLocalesRoot,
-        name: 'Locales',
+        name: "Locales",
       },
       {
         from: _Directories.sectionsRoot,
         to: _Directories.distSectionsRoot,
-        name: 'Sections',
+        name: "Sections",
       },
       {
         from: _Directories.snippetsRoot,
         to: _Directories.distSnippetsRoot,
-        name: 'Snippets',
+        name: "Snippets",
       },
       {
         from: _Directories.templatesRoot,
         to: _Directories.distTemplatesRoot,
-        name: 'Templates',
+        name: "Templates",
       },
       {
         from: _Directories.customersRoot,
         to: _Directories.distCustomersRoot,
-        name: 'Customers',
-      }
+        name: "Customers",
+      },
     ];
-    const stepsToRun: Array<{(): void }> = [removeDistDirectory, removeLiveReload, buildDistDirectory];
+    const stepsToRun: Array<{ (): void }> = [
+      removeDistDirectory,
+      removeLiveReload,
+      buildDistDirectory,
+    ];
 
     // run the steps for building the dist directory.
     for await (const step of stepsToRun) {
@@ -204,7 +249,7 @@ const buildDistFiles = async (options: BuildOptions): Promise<void> => {
       await copyToDist(directory.from, directory.to, directory.name);
     }
 
-    spinner.succeed('Finished building distribution folder');
+    spinner.succeed("Finished building distribution folder");
 
     // sleep func called to start the webpack spinner.
     await sleep(500);
@@ -212,7 +257,7 @@ const buildDistFiles = async (options: BuildOptions): Promise<void> => {
     await runWebpackBuild();
     return;
   } catch (err) {
-    spinner.fail('Error building distribution folder');
+    spinner.fail("Error building distribution folder");
     return console.error(err);
   }
 };
